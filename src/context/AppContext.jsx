@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { INITIAL_EVENTS, INITIAL_PROMOTERS, INITIAL_SALES, COMMISSION_TIERS } from '../data/mockData';
+import { INITIAL_EVENTS, INITIAL_PROMOTERS, INITIAL_SALES, INITIAL_REWARDS, INITIAL_REFERRALS, COMMISSION_TIERS } from '../data/mockData';
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v8_upfront_payment';
+const STORAGE_VERSION = 'v9_rewards_referrals';
 
 export const AppProvider = ({ children }) => {
   // Persistence in localStorage with auto-migration
@@ -41,6 +41,42 @@ export const AppProvider = ({ children }) => {
       }
     }
     return INITIAL_SALES;
+  });
+
+  const [rewards, setRewards] = useState(() => {
+    const saved = localStorage.getItem(`tixora_rewards_${STORAGE_VERSION}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return INITIAL_REWARDS;
+      }
+    }
+    return INITIAL_REWARDS;
+  });
+
+  const [claimedRewardIds, setClaimedRewardIds] = useState(() => {
+    const saved = localStorage.getItem(`tixora_claimed_rewards_${STORAGE_VERSION}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return ['rew-2']; // 15 tickets milestone claimed as sample
+      }
+    }
+    return ['rew-2'];
+  });
+
+  const [referrals, setReferrals] = useState(() => {
+    const saved = localStorage.getItem(`tixora_referrals_${STORAGE_VERSION}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return INITIAL_REFERRALS;
+      }
+    }
+    return INITIAL_REFERRALS;
   });
 
   // Current session: role can be 'promoter' or 'admin'
@@ -194,10 +230,30 @@ export const AppProvider = ({ children }) => {
     );
   };
 
+  useEffect(() => {
+    localStorage.setItem(`tixora_claimed_rewards_${STORAGE_VERSION}`, JSON.stringify(claimedRewardIds));
+  }, [claimedRewardIds]);
+
+  const claimReward = (rewardId) => {
+    const reward = rewards.find((r) => r.id === rewardId);
+    if (!reward) return;
+
+    if (claimedRewardIds.includes(rewardId)) {
+      showToast(`Reward "${reward.title}" has already been claimed!`, 'info');
+      return;
+    }
+
+    setClaimedRewardIds((prev) => [...prev, rewardId]);
+    showToast(`🎉 Reward Claimed! Voucher code: ${reward.voucherCode}`, 'success');
+  };
+
   const resetAllData = () => {
     setEvents(INITIAL_EVENTS);
     setPromoters(INITIAL_PROMOTERS);
     setSales(INITIAL_SALES);
+    setRewards(INITIAL_REWARDS);
+    setReferrals(INITIAL_REFERRALS);
+    setClaimedRewardIds(['rew-2']);
     localStorage.clear();
     showToast('Database reset to official 2026 concert lineup & posters', 'info');
   };
@@ -208,6 +264,10 @@ export const AppProvider = ({ children }) => {
         events,
         promoters,
         sales,
+        rewards,
+        claimedRewardIds,
+        referrals,
+        claimReward,
         currentRole,
         setCurrentRole,
         activePromoterId,

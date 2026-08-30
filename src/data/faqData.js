@@ -47,6 +47,24 @@ export const FAQ_DATA = [
     keywords: ['move up tier', 'better commission', 'tier progression', 'increase cut', 'tier upgrade', 'platinum'],
     highlight: 'Progress automatically from Silver (5–8.5%) to Gold (9–12%) and Platinum (13–16%) based on sales volume.'
   },
+  {
+    id: 'faq-promoter-rewards-perks',
+    category: 'promoters',
+    categoryLabel: 'For Promoters',
+    question: 'What rewards, free tickets, and coupons do promoters get?',
+    answer: 'Tixora rewards high-performing promoters with complimentary VIP & GA concert passes (e.g., The Chainsmokers, Anyma presents ÆDEN, Guns N\' Roses), ₹1,500 official tour merchandise vouchers, ₹2,500 festival food & beverage coupons, and ₹5,000 cash bonuses as you cross sales milestones (15, 25, 50, 100 passes). Vouchers and ticket claim codes are unlocked directly in your Rewards tab.',
+    keywords: ['rewards', 'free tickets', 'coupons', 'free passes', 'merch voucher', 'f&b coupon', 'milestone perks', 'food voucher'],
+    highlight: 'Complimentary concert passes, official tour merch coupons & F&B vouchers unlocked on sales milestones.'
+  },
+  {
+    id: 'faq-promoter-referral-program',
+    category: 'promoters',
+    categoryLabel: 'For Promoters',
+    question: 'How does the Campus Promoter Referral System work?',
+    answer: 'Every promoter gets a unique referral code and 1-click WhatsApp invite link in their dashboard. Invite fellow students, club heads, or campus friends to sign up as Tixora promoters. As soon as your referred ambassador completes their first 5 ticket sales, you automatically earn a flat ₹500 cash bounty credited to your account.',
+    keywords: ['referral system', 'refer a friend', 'referral code', 'earn 500', 'referral bonus', 'bounty', 'invite link'],
+    highlight: 'Earn ₹500 flat cash bounty for every friend you onboard who sells 5 passes.'
+  },
 
   // --- Ticket Delivery ---
   {

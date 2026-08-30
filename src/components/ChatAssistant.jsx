@@ -147,6 +147,16 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
       return `📈 **How to Move Up Tiers & Earn Up to 16% Commission:**\n\n• **Cumulative Volume:** Tiers progress automatically as you sell more passes across concerts.\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per pass.\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage passes & tour bonuses.`;
     }
 
+    // 5. FAQ: Promoter Milestone Rewards, Free Tickets & Merch Coupons
+    if (q.includes('reward') || q.includes('free ticket') || q.includes('coupon') || q.includes('free pass') || q.includes('merch') || q.includes('voucher') || q.includes('perk')) {
+      return `🎁 **Promoter Milestone Rewards & Free Concert Passes:**\n\n• **2x Free GA Passes:** Sell 25 passes to unlock 2 free tickets to The Chainsmokers Bengaluru (₹4,000 value)!\n• **₹1,500 Tour Merch Coupon:** Unlocked at 15 sales milestone.\n• **1x VIP Fanpit Pass:** Unlocked at 50 sales for Anyma presents ÆDEN Mumbai (₹8,000 value).\n• **₹2,500 F&B Vouchers:** Unlocked at 40 sales.\n• **2x All-Access Backstage Pass:** Unlocked at 100 sales for Guns N' Roses India Tour!\n• **₹5,000 Cash Stipend:** Direct UPI payment for 150 sales milestone.\n\n*Check the new **'Rewards & Referrals'** tab on your dashboard to claim your codes!*`;
+    }
+
+    // 6. FAQ: Campus Promoter Referral Program
+    if (q.includes('refer') || q.includes('invite') || q.includes('bounty') || q.includes('referral code') || q.includes('earn 500') || q.includes('referral link')) {
+      return `🤝 **Campus Promoter Referral Program:**\n\n• **Earn ₹500 Bounty:** Share your unique promoter referral link (found in the Rewards & Referrals tab) with batchmates and student ambassadors.\n• **Payout Trigger:** As soon as your referred friend signs up and sells their first 5 passes, ₹500 cash is credited directly to your account.\n• **1-Click WhatsApp Share:** Easily forward your invite link to college WhatsApp groups and student clubs!`;
+    }
+
     // 6. FAQ: How tickets are delivered to buyer (BookMyShow / District)
     if (q.includes('how are tickets') || q.includes('delivered') || q.includes('ticket delivery') || q.includes('where do tickets go') || q.includes('receive ticket') || q.includes('bookmyshow') || q.includes('district')) {
       if (q.includes('need') && (q.includes('account') || q.includes('bms') || q.includes('district'))) {
@@ -286,14 +296,14 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
   }, [externalQueryTrigger]);
 
   const QUICK_QUESTIONS = [
+    { label: "🎁 Rewards & Free Tickets", query: "What rewards, free tickets, and coupons do promoters get?" },
+    { label: "🤝 Refer Friends (Earn ₹500)", query: "How does the Campus Promoter Referral System work?" },
     { label: "💳 Pay via Card / UPI / Bank", query: "How does ticket payment and issuance work?" },
     { label: "💵 Collecting Cash from Buyers", query: "Can promoters collect cash from their peer buyers?" },
-    { label: "⚡ Zero Deposit Deadlines", query: "Are there deposit due dates or post-event deadlines?" },
     { label: "🎟️ BMS / District Delivery", query: "How are tickets delivered to the buyer?" },
+    { label: "📈 Move Up Commission Tiers", query: "How do I move up a tier and get a better commission rate?" },
     { label: "🔄 Event Cancellations & Refunds", query: "What happens if an event is cancelled?" },
     { label: "🛡️ DigiLocker & Disputes", query: "Why do I need to verify with DigiLocker?" },
-    { label: "📈 Move Up Commission Tiers", query: "How do I move up a tier and get a better commission rate?" },
-    { label: "🎪 How Tixora Gets Tickets", query: "How does Tixora get tickets to sell?" },
     { label: "📞 Helpline: 78921 45475", query: "Contact phone number and helpline" }
   ];
 

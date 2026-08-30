@@ -127,6 +127,9 @@ export const INITIAL_PROMOTERS = [
     nextTierTarget: 50,
     totalRevenueGenerated: 64750,
     totalCommissionEarned: 6840,
+    referralCode: "AARAV-DU",
+    referralEarnings: 1500,
+    referredCount: 4,
     status: "Active",
     assignedEvents: ["evt-fred-del", "evt-khalid-del", "evt-chainsmokers-blr"],
     joinedDate: "15 Aug 2026"
@@ -145,6 +148,9 @@ export const INITIAL_PROMOTERS = [
     nextTierTarget: 150,
     totalRevenueGenerated: 215000,
     totalCommissionEarned: 24500,
+    referralCode: "RIYA-MUM",
+    referralEarnings: 3000,
+    referredCount: 7,
     status: "Active",
     assignedEvents: ["evt-anyma-mum", "evt-fred-mum"],
     joinedDate: "02 Jul 2026"
@@ -163,6 +169,9 @@ export const INITIAL_PROMOTERS = [
     nextTierTarget: 300,
     totalRevenueGenerated: 610000,
     totalCommissionEarned: 74200,
+    referralCode: "VIKRAM-BLR",
+    referralEarnings: 6500,
+    referredCount: 14,
     status: "Active",
     assignedEvents: ["evt-gnr-blr", "evt-chainsmokers-blr"],
     joinedDate: "10 May 2026"
@@ -181,6 +190,9 @@ export const INITIAL_PROMOTERS = [
     nextTierTarget: 50,
     totalRevenueGenerated: 48000,
     totalCommissionEarned: 3950,
+    referralCode: "KABIR-NMIMS",
+    referralEarnings: 500,
+    referredCount: 2,
     status: "Active",
     assignedEvents: ["evt-anyma-mum"],
     joinedDate: "20 Aug 2026"
@@ -266,6 +278,128 @@ export const INITIAL_SALES = [
   }
 ];
 
+export const INITIAL_REWARDS = [
+  {
+    id: "rew-1",
+    title: "2x Free GA Concert Passes",
+    event: "The Chainsmokers — Sunburn Arena Bengaluru",
+    category: "ticket",
+    targetSales: 25,
+    rewardValue: "₹4,000 Value",
+    description: "Sell 25 total passes to earn 2 complimentary General Admission tickets to The Chainsmokers Bengaluru.",
+    voucherCode: "FREE-CHAIN-TXR92",
+    badge: "Free Tickets",
+    icon: "Ticket"
+  },
+  {
+    id: "rew-2",
+    title: "₹1,500 Official Tour Merch Coupon",
+    event: "All 2026 Concerts & Tours",
+    category: "coupon",
+    targetSales: 15,
+    rewardValue: "₹1,500 Coupon",
+    description: "Valid for official artist hoodies, tees, and caps at venue merchandise stalls.",
+    voucherCode: "MERCH-TXR-1500",
+    badge: "Merch Coupon",
+    icon: "ShoppingBag"
+  },
+  {
+    id: "rew-3",
+    title: "1x VIP Fanpit / Front Row Pass",
+    event: "Anyma presents ÆDEN — Mumbai",
+    category: "ticket",
+    targetSales: 50,
+    rewardValue: "₹8,000 Value",
+    description: "Reach 50 passes sold to claim 1 exclusive VIP Front Stage pass with expedited gate entry.",
+    voucherCode: "VIP-ANYMA-PASS88",
+    badge: "VIP Ticket",
+    icon: "Sparkles"
+  },
+  {
+    id: "rew-4",
+    title: "₹2,500 Festival Food & Drink Voucher",
+    event: "Fred again.. & Guns N' Roses Venues",
+    category: "coupon",
+    targetSales: 40,
+    rewardValue: "₹2,500 F&B Voucher",
+    description: "Complimentary food and premium beverage credits redeemable via digital venue wristband.",
+    voucherCode: "FEAST-TXR-2500",
+    badge: "F&B Voucher",
+    icon: "Utensils"
+  },
+  {
+    id: "rew-5",
+    title: "2x All-Access Backstage Pass",
+    event: "Guns N' Roses — Bengaluru Tour",
+    category: "ticket",
+    targetSales: 100,
+    rewardValue: "₹32,000 Value",
+    description: "Top promoter tier milestone: Complete backstage tour, artist lounge credentials, and soundcheck access.",
+    voucherCode: "BACKSTAGE-GNR-XX1",
+    badge: "All-Access VIP",
+    icon: "Crown"
+  },
+  {
+    id: "rew-6",
+    title: "₹5,000 Direct Tour Cash Stipend",
+    event: "All Venues & Cities",
+    category: "cash",
+    targetSales: 150,
+    rewardValue: "₹5,000 Direct Cash",
+    description: "Paid directly to your bank account / UPI for exceptional campus network performance.",
+    voucherCode: "CASH-BONUS-5000",
+    badge: "Cash Reward",
+    icon: "Banknote"
+  }
+];
+
+export const INITIAL_REFERRALS = [
+  {
+    id: "ref-1",
+    referrerId: "prom-1",
+    referredName: "Ananya Iyer",
+    referredCollege: "SRCC, Delhi University",
+    referredPhone: "+91 98111 87654",
+    passesSold: 8,
+    status: "Completed (₹500 Earned)",
+    rewardAmount: 500,
+    joinedDate: "18 Aug 2026"
+  },
+  {
+    id: "ref-2",
+    referrerId: "prom-1",
+    referredName: "Devansh Batra",
+    referredCollege: "Hindu College, DU",
+    referredPhone: "+91 98102 33441",
+    passesSold: 6,
+    status: "Completed (₹500 Earned)",
+    rewardAmount: 500,
+    joinedDate: "21 Aug 2026"
+  },
+  {
+    id: "ref-3",
+    referrerId: "prom-1",
+    referredName: "Kritika Sethi",
+    referredCollege: "Lady Shri Ram College (LSR), Delhi",
+    referredPhone: "+91 99109 44556",
+    passesSold: 5,
+    status: "Completed (₹500 Earned)",
+    rewardAmount: 500,
+    joinedDate: "24 Aug 2026"
+  },
+  {
+    id: "ref-4",
+    referrerId: "prom-1",
+    referredName: "Aditya Nair",
+    referredCollege: "IIT Delhi",
+    referredPhone: "+91 98711 66778",
+    passesSold: 2,
+    status: "In Progress (2/5 passes)",
+    rewardAmount: 0,
+    joinedDate: "28 Aug 2026"
+  }
+];
+
 export const COMMISSION_TIERS = [
   {
     tier: "Silver",
@@ -298,3 +432,4 @@ export const COMMISSION_TIERS = [
     border: "rgba(236, 72, 153, 0.25)"
   }
 ];
+

@@ -8,6 +8,7 @@ import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
 import { SalesLedger } from './components/PromoterDashboard/SalesLedger';
 import { RecordSaleModal } from './components/PromoterDashboard/RecordSaleModal';
+import { RewardsAndReferrals } from './components/PromoterDashboard/RewardsAndReferrals';
 import { AdminOverview } from './components/AdminDashboard/AdminOverview';
 import { EventManager } from './components/AdminDashboard/EventManager';
 import { PromoterManager } from './components/AdminDashboard/PromoterManager';
@@ -22,6 +23,7 @@ import {
   Tag, 
   Receipt, 
   Award, 
+  Gift,
   CheckCircle2,
   ShieldCheck,
   Scale,
@@ -220,6 +222,7 @@ const MainDashboard = () => {
                 { id: 'posters', label: 'Events & Posters', icon: <Ticket size={15} /> },
                 { id: 'prices', label: 'Price Lists & Calculator', icon: <Tag size={15} /> },
                 { id: 'ledger', label: 'My Sales Ledger', icon: <Receipt size={15} /> },
+                { id: 'rewards', label: 'Rewards & Referrals', icon: <Gift size={15} /> },
                 { id: 'tiers', label: 'Tier Milestones', icon: <Award size={15} /> },
                 { id: 'faqs', label: 'FAQs & Policies', icon: <HelpCircle size={15} /> }
               ].map((tab) => (
@@ -275,6 +278,10 @@ const MainDashboard = () => {
               <SalesLedger
                 onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
               />
+            )}
+
+            {promoterTab === 'rewards' && (
+              <RewardsAndReferrals />
             )}
 
             {promoterTab === 'tiers' && (
@@ -386,11 +393,11 @@ const MainDashboard = () => {
             </button>
 
             <button
-              onClick={() => { setPromoterTab('prices'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${promoterTab === 'prices' ? 'active' : ''}`}
+              onClick={() => { setPromoterTab('rewards'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${promoterTab === 'rewards' ? 'active' : ''}`}
             >
-              <Tag size={18} />
-              <span>Prices</span>
+              <Gift size={18} />
+              <span>Rewards</span>
             </button>
 
             {/* Floating Quick Action in Center */}
