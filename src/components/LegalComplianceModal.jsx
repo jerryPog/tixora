@@ -7,7 +7,8 @@ import {
   Lock, 
   CheckCircle2, 
   X,
-  Users
+  Users,
+  Phone
 } from 'lucide-react';
 
 export const LegalComplianceModal = ({ isOpen, onClose }) => {
@@ -80,7 +81,7 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Founders Accreditation Card */}
+        {/* Founders Accreditation & Direct Helpline Card */}
         <div style={{
           background: 'rgba(255, 255, 255, 0.04)',
           border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -91,17 +92,31 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '8px'
+          gap: '10px'
         }}>
           <div className="flex items-center gap-2">
             <Users size={16} color="#38bdf8" />
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>Leadership & Founding Team:</span>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>Leadership:</span>
+            <span style={{ fontSize: '0.8rem', color: '#e4e4e7' }}>
+              <strong>Ronak Jain R</strong> (Founder) & <strong>Anshul S Balan</strong> (Co-Founder)
+            </span>
           </div>
-          <div style={{ fontSize: '0.8rem', color: '#e4e4e7', display: 'flex', gap: '8px' }}>
-            <span><strong>Ronak Jain R</strong> — Founder</span>
-            <span style={{ color: 'var(--text-muted)' }}>|</span>
-            <span><strong>Anshul S Balan</strong> — Co-Founder</span>
-          </div>
+
+          <a
+            href="tel:+917892145475"
+            style={{
+              fontSize: '0.8rem',
+              color: '#34d399',
+              fontWeight: 600,
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <Phone size={13} />
+            <span>+91 78921 45475</span>
+          </a>
         </div>
 
         {/* Policy Sections */}

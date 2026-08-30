@@ -26,7 +26,8 @@ import {
   Scale,
   Users,
   TrendingUp,
-  Plus
+  Plus,
+  Phone
 } from 'lucide-react';
 import './index.css';
 
@@ -431,7 +432,7 @@ const MainDashboard = () => {
       {/* Action Toasts */}
       <ToastContainer />
 
-      {/* Footer with Founders Attribution */}
+      {/* Footer with Founders Attribution & Helpline */}
       <footer style={{
         borderTop: '1px solid var(--border-color)',
         padding: '1.75rem 0',
@@ -475,8 +476,24 @@ const MainDashboard = () => {
             </div>
           </div>
 
-          {/* Legal & Policy Links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', fontSize: '0.74rem', color: 'var(--text-muted)', justifyContent: 'center' }}>
+          {/* Queries & Helpline and Legal Links */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.74rem', color: 'var(--text-muted)', justifyContent: 'center' }}>
+            <a
+              href="https://wa.me/917892145475"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                color: '#34d399',
+                textDecoration: 'none',
+                fontWeight: 600
+              }}
+            >
+              <Phone size={12} /> Helpline: +91 78921 45475
+            </a>
+            <span>•</span>
             <span className="flex items-center gap-1">
               <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
             </span>

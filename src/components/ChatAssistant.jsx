@@ -1,17 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
-  MessageSquare, 
   X, 
   Send, 
   Bot, 
   Sparkles, 
+  Phone,
+  MessageCircle,
   Music, 
   CreditCard, 
   HelpCircle, 
-  Ticket, 
-  ChevronRight,
-  ShieldCheck
+  Ticket
 } from 'lucide-react';
 
 const ARTIST_KNOWLEDGE = {
@@ -109,7 +108,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
     {
       id: 'msg-welcome',
       sender: 'bot',
-      text: "👋 Hi! I'm **Tixora AI**. Ask me anything about artist bios, top hit songs, concert dates, cash settlements, or how promoter commissions work!",
+      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about popular songs of any artist, concert dates, cash settlements, or promoter commission tiers.\n\n📞 *For direct queries, reach our helpline at +91 78921 45475.*",
       timestamp: 'Just now'
     }
   ]);
@@ -127,6 +126,11 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
 
   const generateBotReply = (query) => {
     const q = query.toLowerCase().trim();
+
+    // 0. Helpline / Phone Number
+    if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('support') || q.includes('help')) {
+      return `📞 **Tixora Helpline & Founder Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](tel:+917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST\n• **Founding Team:** Ronak Jain R (Founder) & Anshul S Balan (Co-Founder)\n\nFeel free to call or WhatsApp +91 78921 45475 anytime for promoter onboarding, event allocations, or urgent settlement queries!`;
+    }
 
     // 1. Artist Songs & Info Matching
     if (q.includes('fred') || q.includes('again')) {
@@ -156,7 +160,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
 
     // 2. Payments & Cash Settlement Rules
     if (q.includes('cash') || q.includes('payment') || q.includes('settle') || q.includes('deposit') || q.includes('deadline')) {
-      return `💰 **How Cash & Payments Work on Tixora:**\n\n1. **Accept Cash or UPI:** Many buyers (16-18 students without credit cards) pay promoters directly in cash.\n2. **Instant Ticket Issuance:** You issue tickets against your promoter credit limit. A digital QR pass is generated immediately.\n3. **10-Day Pre-Event Settlement:** You must deposit collected cash to Tixora Ops at least **10 days before** the show.\n4. **Deposit Channels:** Settle via Campus Student Hub drop, UPI, or direct Escrow NEFT/IMPS.\n5. **Anti-Scalping:** All passes must strictly be sold at official published MRP.`;
+      return `💰 **How Cash & Payments Work on Tixora:**\n\n1. **Accept Cash or UPI:** Many buyers (16-18 students without credit cards) pay promoters directly in cash.\n2. **Instant Ticket Issuance:** You issue tickets against your promoter credit limit. A digital QR pass is generated immediately.\n3. **10-Day Pre-Event Settlement:** You must deposit collected cash to Tixora Ops at least **10 days before** the show.\n4. **Deposit Channels:** Settle via Campus Student Hub drop, UPI, or direct Escrow NEFT/IMPS.\n5. **Anti-Scalping:** All passes must strictly be sold at official published MRP.\n\n*Questions? Call / WhatsApp +91 78921 45475.*`;
     }
 
     // 3. Commissions & Tiers
@@ -171,11 +175,11 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
 
     // 5. Founders
     if (q.includes('founder') || q.includes('who made') || q.includes('created by') || q.includes('team')) {
-      return `🏛️ **Tixora Founding Team:**\n\n• **Ronak Jain R** — Founder\n• **Anshul S Balan** — Co-Founder\n\nTixora is built to turn verified student networks into official ticketing promoters with digital ticket control.`;
+      return `🏛️ **Tixora Founding Team:**\n\n• **Ronak Jain R** — Founder\n• **Anshul S Balan** — Co-Founder\n• **Support Helpline:** +91 78921 45475\n\nTixora is built to turn verified student networks into official ticketing promoters with digital ticket control.`;
     }
 
     // Default Fallback
-    return `✨ I can help you with:\n\n• **Artist Music & Bios:** Popular songs of Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid.\n• **Payment Rules:** Cash collection, UPI, and the 10-day pre-show deposit deadline.\n• **Commission Matrix:** Silver, Gold, and Platinum tier earnings.\n• **Ticket Issuance:** How to issue digital passes to friends on your credit line.\n\nWhat would you like to know?`;
+    return `✨ I can help you with:\n\n• **Artist Music & Bios:** Popular songs of Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid.\n• **Payment Rules:** Cash collection, UPI, and the 10-day pre-show deposit deadline.\n• **Commission Matrix:** Silver, Gold, and Platinum tier earnings.\n• **Support Contact:** Call or WhatsApp **+91 78921 45475** for any further assistance.`;
   };
 
   const handleSend = (textToSend = null) => {
@@ -202,15 +206,16 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages((prev) => [...prev, botMsg]);
-    }, 350);
+    }, 300);
   };
 
   const QUICK_QUESTIONS = [
-    "Top songs of Fred again..",
-    "Who is Anyma & top tracks?",
-    "Guns N' Roses hits & show info",
-    "How does cash settlement work?",
-    "What are promoter commission tiers?"
+    { label: "🎵 Fred again.. top songs", query: "Top songs of Fred again.." },
+    { label: "🌌 Anyma ÆDEN tracklist", query: "Who is Anyma & top tracks?" },
+    { label: "🎸 Guns N' Roses hits", query: "Guns N' Roses hits & show info" },
+    { label: "💰 10-Day Cash Rules", query: "How does cash settlement work?" },
+    { label: "🏆 Commission Tiers", query: "What are promoter commission tiers?" },
+    { label: "📞 Helpline: 78921 45475", query: "Contact phone number and helpline" }
   ];
 
   return (
@@ -260,8 +265,8 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
           bottom: '80px',
           right: '20px',
           width: 'calc(100vw - 40px)',
-          maxWidth: '380px',
-          height: '520px',
+          maxWidth: '390px',
+          height: '540px',
           maxHeight: 'calc(100vh - 120px)',
           background: '#10121a',
           border: '1px solid rgba(255, 255, 255, 0.14)',
@@ -302,7 +307,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
                 </div>
                 <div className="flex items-center gap-1.5" style={{ fontSize: '0.68rem', color: '#10b981' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
-                  <span>Concert & Payment Intelligence</span>
+                  <span>Songs • Payments • Contact</span>
                 </div>
               </div>
             </div>
@@ -326,6 +331,31 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
             </button>
           </div>
 
+          {/* Direct Founder Helpline Callout Bar */}
+          <a
+            href="https://wa.me/917892145475"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              background: 'rgba(16, 185, 129, 0.12)',
+              borderBottom: '1px solid rgba(16, 185, 129, 0.25)',
+              padding: '6px 12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              textDecoration: 'none',
+              fontSize: '0.74rem',
+              color: '#34d399',
+              fontWeight: 600
+            }}
+          >
+            <div className="flex items-center gap-1.5">
+              <Phone size={12} />
+              <span>Helpline: <strong>+91 78921 45475</strong></span>
+            </div>
+            <span style={{ fontSize: '0.68rem', textDecoration: 'underline' }}>WhatsApp Us →</span>
+          </a>
+
           {/* Messages Body */}
           <div style={{
             flex: 1,
@@ -340,7 +370,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
                 key={msg.id}
                 style={{
                   alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                  maxWidth: '85%',
+                  maxWidth: '88%',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '2px'
@@ -371,33 +401,39 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Suggestions Chips */}
+          {/* 1-Click Quick Suggestion Chips Bar */}
           <div style={{
-            padding: '6px 10px',
-            background: 'rgba(14, 16, 24, 0.7)',
+            padding: '8px 10px',
+            background: 'rgba(14, 16, 24, 0.85)',
             borderTop: '1px solid var(--border-color)',
             overflowX: 'auto',
             display: 'flex',
-            gap: '5px',
+            gap: '6px',
             WebkitOverflowScrolling: 'touch'
           }}>
-            {QUICK_QUESTIONS.map((q, idx) => (
+            {QUICK_QUESTIONS.map((item, idx) => (
               <button
                 key={idx}
-                onClick={() => handleSend(q)}
+                onClick={() => handleSend(item.query)}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid var(--border-color)',
-                  color: '#e4e4e7',
-                  borderRadius: '6px',
-                  padding: '4px 8px',
-                  fontSize: '0.68rem',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  color: '#ffffff',
+                  borderRadius: '7px',
+                  padding: '5px 9px',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
-                  transition: 'all 0.15s ease'
+                  transition: 'all 0.15s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}
+                onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
+                onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
               >
-                {q}
+                {item.label}
               </button>
             ))}
           </div>
