@@ -43,7 +43,7 @@ export const EventManager = ({ onOpenCreateEvent, onEditEvent }) => {
                 <img
                   src={event.posterUrl}
                   alt={event.name}
-                  style={{ width: '56px', height: '56px', borderRadius: '8px', objectFit: 'cover', border: '1px solid var(--border-color)' }}
+                  style={{ width: '56px', height: '56px', borderRadius: '8px', objectFit: 'cover', objectPosition: event.posterPosition || 'center top', border: '1px solid var(--border-color)' }}
                 />
                 <div>
                   <div className="flex items-center gap-2">

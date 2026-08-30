@@ -3,7 +3,7 @@ import { INITIAL_EVENTS, INITIAL_PROMOTERS, INITIAL_SALES, COMMISSION_TIERS } fr
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v4_posters';
+const STORAGE_VERSION = 'v5_poster_framing';
 
 export const AppProvider = ({ children }) => {
   // Persistence in localStorage with auto-migration to new poster paths

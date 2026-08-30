@@ -140,22 +140,30 @@ ${tiersText}
               }}
             >
               {/* Poster Image with overlays */}
-              <div style={{ position: 'relative', height: '220px', width: '100%', overflow: 'hidden', background: '#0e1017' }}>
+              <div style={{ position: 'relative', height: '270px', width: '100%', overflow: 'hidden', background: '#0e1017' }}>
                 <img
                   src={event.posterUrl}
                   alt={event.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover', 
+                    objectPosition: event.posterPosition || 'center top',
+                    transition: 'transform 0.3s ease'
+                  }}
+                  loading="lazy"
                 />
                 
-                {/* Gradient scrim */}
+                {/* Subtle bottom-only gradient scrim (leaves artist face 100% crisp and unshaded) */}
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(9,10,13,0.95) 0%, rgba(9,10,13,0.2) 60%, rgba(0,0,0,0.6) 100%)'
+                  background: 'linear-gradient(to top, rgba(9,10,13,0.95) 0%, rgba(9,10,13,0.35) 25%, transparent 60%)',
+                  pointerEvents: 'none'
                 }} />
 
                 {/* Badges on poster */}
-                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '5px' }}>
+                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '5px', zIndex: 2 }}>
                   <span className="badge" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}>
                     {event.city}
                   </span>
@@ -183,7 +191,8 @@ ${tiersText}
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    zIndex: 2
                   }}
                   title="View Posters"
                 >
@@ -191,7 +200,7 @@ ${tiersText}
                 </button>
 
                 {/* Event Name on Poster bottom */}
-                <div style={{ position: 'absolute', bottom: '10px', left: '12px', right: '12px' }}>
+                <div style={{ position: 'absolute', bottom: '10px', left: '12px', right: '12px', zIndex: 2 }}>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
                     {event.name}
                   </h3>
@@ -357,11 +366,21 @@ ${tiersText}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ marginBottom: '1rem' }}>
               <div>
-                <div style={{ borderRadius: '10px', overflow: 'hidden', height: '260px', marginBottom: '6px', border: '1px solid var(--border-color)' }}>
+                <div style={{ 
+                  borderRadius: '10px', 
+                  overflow: 'hidden', 
+                  height: '360px', 
+                  marginBottom: '6px', 
+                  border: '1px solid var(--border-color)',
+                  background: '#090a0d',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
                   <img
                     src={selectedPosterModal.posterUrl}
                     alt="Story Poster"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 </div>
                 <button
@@ -374,11 +393,21 @@ ${tiersText}
               </div>
 
               <div>
-                <div style={{ borderRadius: '10px', overflow: 'hidden', height: '260px', marginBottom: '6px', border: '1px solid var(--border-color)' }}>
+                <div style={{ 
+                  borderRadius: '10px', 
+                  overflow: 'hidden', 
+                  height: '360px', 
+                  marginBottom: '6px', 
+                  border: '1px solid var(--border-color)',
+                  background: '#090a0d',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
                   <img
                     src={selectedPosterModal.bannerUrl}
                     alt="Feed Banner"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 </div>
                 <button

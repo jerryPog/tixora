@@ -12,6 +12,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "04 Nov 2026", // 10 days before
     posterUrl: "/posters/guns-n-roses-india-poster.jpg",
     bannerUrl: "/posters/guns-n-roses-banner.webp",
+    posterPosition: "center 15%",
     description: "The American hard-rock legends Axl Rose, Slash & Duff McKagan live in Bengaluru with iconic hits like Sweet Child O' Mine and November Rain.",
     priceList: [
       { id: "p1", category: "Silver (Phase 1)", faceValue: 4000, promoterPrice: 4000, commissionPct: 7.5, commissionAmount: 300, quotaTotal: 100, quotaSold: 42 },
@@ -30,6 +31,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "11 Nov 2026", // 10 days before
     posterUrl: "/posters/anyma-aeden-poster-1.jpg",
     bannerUrl: "/posters/anyma-aeden-poster-2.jpg",
+    posterPosition: "center 20%",
     description: "Matteo Milleri's groundbreaking melodic-techno and audiovisual immersive production combining cinematic visuals and futuristic themes.",
     priceList: [
       { id: "p4", category: "GA Back", faceValue: 4250, promoterPrice: 4250, commissionPct: 7.5, commissionAmount: 318, quotaTotal: 150, quotaSold: 94 },
@@ -49,6 +51,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "25 Nov 2026", // 10 days before
     posterUrl: "/posters/fred-again-india-poster-1.png",
     bannerUrl: "/posters/fred-again-india-poster-2.png",
+    posterPosition: "center 18%",
     description: "British electronic producer and live performer bringing emotionally raw, high-energy live sampling and beats from Actual Life to USB.",
     priceList: [
       { id: "p8", category: "Student Pass (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 250, quotaSold: 180 },
@@ -66,6 +69,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "28 Nov 2026",
     posterUrl: "/posters/fred-again-india-poster-2.png",
     bannerUrl: "/posters/fred-again-india-poster-1.png",
+    posterPosition: "center 18%",
     description: "Two consecutive nights of unmatched electronic music magic under the Mumbai skyline.",
     priceList: [
       { id: "p10", category: "Student Pass (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 300, quotaSold: 210 },
@@ -83,6 +87,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "10 Dec 2026",
     posterUrl: "/posters/chainsmokers-bengaluru-banner.jpg",
     bannerUrl: "/posters/chainsmokers-india-banner.jpg",
+    posterPosition: "center 20%",
     description: "Grammy-winning electronic duo Andrew Taggart and Alex Pall performing Closer, Paris, Something Just Like This and explosive new drops.",
     priceList: [
       { id: "p12", category: "Early Bird GA", faceValue: 1500, promoterPrice: 1500, commissionPct: 7.0, commissionAmount: 105, quotaTotal: 120, quotaSold: 120 },
@@ -103,6 +108,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "03 Dec 2026",
     posterUrl: "/posters/khalid-india-banner.jpg",
     bannerUrl: "/posters/khalid-india-banner.jpg",
+    posterPosition: "center 25%",
     description: "Multi-platinum R&B/pop superstar Khalid bringing the soulful warmth of Location, Young Dumb & Broke, and Talk to Delhi NCR.",
     priceList: [
       { id: "p17", category: "General Access", faceValue: 2549, promoterPrice: 2549, commissionPct: 7.5, commissionAmount: 191, quotaTotal: 100, quotaSold: 25 },
