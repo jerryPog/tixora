@@ -15,6 +15,7 @@ import { PromoterManager } from './components/AdminDashboard/PromoterManager';
 import { AllSalesMonitor } from './components/AdminDashboard/AllSalesMonitor';
 import { CreateEventModal } from './components/AdminDashboard/CreateEventModal';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
+import { FAQSection } from './components/FAQSection';
 import { ToastContainer } from './components/Toast';
 import { 
   Ticket, 
@@ -27,7 +28,8 @@ import {
   Users,
   TrendingUp,
   Plus,
-  Phone
+  Phone,
+  HelpCircle
 } from 'lucide-react';
 import './index.css';
 
@@ -130,8 +132,9 @@ const MainDashboard = () => {
   const { currentRole } = useApp();
 
   // Promoter View State
-  const [promoterTab, setPromoterTab] = useState('posters'); // 'posters' | 'prices' | 'ledger' | 'tiers'
+  const [promoterTab, setPromoterTab] = useState('posters'); // 'posters' | 'prices' | 'ledger' | 'tiers' | 'faqs'
   const [selectedEventForPrices, setSelectedEventForPrices] = useState(null);
+  const [externalChatQuery, setExternalChatQuery] = useState(null);
 
   // Modals
   const [isRecordSaleOpen, setIsRecordSaleOpen] = useState(false);
@@ -141,7 +144,7 @@ const MainDashboard = () => {
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
 
   // Admin View State
-  const [adminTab, setAdminTab] = useState('events'); // 'events' | 'promoters' | 'sales'
+  const [adminTab, setAdminTab] = useState('events'); // 'events' | 'promoters' | 'sales' | 'faqs'
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
 
@@ -167,6 +170,19 @@ const MainDashboard = () => {
     setIsCreateEventOpen(true);
   };
 
+  const handleAskInChat = (queryText) => {
+    setExternalChatQuery(queryText);
+  };
+
+  const handleOpenFAQ = () => {
+    if (currentRole === 'admin') {
+      setAdminTab('faqs');
+    } else {
+      setPromoterTab('faqs');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       
@@ -178,6 +194,7 @@ const MainDashboard = () => {
         onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
         onOpenCreateEvent={handleAddNewEvent}
         onOpenLegalCompliance={() => setIsLegalModalOpen(true)}
+        onOpenFAQ={handleOpenFAQ}
       />
 
       {/* Main Content Area */}
@@ -206,7 +223,8 @@ const MainDashboard = () => {
                 { id: 'posters', label: 'Events & Posters', icon: <Ticket size={15} /> },
                 { id: 'prices', label: 'Price Lists & Calculator', icon: <Tag size={15} /> },
                 { id: 'ledger', label: 'My Sales Ledger', icon: <Receipt size={15} /> },
-                { id: 'tiers', label: 'Tier Milestones', icon: <Award size={15} /> }
+                { id: 'tiers', label: 'Tier Milestones', icon: <Award size={15} /> },
+                { id: 'faqs', label: 'FAQs & Policies', icon: <HelpCircle size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -236,10 +254,17 @@ const MainDashboard = () => {
 
             {/* Subviews */}
             {promoterTab === 'posters' && (
-              <EventPosters
-                onSelectEventForSale={(eId) => handleOpenSaleWithCategory(eId, null)}
-                onSelectEventForPriceList={handleViewPriceList}
-              />
+              <>
+                <EventPosters
+                  onSelectEventForSale={(eId) => handleOpenSaleWithCategory(eId, null)}
+                  onSelectEventForPriceList={handleViewPriceList}
+                />
+                
+                {/* Live FAQ Section on Homepage */}
+                <div style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
+                  <FAQSection onAskInChat={handleAskInChat} />
+                </div>
+              </>
             )}
 
             {promoterTab === 'prices' && (
@@ -259,6 +284,10 @@ const MainDashboard = () => {
               <PromoterCommissionRules />
             )}
 
+            {promoterTab === 'faqs' && (
+              <FAQSection onAskInChat={handleAskInChat} />
+            )}
+
           </div>
         ) : (
           /* ================= ADMIN DASHBOARD ================= */
@@ -269,11 +298,58 @@ const MainDashboard = () => {
               onOpenCreateEvent={handleAddNewEvent}
             />
 
+            {/* Additional Admin Tab Strip for FAQs */}
+            <div style={{
+              display: 'flex',
+              gap: '0.35rem',
+              borderBottom: '1px solid var(--border-color)',
+              paddingBottom: '0.4rem',
+              marginBottom: '1.5rem',
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch'
+            }}>
+              {[
+                { id: 'events', label: 'Concert Roster', icon: <Ticket size={15} /> },
+                { id: 'promoters', label: 'Promoter Network', icon: <Users size={15} /> },
+                { id: 'sales', label: 'Audit & Sales Feed', icon: <TrendingUp size={15} /> },
+                { id: 'faqs', label: 'Operational FAQs', icon: <HelpCircle size={15} /> }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setAdminTab(tab.id)}
+                  style={{
+                    background: adminTab === tab.id ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                    color: adminTab === tab.id ? '#ffffff' : 'var(--text-muted)',
+                    border: 'none',
+                    borderBottom: adminTab === tab.id ? '2px solid #ffffff' : '2px solid transparent',
+                    padding: '8px 14px',
+                    borderRadius: '6px 6px 0 0',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
             {adminTab === 'events' && (
-              <EventManager
-                onOpenCreateEvent={handleAddNewEvent}
-                onEditEvent={handleEditEvent}
-              />
+              <>
+                <EventManager
+                  onOpenCreateEvent={handleAddNewEvent}
+                  onEditEvent={handleEditEvent}
+                />
+                <div style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
+                  <FAQSection onAskInChat={handleAskInChat} />
+                </div>
+              </>
             )}
 
             {adminTab === 'promoters' && (
@@ -282,6 +358,10 @@ const MainDashboard = () => {
 
             {adminTab === 'sales' && (
               <AllSalesMonitor />
+            )}
+
+            {adminTab === 'faqs' && (
+              <FAQSection onAskInChat={handleAskInChat} />
             )}
           </div>
         )}
@@ -292,6 +372,8 @@ const MainDashboard = () => {
       <ChatAssistant
         onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
         onOpenPriceList={handleViewPriceList}
+        externalQueryTrigger={externalChatQuery}
+        onNavigateToFAQ={handleOpenFAQ}
       />
 
       {/* Mobile Sticky Bottom Navigation */}
@@ -345,11 +427,11 @@ const MainDashboard = () => {
             </button>
 
             <button
-              onClick={() => { setPromoterTab('tiers'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${promoterTab === 'tiers' ? 'active' : ''}`}
+              onClick={() => { setPromoterTab('faqs'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${promoterTab === 'faqs' ? 'active' : ''}`}
             >
-              <Award size={18} />
-              <span>Tiers</span>
+              <HelpCircle size={18} />
+              <span>FAQs</span>
             </button>
           </>
         ) : (
@@ -392,11 +474,11 @@ const MainDashboard = () => {
             </button>
 
             <button
-              onClick={() => { setAdminTab('sales'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${adminTab === 'sales' ? 'active' : ''}`}
+              onClick={() => { setAdminTab('faqs'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${adminTab === 'faqs' ? 'active' : ''}`}
             >
-              <TrendingUp size={18} />
-              <span>Feed</span>
+              <HelpCircle size={18} />
+              <span>FAQs</span>
             </button>
           </>
         )}
@@ -496,6 +578,23 @@ const MainDashboard = () => {
             <span className="flex items-center gap-1">
               <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
             </span>
+            <span>•</span>
+            <button
+              onClick={handleOpenFAQ}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#ffffff',
+                cursor: 'pointer',
+                padding: 0,
+                textDecoration: 'underline',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '3px'
+              }}
+            >
+              <HelpCircle size={12} /> FAQ Center
+            </button>
             <span>•</span>
             <button
               onClick={() => setIsLegalModalOpen(true)}

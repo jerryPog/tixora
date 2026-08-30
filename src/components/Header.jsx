@@ -10,7 +10,7 @@ import {
   Scale
 } from 'lucide-react';
 
-export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalCompliance }) => {
+export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalCompliance, onOpenFAQ }) => {
   const { 
     currentRole, 
     setCurrentRole, 
@@ -94,6 +94,29 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
               >
                 <Scale size={10} color="#3b82f6" /> Policy
               </button>
+              {onOpenFAQ && (
+                <>
+                  <span>•</span>
+                  <button
+                    onClick={onOpenFAQ}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#ffffff',
+                      fontSize: '0.68rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      padding: 0,
+                      textDecoration: 'underline',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '2px'
+                    }}
+                  >
+                    FAQs
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -156,6 +179,32 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
               <SlidersHorizontal size={12} /> Admin
             </button>
           </div>
+
+          {/* Direct FAQ Button in Header */}
+          {onOpenFAQ && (
+            <button
+              onClick={onOpenFAQ}
+              style={{
+                background: 'rgba(255, 255, 255, 0.07)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#ffffff',
+                padding: '4px 10px',
+                borderRadius: '8px',
+                fontSize: '0.74rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)')}
+              onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.07)')}
+            >
+              <HelpCircle size={13} />
+              <span>FAQs</span>
+            </button>
+          )}
 
           {/* Promoter Switcher Dropdown */}
           {currentRole === 'promoter' && activePromoter && (

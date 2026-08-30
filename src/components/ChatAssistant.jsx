@@ -6,12 +6,17 @@ import {
   Bot, 
   Sparkles, 
   Phone,
-  MessageCircle,
+  MessageCircle, 
   Music, 
   CreditCard, 
   HelpCircle, 
-  Ticket
+  Ticket,
+  ShieldCheck,
+  RotateCcw,
+  Building2,
+  ChevronRight
 } from 'lucide-react';
+import { FAQ_DATA } from '../data/faqData';
 
 const ARTIST_KNOWLEDGE = {
   'guns n roses': {
@@ -101,14 +106,14 @@ const ARTIST_KNOWLEDGE = {
   }
 };
 
-export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
+export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQueryTrigger, onNavigateToFAQ }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([
     {
       id: 'msg-welcome',
       sender: 'bot',
-      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about popular songs of any artist, concert dates, cash settlements, or promoter commission tiers.\n\n📞 *For direct queries, reach our helpline at +91 78921 45475.*",
+      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about:\n• 🎟️ **Ticket Delivery:** How passes reach BookMyShow/District\n• 💰 **Cash Rules:** 10-day deposit cutoff, interim caps & penalties\n• 🏆 **Tiers:** Commission progressions & performance criteria\n• 🛡️ **DigiLocker & Disputes:** Verification & record authenticity\n• 🎵 **Artists & Songs:** Guns N' Roses, Anyma, Fred again.., Chainsmokers, Khalid\n\n📞 *Direct helpline: +91 78921 45475*",
       timestamp: 'Just now'
     }
   ]);
@@ -124,15 +129,92 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
     }
   }, [messages, isOpen]);
 
+  // Handle external query triggers (e.g. from FAQ items)
+  useEffect(() => {
+    if (externalQueryTrigger) {
+      setIsOpen(true);
+      handleSend(externalQueryTrigger);
+    }
+  }, [externalQueryTrigger]);
+
   const generateBotReply = (query) => {
     const q = query.toLowerCase().trim();
 
     // 0. Helpline / Phone Number
-    if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('support') || q.includes('help')) {
-      return `📞 **Tixora Helpline & Founder Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](tel:+917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST\n• **Founding Team:** Ronak Jain R (Founder) & Anshul S Balan (Co-Founder)\n\nFeel free to call or WhatsApp +91 78921 45475 anytime for promoter onboarding, event allocations, or urgent settlement queries!`;
+    if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('support') || q.includes('helpline')) {
+      return `📞 **Tixora Helpline & Operations Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n• **Founders:** Ronak Jain R (Founder) & Anshul S Balan (Co-Founder)\n\nFeel free to call or WhatsApp +91 78921 45475 anytime for promoter onboarding, urgent cash settlement assistance, or event ticket allocations!`;
     }
 
-    // 1. Artist Songs & Info Matching
+    // 1. FAQ: Missed deposit deadline & penalties
+    if (q.includes('miss') && (q.includes('deadline') || q.includes('deposit') || q.includes('cash') || q.includes('cutoff')) || q.includes('under review') || q.includes('late deposit') || q.includes('missed deadline')) {
+      return `⚠️ **What Happens If You Miss Your Cash Deposit Deadline:**\n\n• **10-Day Cutoff:** All cash collected from buyers must be deposited with Tixora no later than **10 days before the event**.\n• **'Under Review' Status:** If you miss this deadline, your account is immediately moved to **"Under Review"** and no new tickets can be issued to you until the deposit is made.\n• **Penalty Consequences:** Repeated late deposits will reset your commission rate to the base of your current tier and reduce your credit limit.\n• **Suspension:** Continued non-payment can result in account suspension and recovery action.`;
+    }
+
+    // 2. FAQ: How to actually deposit cash (Bank deposit vs UPI)
+    if ((q.includes('how') && (q.includes('deposit') || q.includes('pay cash') || q.includes('settle'))) || q.includes('deposit method') || q.includes('bank deposit') || q.includes('upi transfer') || q.includes('how do i actually deposit')) {
+      return `🏦 **How to Deposit Collected Cash:**\n\nYou have two official direct options:\n\n1. **Bank Deposit:** Deposit the cash directly into Tixora's designated bank account.\n2. **UPI Transfer:** Pay Tixora directly via UPI for the equivalent amount.\n\n⏱️ *Whichever method you use, ensure your deposit is completed before the 10-day-before-event cutoff so it is reflected against your account on time.*`;
+    }
+
+    // 3. FAQ: Limit on holding uncollected cash / Interim deposit cap
+    if (q.includes('limit to how much') || q.includes('limit') && (q.includes('hold') || q.includes('cash') || q.includes('uncollected')) || q.includes('interim deposit') || q.includes('cash cap')) {
+      return `💼 **Holding Cash Limit & Interim Deposits:**\n\n• **Yes, there is a cap!** There is a defined limit on how much uncollected cash you can hold at any one time before you're required to make an interim deposit, even before the 10-day cutoff.\n• **Purpose:** This protects both you and Tixora from holding large sums of physical cash unnecessarily.`;
+    }
+
+    // 4. FAQ: How many tickets can I sell at once / Credit Limit
+    if (q.includes('how many tickets') || q.includes('sell at once') || q.includes('credit limit') || q.includes('quota') || q.includes('ticket limit')) {
+      return `🎟️ **Ticket Credit Limit & Issuance Quota:**\n\n• You're issued tickets on credit up to a limit based on your **commission tier**.\n• Once you reach your credit limit, no further tickets can be issued to you until you deposit collected cash or your limit is reviewed and raised by Tixora Admin.`;
+    }
+
+    // 5. FAQ: Move up a tier & better commission rate
+    if (q.includes('move up') || q.includes('better commission') || q.includes('tier progression') || q.includes('increase commission') || q.includes('tier rate') || q.includes('upgrade tier')) {
+      return `📈 **How to Move Up Tiers & Get Higher Commission:**\n\n• **Cumulative Volume:** Tiers are determined by your cumulative tickets sold across events.\n• **Performance Criteria:** Within your tier's commission range, you move toward the higher end **only if you have no missed or late deposits and zero confirmed buyer complaints** in the recent period.\n• **Reset Rule:** A single late deposit resets you to the base rate for the following period!`;
+    }
+
+    // 6. FAQ: How tickets are delivered to buyer (BookMyShow / District)
+    if (q.includes('how are tickets') || q.includes('delivered') || q.includes('ticket delivery') || q.includes('where do tickets go') || q.includes('receive ticket') || q.includes('bookmyshow') || q.includes('district')) {
+      if (q.includes('need') && (q.includes('account') || q.includes('bms') || q.includes('district'))) {
+        return `📱 **Buyer Account Requirements (BookMyShow / District):**\n\n• **Yes**, the buyer needs an account on the relevant platform (BookMyShow or District) to receive the ticket.\n• **No Credit Card Required:** If they don't have one, creating an account only requires a mobile phone number — no card or bank account needed, ensuring zero friction for cash buyers.`;
+      }
+      return `📲 **How Tickets are Delivered to the Buyer:**\n\n• **Direct Platform Delivery:** Tickets are delivered digitally, directly into the buyer's own **BookMyShow or District account** — NOT through a separate Tixora app.\n• **Trust & Legitimacy:** The buyer gets an official, scannable ticket on a platform they already recognize and trust, accessible just like any other standard booking.`;
+    }
+
+    // 7. FAQ: Physical / Paper tickets
+    if (q.includes('physical') || q.includes('paper') || q.includes('printed') || q.includes('hard copy')) {
+      return `🚫 **Physical & Paper Ticket Policy:**\n\n• **No paper tickets are generated:** All tickets are issued digitally only.\n• **Anti-Scalping & Fraud Prevention:** This eliminates counterfeit, duplicate, or forged tickets and ensures Tixora always possesses a verifiable, traceable record of every legitimate pass issued.`;
+    }
+
+    // 8. FAQ: Event Cancellations & Refunds
+    if (q.includes('cancel') || (q.includes('refund') && (q.includes('event') || q.includes('cancelled') || q.includes('money back')))) {
+      if (q.includes('not cancelled') || q.includes('isn\'t cancelled') || q.includes('change mind')) {
+        return `⚠️ **Buyer Refund Policy (Event NOT Cancelled):**\n\n• Refunds outside of a cancellation strictly follow the standard policy of the ticketing platform (BookMyShow/District) where the ticket was issued.\n• **Promoter Advisory:** Promoters should **not** personally refund cash without confirming the ticket's refund eligibility with Tixora first.`;
+      }
+      return `🔄 **What Happens If an Event Is Cancelled:**\n\n1. **Digital Passes:** All tickets already delivered are refunded through the standard BookMyShow/District cancellation process on that platform.\n2. **Promoter Cash Refunds:** Cash collected by promoters for a cancelled event must be returned to those buyers.\n3. **Tixora Reimbursements:** Any cash already deposited with Tixora for that event will be refunded to the promoter to pass on.\n4. **Important:** Promoters must **not** disburse refunds to buyers until formal confirmation is received from Tixora.`;
+    }
+
+    // 9. FAQ: Event Postponement
+    if (q.includes('postpone') || q.includes('reschedule') || q.includes('delayed date')) {
+      return `📅 **What Happens If an Event Is Postponed:**\n\n• **Tickets Remain Valid:** Existing tickets typically remain valid for the new date, following the organizer's and platform's postponement policy.\n• **Direct Notice:** Tixora will notify affected promoters directly with instructions specific to that event.`;
+    }
+
+    // 10. FAQ: DigiLocker Verification & Disputes
+    if (q.includes('digilocker') || q.includes('why verify') || q.includes('verification') || q.includes('identity')) {
+      if (q.includes('student') || q.includes('college') || q.includes('genuine')) {
+        return `🎓 **DigiLocker vs. Student Verification:**\n\n• **Identity vs Enrollment:** DigiLocker confirms official identity (Aadhaar/PAN details), not school or college enrollment.\n• **Secondary Check:** Some student-exclusive passes may require an additional student ID card or institutional email verification.`;
+      }
+      return `🛡️ **Why DigiLocker Verification Is Required:**\n\n• **Verified Identity:** DigiLocker confirms your real identity before you're approved as a promoter.\n• **Mutual Protection:** It protects buyers (they know a verified real person sold them the ticket) and protects you (Tixora can resolve disputes in your favor based on verified identity logs).`;
+    }
+
+    // 11. FAQ: Disputes Between Promoter and Buyer
+    if (q.includes('dispute') || q.includes('conflict') || q.includes('complaint') || q.includes('source of truth')) {
+      return `⚖️ **Dispute Resolution Between Promoter and Buyer:**\n\n• **Authoritative Log:** Because every ticket is logged against your verified promoter account, Tixora uses its own ticket records as the **single source of truth** in any dispute — independent of how cash was handled.\n• **Protection for Promoters:** This works in your favor as long as you have properly recorded the transaction in the system.`;
+    }
+
+    // 12. FAQ: For Organizers — Minimum Guarantee & Upfront payments
+    if (q.includes('organizer') || q.includes('minimum guarantee') || q.includes('how does tixora get') || q.includes('upfront') || q.includes('revenue share')) {
+      return `🎪 **How Tixora Works with Event Organizers:**\n\n• **Minimum Guarantee (MG):** Tixora negotiates minimum guarantee deals with organizers — committing to a guaranteed number of tickets sold in exchange for a bulk discount off face value.\n• **Payment Structures:** Depending on demand, deals are structured either as a **committed inventory buy** under a minimum guarantee or as a **revenue-share arrangement** for lower-demand events.`;
+    }
+
+    // 13. Artist Songs & Info Matching
     if (q.includes('fred') || q.includes('again')) {
       const a = ARTIST_KNOWLEDGE['fred again'];
       return `🎹 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Most Popular Songs:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Tour Info:** ${a.showInfo}`;
@@ -158,28 +240,28 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
       return `🎤 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Top Hits:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`;
     }
 
-    // 2. Payments & Cash Settlement Rules
-    if (q.includes('cash') || q.includes('payment') || q.includes('settle') || q.includes('deposit') || q.includes('deadline')) {
-      return `💰 **How Cash & Payments Work on Tixora:**\n\n1. **Accept Cash or UPI:** Many buyers (16-18 students without credit cards) pay promoters directly in cash.\n2. **Instant Ticket Issuance:** You issue tickets against your promoter credit limit. A digital QR pass is generated immediately.\n3. **10-Day Pre-Event Settlement:** You must deposit collected cash to Tixora Ops at least **10 days before** the show.\n4. **Deposit Channels:** Settle via Campus Student Hub drop, UPI, or direct Escrow NEFT/IMPS.\n5. **Anti-Scalping:** All passes must strictly be sold at official published MRP.\n\n*Questions? Call / WhatsApp +91 78921 45475.*`;
+    // 14. Commission tiers summary
+    if (q.includes('commission') || q.includes('tier') || q.includes('silver') || q.includes('gold') || q.includes('platinum')) {
+      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (50 ticket credit line).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access (100 ticket credit line).\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*Note: A single late deposit resets you to the base rate of your tier!*`;
     }
 
-    // 3. Commissions & Tiers
-    if (q.includes('commission') || q.includes('tier') || q.includes('silver') || q.includes('gold') || q.includes('platinum') || q.includes('earn')) {
-      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (50 ticket credit line).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access (100 ticket credit line).\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*Your commission is automatically logged to your wallet balance on every sale!*`;
-    }
-
-    // 4. DigiLocker & Verification
-    if (q.includes('digilocker') || q.includes('verify') || q.includes('fake') || q.includes('fraud')) {
-      return `🔒 **DigiLocker Security & QR Verification:**\n\n• Every promoter is 100% verified via DigiLocker (Aadhaar/PAN).\n• Passes generated are digitally signed with unique encrypted barcodes (\`TXR-...\`).\n• At the event entrance, security scans the pass directly against the organizer database. Physical counterfeit paper is impossible.`;
-    }
-
-    // 5. Founders
+    // 15. Founders
     if (q.includes('founder') || q.includes('who made') || q.includes('created by') || q.includes('team')) {
-      return `🏛️ **Tixora Founding Team:**\n\n• **Ronak Jain R** — Founder\n• **Anshul S Balan** — Co-Founder\n• **Support Helpline:** +91 78921 45475\n\nTixora is built to turn verified student networks into official ticketing promoters with digital ticket control.`;
+      return `🏛️ **Tixora Founding Team:**\n\n• **Ronak Jain R** — Founder\n• **Anshul S Balan** — Co-Founder\n• **Support Helpline:** +91 78921 45475\n\nTixora empowers verified student networks to issue official digital concert passes with full audit control and instant cash accounting.`;
+    }
+
+    // 16. Fallback Search in FAQ Dataset
+    const matchFaq = FAQ_DATA.find(f => 
+      f.question.toLowerCase().includes(q) || 
+      f.keywords.some(k => q.includes(k.toLowerCase()))
+    );
+
+    if (matchFaq) {
+      return `💡 **${matchFaq.question}**\n\n${matchFaq.answer}\n\n*Category: ${matchFaq.categoryLabel}*`;
     }
 
     // Default Fallback
-    return `✨ I can help you with:\n\n• **Artist Music & Bios:** Popular songs of Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid.\n• **Payment Rules:** Cash collection, UPI, and the 10-day pre-show deposit deadline.\n• **Commission Matrix:** Silver, Gold, and Platinum tier earnings.\n• **Support Contact:** Call or WhatsApp **+91 78921 45475** for any further assistance.`;
+    return `✨ **I'm here to help! Ask me anything about:**\n\n• 🎟️ **Ticket Delivery:** How passes reach BookMyShow or District accounts\n• 💰 **Deposit Deadlines:** 10-day pre-event cutoff, Bank/UPI methods, interim caps\n• 🏆 **Promoter Tiers:** Silver, Gold, Platinum commission rates and reset rules\n• 🔄 **Cancellations & Refunds:** Platform refunds vs promoter cash returns\n• 🛡️ **DigiLocker & Disputes:** Identity verification and source of truth records\n• 🎸 **Artist Songs & Info:** Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid\n\n📞 *Or WhatsApp our team directly at +91 78921 45475.*`;
   };
 
   const handleSend = (textToSend = null) => {
@@ -206,15 +288,19 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages((prev) => [...prev, botMsg]);
-    }, 300);
+    }, 250);
   };
 
   const QUICK_QUESTIONS = [
+    { label: "🎟️ BMS / District Delivery", query: "How are tickets delivered to the buyer?" },
+    { label: "⚠️ Missed Deadline Rules", query: "What happens if I miss my cash deposit deadline?" },
+    { label: "💳 Deposit Methods (Bank/UPI)", query: "How do I actually deposit the cash I've collected?" },
+    { label: "🔄 Event Cancellations & Refunds", query: "What happens if an event is cancelled?" },
+    { label: "🛡️ DigiLocker & Disputes", query: "Why do I need to verify with DigiLocker?" },
+    { label: "📈 Move Up Commission Tiers", query: "How do I move up a tier and get a better commission rate?" },
+    { label: "🎪 How Tixora Gets Tickets", query: "How does Tixora get tickets to sell?" },
     { label: "🎵 Fred again.. top songs", query: "Top songs of Fred again.." },
-    { label: "🌌 Anyma ÆDEN tracklist", query: "Who is Anyma & top tracks?" },
-    { label: "🎸 Guns N' Roses hits", query: "Guns N' Roses hits & show info" },
-    { label: "💰 10-Day Cash Rules", query: "How does cash settlement work?" },
-    { label: "🏆 Commission Tiers", query: "What are promoter commission tiers?" },
+    { label: "🌌 Anyma tracklist", query: "Anyma top songs and tour info" },
     { label: "📞 Helpline: 78921 45475", query: "Contact phone number and helpline" }
   ];
 
@@ -265,8 +351,8 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
           bottom: '80px',
           right: '20px',
           width: 'calc(100vw - 40px)',
-          maxWidth: '390px',
-          height: '540px',
+          maxWidth: '420px',
+          height: '560px',
           maxHeight: 'calc(100vh - 120px)',
           background: '#10121a',
           border: '1px solid rgba(255, 255, 255, 0.14)',
@@ -305,28 +391,56 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
                 </div>
                 <div className="flex items-center gap-1.5" style={{ fontSize: '0.68rem', color: '#10b981' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
-                  <span>Songs • Payments • Contact</span>
+                  <span>FAQs • Policies • Delivery • Artists</span>
                 </div>
               </div>
             </div>
 
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: 'none',
-                color: '#ffffff',
-                width: '28px',
-                height: '28px',
-                borderRadius: '50%',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <X size={14} />
-            </button>
+            <div className="flex items-center gap-1">
+              {onNavigateToFAQ && (
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    onNavigateToFAQ();
+                  }}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: 'none',
+                    color: '#e4e4e7',
+                    padding: '4px 8px',
+                    borderRadius: '6px',
+                    fontSize: '0.7rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                  title="View Full FAQ Guide"
+                >
+                  <HelpCircle size={12} />
+                  <span>Full FAQs</span>
+                </button>
+              )}
+
+              <button
+                onClick={() => setIsOpen(false)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: 'none',
+                  color: '#ffffff',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
 
           {/* Direct Founder Helpline Callout Bar */}
@@ -426,7 +540,8 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
                   transition: 'all 0.15s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '4px'
+                  gap: '4px',
+                  flexShrink: 0
                 }}
                 onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
                 onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
@@ -452,7 +567,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
           >
             <input
               type="text"
-              placeholder="Ask about songs, tour dates, cash rules..."
+              placeholder="Ask about BookMyShow delivery, 10-day rules, refunds..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               style={{
