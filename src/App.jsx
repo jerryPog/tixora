@@ -21,7 +21,10 @@ import {
   Award, 
   CheckCircle2,
   ShieldCheck,
-  Scale
+  Scale,
+  Users,
+  TrendingUp,
+  Plus
 } from 'lucide-react';
 import './index.css';
 
@@ -31,15 +34,15 @@ const PromoterCommissionRules = () => {
   return (
     <div style={{ marginBottom: '3rem' }}>
       <div style={{ marginBottom: '1.25rem' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>
+        <h2 style={{ fontSize: '1.35rem', fontWeight: 800 }}>
           Commission Tiers & Promoter Privileges
         </h2>
-        <p className="text-muted" style={{ fontSize: '0.85rem' }}>
+        <p className="text-muted" style={{ fontSize: '0.82rem' }}>
           Sell tickets to your campus network, climb tiers, and unlock VIP access and higher profit cuts.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {commissionTiers.map((tier) => {
           const isCurrent = activePromoter.tier === tier.tier;
 
@@ -63,8 +66,8 @@ const PromoterCommissionRules = () => {
                   background: '#ffffff',
                   color: '#090a0d',
                   fontWeight: 700,
-                  fontSize: '0.68rem',
-                  padding: '2px 9px',
+                  fontSize: '0.65rem',
+                  padding: '2px 8px',
                   borderRadius: '9999px',
                   textTransform: 'uppercase',
                   letterSpacing: '0.04em'
@@ -73,40 +76,40 @@ const PromoterCommissionRules = () => {
                 </div>
               )}
 
-              <div style={{ marginBottom: '0.85rem' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff' }}>
+              <div style={{ marginBottom: '0.75rem' }}>
+                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
                   {tier.tier}
                 </h3>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                   {tier.ticketRange}
                 </div>
               </div>
 
               <div style={{
                 background: 'rgba(0,0,0,0.3)',
-                padding: '12px',
-                borderRadius: '10px',
-                marginBottom: '1rem',
+                padding: '10px',
+                borderRadius: '9px',
+                marginBottom: '0.85rem',
                 textAlign: 'center',
                 border: '1px solid var(--border-color)'
               }}>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                   Commission Rate
                 </div>
-                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#ffffff' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff' }}>
                   {tier.commissionRange}
                 </div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>per ticket sold</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>per ticket sold</div>
               </div>
 
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Privileges & Rewards
                 </div>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {tier.perks.map((perk, i) => (
-                    <li key={i} className="flex items-center gap-2" style={{ fontSize: '0.82rem', color: '#e4e4e7' }}>
-                      <CheckCircle2 size={14} color="#ffffff" style={{ flexShrink: 0 }} />
+                    <li key={i} className="flex items-center gap-2" style={{ fontSize: '0.8rem', color: '#e4e4e7' }}>
+                      <CheckCircle2 size={13} color="#ffffff" style={{ flexShrink: 0 }} />
                       <span>{perk}</span>
                     </li>
                   ))}
@@ -148,6 +151,7 @@ const MainDashboard = () => {
   const handleViewPriceList = (eventId) => {
     setSelectedEventForPrices(eventId);
     setPromoterTab('prices');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleEditEvent = (event) => {
@@ -171,7 +175,7 @@ const MainDashboard = () => {
       />
 
       {/* Main Content Area */}
-      <main className="container section" style={{ flex: 1, paddingTop: '1.5rem' }}>
+      <main className="container section" style={{ flex: 1, paddingTop: '1.25rem' }}>
         
         {/* ================= PROMOTER DASHBOARD ================= */}
         {currentRole === 'promoter' ? (
@@ -182,20 +186,21 @@ const MainDashboard = () => {
               onOpenDepositModal={() => setIsDepositModalOpen(true)}
             />
 
-            {/* Promoter Navigation Tabs */}
+            {/* Desktop Navigation Tabs (Hidden on mobile) */}
             <div style={{
               display: 'flex',
               gap: '0.35rem',
               borderBottom: '1px solid var(--border-color)',
               paddingBottom: '0.4rem',
-              marginBottom: '1.75rem',
-              overflowX: 'auto'
+              marginBottom: '1.5rem',
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch'
             }}>
               {[
-                { id: 'posters', label: 'Events & Posters', icon: <Ticket size={16} /> },
-                { id: 'prices', label: 'Price Lists & Calculator', icon: <Tag size={16} /> },
-                { id: 'ledger', label: 'My Sales Ledger', icon: <Receipt size={16} /> },
-                { id: 'tiers', label: 'Tier Milestones', icon: <Award size={16} /> }
+                { id: 'posters', label: 'Events & Posters', icon: <Ticket size={15} /> },
+                { id: 'prices', label: 'Price Lists & Calculator', icon: <Tag size={15} /> },
+                { id: 'ledger', label: 'My Sales Ledger', icon: <Receipt size={15} /> },
+                { id: 'tiers', label: 'Tier Milestones', icon: <Award size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -205,9 +210,9 @@ const MainDashboard = () => {
                     color: promoterTab === tab.id ? '#ffffff' : 'var(--text-muted)',
                     border: 'none',
                     borderBottom: promoterTab === tab.id ? '2px solid #ffffff' : '2px solid transparent',
-                    padding: '8px 16px',
+                    padding: '8px 14px',
                     borderRadius: '6px 6px 0 0',
-                    fontSize: '0.85rem',
+                    fontSize: '0.82rem',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -277,6 +282,114 @@ const MainDashboard = () => {
 
       </main>
 
+      {/* Mobile Sticky Bottom Navigation */}
+      <nav className="mobile-bottom-nav">
+        {currentRole === 'promoter' ? (
+          <>
+            <button
+              onClick={() => { setPromoterTab('posters'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${promoterTab === 'posters' ? 'active' : ''}`}
+            >
+              <Ticket size={18} />
+              <span>Events</span>
+            </button>
+
+            <button
+              onClick={() => { setPromoterTab('prices'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${promoterTab === 'prices' ? 'active' : ''}`}
+            >
+              <Tag size={18} />
+              <span>Prices</span>
+            </button>
+
+            {/* Floating Quick Action in Center */}
+            <button
+              onClick={() => handleOpenSaleWithCategory(null, null)}
+              style={{
+                background: '#ffffff',
+                color: '#090a0d',
+                border: 'none',
+                borderRadius: '50%',
+                width: '42px',
+                height: '42px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                cursor: 'pointer',
+                marginTop: '-12px'
+              }}
+              title="Issue Ticket"
+            >
+              <Plus size={20} strokeWidth={2.6} />
+            </button>
+
+            <button
+              onClick={() => { setPromoterTab('ledger'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${promoterTab === 'ledger' ? 'active' : ''}`}
+            >
+              <Receipt size={18} />
+              <span>Ledger</span>
+            </button>
+
+            <button
+              onClick={() => { setPromoterTab('tiers'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${promoterTab === 'tiers' ? 'active' : ''}`}
+            >
+              <Award size={18} />
+              <span>Tiers</span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => { setAdminTab('events'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${adminTab === 'events' ? 'active' : ''}`}
+            >
+              <Ticket size={18} />
+              <span>Concerts</span>
+            </button>
+
+            <button
+              onClick={handleAddNewEvent}
+              style={{
+                background: '#ffffff',
+                color: '#090a0d',
+                border: 'none',
+                borderRadius: '50%',
+                width: '42px',
+                height: '42px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                cursor: 'pointer',
+                marginTop: '-12px'
+              }}
+              title="Add Concert"
+            >
+              <Plus size={20} strokeWidth={2.6} />
+            </button>
+
+            <button
+              onClick={() => { setAdminTab('promoters'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${adminTab === 'promoters' ? 'active' : ''}`}
+            >
+              <Users size={18} />
+              <span>Promoters</span>
+            </button>
+
+            <button
+              onClick={() => { setAdminTab('sales'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${adminTab === 'sales' ? 'active' : ''}`}
+            >
+              <TrendingUp size={18} />
+              <span>Feed</span>
+            </button>
+          </>
+        )}
+      </nav>
+
       {/* Modals */}
       <RecordSaleModal
         isOpen={isRecordSaleOpen}
@@ -310,11 +423,11 @@ const MainDashboard = () => {
       {/* Footer */}
       <footer style={{
         borderTop: '1px solid var(--border-color)',
-        padding: '1.75rem 0',
+        padding: '1.5rem 0',
         background: '#07080a',
         marginTop: 'auto'
       }}>
-        <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="container flex flex-col md:flex-row justify-between items-center gap-3">
           <div className="flex items-center gap-2">
             <div style={{
               width: '24px', height: '24px', borderRadius: '6px',
@@ -324,18 +437,14 @@ const MainDashboard = () => {
             }}>
               <Ticket size={14} strokeWidth={2.2} />
             </div>
-            <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
+            <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
               Tixora
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', fontSize: '0.74rem', color: 'var(--text-muted)', justifyContent: 'center' }}>
             <span className="flex items-center gap-1">
-              <ShieldCheck size={13} color="#10b981" /> 100% DigiLocker Verified
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              Anti-Scalping Protected (MRP Only)
+              <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
             </span>
             <span>•</span>
             <button
@@ -349,10 +458,10 @@ const MainDashboard = () => {
                 textDecoration: 'underline',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '3px'
               }}
             >
-              <Scale size={13} /> Legal & Regulatory Policy
+              <Scale size={12} /> Compliance Policy
             </button>
           </div>
         </div>

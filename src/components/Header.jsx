@@ -30,50 +30,52 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      background: 'rgba(9, 10, 13, 0.85)',
+      background: 'rgba(9, 10, 13, 0.9)',
       backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       borderBottom: '1px solid var(--border-color)',
-      padding: '0.75rem 0'
+      padding: '0.65rem 0'
     }}>
-      <div className="container flex items-center justify-between" style={{ flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="container flex items-center justify-between" style={{ gap: '0.75rem', flexWrap: 'wrap' }}>
         
         {/* Brand & Portal Status */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '9px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
             background: '#ffffff',
             color: '#090a0d',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontWeight: 900
+            fontWeight: 900,
+            flexShrink: 0
           }}>
-            <Ticket size={20} strokeWidth={2.2} />
+            <Ticket size={18} strokeWidth={2.2} />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
+            <div className="flex items-center gap-1.5">
+              <span style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
                 Tixora
               </span>
               <span style={{
                 background: currentRole === 'admin' ? 'rgba(244, 63, 94, 0.12)' : 'rgba(255, 255, 255, 0.08)',
                 color: currentRole === 'admin' ? '#fb7185' : '#e4e4e7',
                 border: `1px solid ${currentRole === 'admin' ? 'rgba(244, 63, 94, 0.25)' : 'var(--border-color)'}`,
-                fontSize: '0.68rem',
+                fontSize: '0.65rem',
                 fontWeight: 600,
-                padding: '2px 7px',
-                borderRadius: '5px',
+                padding: '1px 6px',
+                borderRadius: '4px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em'
               }}>
-                {currentRole === 'admin' ? 'Staff Admin' : 'Promoter Portal'}
+                {currentRole === 'admin' ? 'Staff' : 'Promoter'}
               </span>
             </div>
-            <div className="flex items-center gap-2" style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+            <div className="flex items-center gap-2" style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
               <span className="flex items-center gap-1">
-                <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
+                <ShieldCheck size={11} color="#10b981" /> Verified
               </span>
               <span>•</span>
               <button
@@ -82,30 +84,30 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                   background: 'none',
                   border: 'none',
                   color: 'var(--text-muted)',
-                  fontSize: '0.72rem',
+                  fontSize: '0.68rem',
                   cursor: 'pointer',
                   padding: 0,
                   textDecoration: 'underline',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '3px'
+                  gap: '2px'
                 }}
               >
-                <Scale size={11} color="#3b82f6" /> Compliance Policy
+                <Scale size={10} color="#3b82f6" /> Policy
               </button>
             </div>
           </div>
         </div>
 
         {/* Controls Right */}
-        <div className="flex items-center gap-3" style={{ flexWrap: 'wrap' }}>
+        <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
           
           {/* Role Switcher Pill */}
           <div style={{
             background: 'rgba(255, 255, 255, 0.04)',
             border: '1px solid var(--border-color)',
             borderRadius: '8px',
-            padding: '3px',
+            padding: '2px',
             display: 'flex',
             gap: '2px'
           }}>
@@ -118,18 +120,18 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                 background: currentRole === 'promoter' ? '#ffffff' : 'transparent',
                 color: currentRole === 'promoter' ? '#090a0d' : 'var(--text-muted)',
                 border: 'none',
-                padding: '5px 12px',
+                padding: '4px 9px',
                 borderRadius: '6px',
-                fontSize: '0.78rem',
+                fontSize: '0.74rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '5px'
+                gap: '4px'
               }}
             >
-              <UserCheck size={13} /> Promoter
+              <UserCheck size={12} /> Promoter
             </button>
 
             <button
@@ -141,18 +143,18 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                 background: currentRole === 'admin' ? '#ffffff' : 'transparent',
                 color: currentRole === 'admin' ? '#090a0d' : 'var(--text-muted)',
                 border: 'none',
-                padding: '5px 12px',
+                padding: '4px 9px',
                 borderRadius: '6px',
-                fontSize: '0.78rem',
+                fontSize: '0.74rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '5px'
+                gap: '4px'
               }}
             >
-              <SlidersHorizontal size={13} /> Admin
+              <SlidersHorizontal size={12} /> Admin
             </button>
           </div>
 
@@ -164,27 +166,24 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                 style={{
                   background: 'rgba(255, 255, 255, 0.04)',
                   border: '1px solid var(--border-color)',
-                  borderRadius: '9px',
-                  padding: '5px 10px',
+                  borderRadius: '8px',
+                  padding: '4px 8px',
                   color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '6px',
                   cursor: 'pointer'
                 }}
               >
                 <img
                   src={activePromoter.avatar}
                   alt={activePromoter.name}
-                  style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
+                  style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }}
                 />
-                <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>{activePromoter.name}</div>
-                  <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                    {activePromoter.tier} Tier • {activePromoter.college.split(',')[0]}
-                  </div>
-                </div>
-                <ChevronDown size={13} color="var(--text-muted)" />
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, maxWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {activePromoter.name.split(' ')[0]}
+                </span>
+                <ChevronDown size={11} color="var(--text-muted)" />
               </button>
 
               {showPromoterMenu && (
@@ -192,15 +191,15 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                   position: 'absolute',
                   top: '115%',
                   right: 0,
-                  width: '280px',
+                  width: '260px',
                   background: '#13151c',
                   border: '1px solid rgba(255, 255, 255, 0.12)',
                   borderRadius: '12px',
                   boxShadow: '0 12px 30px rgba(0,0,0,0.6)',
                   padding: '6px',
-                  zIndex: 200
+                  zIndex: 300
                 }}>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', padding: '6px 8px', fontWeight: 600, textTransform: 'uppercase' }}>
+                  <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', padding: '6px 8px', fontWeight: 600, textTransform: 'uppercase' }}>
                     Select Demo Promoter
                   </div>
                   {promoters.map((prom) => (
@@ -209,7 +208,7 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                       onClick={() => {
                         setActivePromoterId(prom.id);
                         setShowPromoterMenu(false);
-                        showToast(`Switched account to ${prom.name}`, 'info');
+                        showToast(`Switched to ${prom.name}`, 'info');
                       }}
                       style={{
                         width: '100%',
@@ -228,17 +227,14 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
                       <img
                         src={prom.avatar}
                         alt={prom.name}
-                        style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
+                        style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover' }}
                       />
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>{prom.name}</div>
-                        <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                          {prom.college.split(',')[0]} • <span style={{ color: '#e4e4e7' }}>{prom.tier}</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '0.8rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{prom.name}</div>
+                        <div style={{ fontSize: '0.66rem', color: 'var(--text-muted)' }}>
+                          {prom.city} • <span style={{ color: '#ffffff' }}>{prom.tier}</span>
                         </div>
                       </div>
-                      {prom.depositStatus === 'Suspended' && (
-                        <span style={{ fontSize: '0.62rem', background: 'rgba(244, 63, 94, 0.2)', color: '#fb7185', padding: '2px 5px', borderRadius: '4px', fontWeight: 600 }}>Suspended</span>
-                      )}
                     </button>
                   ))}
                 </div>
@@ -246,34 +242,34 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
             </div>
           )}
 
-          {/* Quick Actions */}
+          {/* Quick Action Button */}
           {currentRole === 'promoter' ? (
             <button
               onClick={onOpenRecordSale}
               className="btn btn-primary"
-              style={{ padding: '6px 14px', fontSize: '0.8rem', gap: '5px' }}
+              style={{ padding: '5px 11px', fontSize: '0.75rem', gap: '4px' }}
             >
-              <Plus size={15} /> Issue Ticket
+              <Plus size={14} /> <span className="hidden-xs">Issue</span>
             </button>
           ) : (
             <button
               onClick={onOpenCreateEvent}
               className="btn btn-primary"
-              style={{ padding: '6px 14px', fontSize: '0.8rem', gap: '5px' }}
+              style={{ padding: '5px 11px', fontSize: '0.75rem', gap: '4px' }}
             >
-              <Plus size={15} /> Add Concert
+              <Plus size={14} /> <span className="hidden-xs">Add Event</span>
             </button>
           )}
 
-          {/* Reset Demo Data Button */}
+          {/* Reset Button */}
           <button
             onClick={resetAllData}
-            title="Reset to 2026 tour lineup"
+            title="Reset lineup"
             style={{
               background: 'rgba(255, 255, 255, 0.04)',
               border: '1px solid var(--border-color)',
               borderRadius: '8px',
-              padding: '7px',
+              padding: '6px',
               color: 'var(--text-muted)',
               cursor: 'pointer',
               display: 'flex',
@@ -281,7 +277,7 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
               justifyContent: 'center'
             }}
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={13} />
           </button>
 
         </div>
