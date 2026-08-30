@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
-import { ConcertVideoReel } from './components/ConcertVideoReel';
 import { PromoterOverview } from './components/PromoterDashboard/PromoterOverview';
 import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
@@ -186,9 +185,6 @@ const MainDashboard = () => {
             <PromoterOverview
               onOpenDepositModal={() => setIsDepositModalOpen(true)}
             />
-
-            {/* Scroll-Reactive Live Concert Stage Visual Reel */}
-            <ConcertVideoReel />
 
             {/* Desktop Navigation Tabs (Hidden on mobile) */}
             <div style={{
