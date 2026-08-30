@@ -514,7 +514,7 @@ const MainDashboard = () => {
 
       {/* Action Toasts & Realtime Live Activity FOMO Pulse */}
       <ToastContainer />
-      <LiveActivityPopup onSelectEvent={handleSelectEventForSale} />
+      <LiveActivityPopup onSelectEvent={(eId) => handleOpenSaleWithCategory(eId, null)} />
 
       {/* Footer with Official Logo, Founders Attribution & Helpline */}
       <footer style={{
