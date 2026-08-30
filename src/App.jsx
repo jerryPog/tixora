@@ -149,6 +149,28 @@ const MainDashboard = () => {
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
 
+  // On page load or browser refresh, always return to the top of the home page
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    // Clean any trailing hashes or query params so the user always lands at root home
+    if (window.location.hash || window.location.search) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
+  const handleGoHome = () => {
+    setPromoterTab('posters');
+    setAdminTab('events');
+    setIsRecordSaleOpen(false);
+    setIsCreateEventOpen(false);
+    setIsLegalModalOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleOpenSaleWithCategory = (eventId, category = null) => {
     setInitialSaleEventId(eventId);
     setInitialSaleCategory(category);
@@ -196,6 +218,7 @@ const MainDashboard = () => {
         onOpenCreateEvent={handleAddNewEvent}
         onOpenLegalCompliance={() => setIsLegalModalOpen(true)}
         onOpenFAQ={handleOpenFAQ}
+        onGoHome={handleGoHome}
       />
 
       {/* Main Content Area */}
@@ -527,7 +550,12 @@ const MainDashboard = () => {
           
           {/* Brand Logo & Founders Tag */}
           <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left">
-            <div className="flex items-center gap-2">
+            <div 
+              onClick={handleGoHome}
+              className="flex items-center gap-2"
+              style={{ cursor: 'pointer' }}
+              title="Return to Tixora Home"
+            >
               <img
                 src="/tixora-logo.png"
                 alt="Tixora — LIVE THE HYPE"

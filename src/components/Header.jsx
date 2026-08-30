@@ -11,7 +11,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 
-export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalCompliance, onOpenFAQ }) => {
+export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalCompliance, onOpenFAQ, onGoHome }) => {
   const { 
     currentRole, 
     setCurrentRole, 
@@ -40,11 +40,16 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
         
         {/* Brand Logo & Portal Status */}
         <div className="flex items-center gap-3">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
+          <div 
+            onClick={onGoHome}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              cursor: 'pointer'
+            }}
+            title="Return to Tixora Home"
+          >
             <img 
               src="/tixora-logo.png" 
               alt="Tixora — LIVE THE HYPE" 
