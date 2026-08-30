@@ -12,7 +12,7 @@ export const INITIAL_EVENTS = [
     depositDeadline: "04 Nov 2026", // 10 days before
     posterUrl: "/posters/guns-n-roses-india-poster.jpg",
     bannerUrl: "/posters/guns-n-roses-banner.webp",
-    posterPosition: "center 15%",
+    posterPosition: "center 25%",
     description: "The American hard-rock legends Axl Rose, Slash & Duff McKagan live in Bengaluru with iconic hits like Sweet Child O' Mine and November Rain.",
     priceList: [
       { id: "p1", category: "Silver (Phase 1)", faceValue: 4000, promoterPrice: 4000, commissionPct: 7.5, commissionAmount: 300, quotaTotal: 100, quotaSold: 42 },
