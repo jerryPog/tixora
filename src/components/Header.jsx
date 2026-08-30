@@ -7,7 +7,8 @@ import {
   RotateCcw, 
   Plus, 
   ChevronDown,
-  Scale
+  Scale,
+  HelpCircle
 } from 'lucide-react';
 
 export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalCompliance, onOpenFAQ }) => {

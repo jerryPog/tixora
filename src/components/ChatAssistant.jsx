@@ -273,6 +273,23 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
     }, 250);
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isOpen]);
+
+  useEffect(() => {
+    if (externalQueryTrigger) {
+      setIsOpen(true);
+      handleSend(externalQueryTrigger);
+    }
+  }, [externalQueryTrigger]);
+
   const QUICK_QUESTIONS = [
     { label: "🎟️ BMS / District Delivery", query: "How are tickets delivered to the buyer?" },
     { label: "⚠️ Missed Deadline Rules", query: "What happens if I miss my cash deposit deadline?" },
