@@ -119,24 +119,6 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
   ]);
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      scrollToBottom();
-    }
-  }, [messages, isOpen]);
-
-  // Handle external query triggers (e.g. from FAQ items)
-  useEffect(() => {
-    if (externalQueryTrigger) {
-      setIsOpen(true);
-      handleSend(externalQueryTrigger);
-    }
-  }, [externalQueryTrigger]);
-
   const generateBotReply = (query) => {
     const q = query.toLowerCase().trim();
 
