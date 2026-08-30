@@ -84,8 +84,8 @@ export const AllSalesMonitor = () => {
                     +₹{s.commissionEarned.toLocaleString('en-IN')}
                   </td>
                   <td style={{ padding: '10px 6px' }}>
-                    <span className={s.depositStatus === 'Deposited' ? 'badge badge-emerald' : 'badge badge-amber'} style={{ padding: '2px 6px', fontSize: '0.68rem' }}>
-                      {s.depositStatus}
+                    <span className="badge badge-emerald" style={{ padding: '2px 6px', fontSize: '0.68rem' }}>
+                      {s.paymentStatus || 'Paid & Cleared'}
                     </span>
                   </td>
                   <td style={{ padding: '10px 6px', textAlign: 'right', fontSize: '0.72rem', color: 'var(--text-muted)' }}>

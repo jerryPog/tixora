@@ -29,7 +29,7 @@ export const PriceListExplorer = ({ selectedEventId, onSelectEventForSale }) => 
   const selectedPriceItem = activeEvent?.priceList.find((p) => p.category === calcCategory) || activeEvent?.priceList[0];
   const totalBuyerCost = (selectedPriceItem?.promoterPrice || 0) * calcQty;
   const totalCommission = Math.round((selectedPriceItem?.commissionAmount || 0) * calcQty);
-  const cashToDeposit = totalBuyerCost - totalCommission;
+  const netPayableUpfront = totalBuyerCost - totalCommission;
 
   const handleCopyPriceList = () => {
     if (!activeEvent) return;
@@ -294,20 +294,20 @@ ${tiersText}
               gap: '6px'
             }}>
               <div className="flex justify-between items-center" style={{ fontSize: '0.78rem' }}>
-                <span className="text-muted">Total Cash to Collect:</span>
+                <span className="text-muted">Total Face Value:</span>
                 <span style={{ fontWeight: 700, color: '#ffffff' }}>₹{totalBuyerCost.toLocaleString('en-IN')}</span>
               </div>
 
               <div className="flex justify-between items-center" style={{ fontSize: '0.78rem' }}>
-                <span className="text-muted">Settle to Tixora:</span>
-                <span style={{ fontWeight: 600, color: '#f59e0b' }}>₹{cashToDeposit.toLocaleString('en-IN')}</span>
+                <span className="text-muted">Net Upfront Payment:</span>
+                <span style={{ fontWeight: 600, color: '#93c5fd' }}>₹{netPayableUpfront.toLocaleString('en-IN')}</span>
               </div>
 
               <div style={{ height: '1px', background: 'var(--border-color)' }} />
 
               <div className="flex justify-between items-center">
                 <span style={{ fontWeight: 700, color: '#10b981', fontSize: '0.8rem' }}>
-                  Your Net Cut:
+                  Your Promoter Profit:
                 </span>
                 <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#10b981' }}>
                   ₹{totalCommission.toLocaleString('en-IN')}

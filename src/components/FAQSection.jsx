@@ -119,7 +119,7 @@ export const FAQSection = ({ onAskInChat }) => {
               Frequently Asked Questions
             </h2>
             <p className="text-muted" style={{ fontSize: '0.84rem', marginTop: '0.35rem', maxWidth: '650px' }}>
-              Everything promoters and organizers need to know about cash deposit deadlines, digital ticket delivery to BookMyShow/District, cancellations, and DigiLocker verification.
+              Everything promoters and organizers need to know about upfront Card/UPI/Bank payments, instant digital pass delivery to BookMyShow/District, cancellations, and DigiLocker verification.
             </p>
           </div>
 

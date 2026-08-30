@@ -9,7 +9,6 @@ export const INITIAL_EVENTS = [
     venue: "NICE Grounds, Bengaluru",
     city: "Bengaluru",
     status: "active",
-    depositDeadline: "04 Nov 2026", // 10 days before
     posterUrl: "/posters/guns-n-roses-india-poster.jpg",
     bannerUrl: "/posters/guns-n-roses-banner.webp",
     posterPosition: "center 25%",
@@ -28,7 +27,6 @@ export const INITIAL_EVENTS = [
     venue: "Mahalaxmi Racecourse, Mumbai",
     city: "Mumbai",
     status: "active",
-    depositDeadline: "11 Nov 2026", // 10 days before
     posterUrl: "/posters/anyma-aeden-poster-1.jpg",
     bannerUrl: "/posters/anyma-aeden-poster-2.jpg",
     posterPosition: "center 20%",
@@ -48,7 +46,6 @@ export const INITIAL_EVENTS = [
     venue: "Leisure Valley Ground, Gurugram",
     city: "Delhi NCR",
     status: "active",
-    depositDeadline: "25 Nov 2026", // 10 days before
     posterUrl: "/posters/fred-again-india-poster-1.png",
     bannerUrl: "/posters/fred-again-india-poster-2.png",
     posterPosition: "center 18%",
@@ -66,7 +63,6 @@ export const INITIAL_EVENTS = [
     venue: "Mahalaxmi Racecourse, Mumbai",
     city: "Mumbai",
     status: "active",
-    depositDeadline: "28 Nov 2026",
     posterUrl: "/posters/fred-again-india-poster-2.png",
     bannerUrl: "/posters/fred-again-india-poster-1.png",
     posterPosition: "center 18%",
@@ -84,7 +80,6 @@ export const INITIAL_EVENTS = [
     venue: "NICE Grounds, Bengaluru",
     city: "Bengaluru",
     status: "active",
-    depositDeadline: "10 Dec 2026",
     posterUrl: "/posters/chainsmokers-bengaluru-banner.jpg",
     bannerUrl: "/posters/chainsmokers-india-banner.jpg",
     posterPosition: "center 20%",
@@ -105,7 +100,6 @@ export const INITIAL_EVENTS = [
     venue: "HUDA Gymkhana Club, Gurugram",
     city: "Delhi NCR",
     status: "upcoming",
-    depositDeadline: "03 Dec 2026",
     posterUrl: "/posters/khalid-india-banner.jpg",
     bannerUrl: "/posters/khalid-india-banner.jpg",
     posterPosition: "center 25%",
@@ -131,11 +125,9 @@ export const INITIAL_PROMOTERS = [
     tier: "Silver",
     ticketsSold: 32,
     nextTierTarget: 50,
+    totalRevenueGenerated: 64750,
     totalCommissionEarned: 6840,
-    cashCollected: 64750,
-    cashDeposited: 42000,
-    cashOwed: 22750,
-    depositStatus: "Due Soon",
+    status: "Active",
     assignedEvents: ["evt-fred-del", "evt-khalid-del", "evt-chainsmokers-blr"],
     joinedDate: "15 Aug 2026"
   },
@@ -151,11 +143,9 @@ export const INITIAL_PROMOTERS = [
     tier: "Gold",
     ticketsSold: 78,
     nextTierTarget: 150,
+    totalRevenueGenerated: 215000,
     totalCommissionEarned: 24500,
-    cashCollected: 215000,
-    cashDeposited: 215000,
-    cashOwed: 0,
-    depositStatus: "Up to Date",
+    status: "Active",
     assignedEvents: ["evt-anyma-mum", "evt-fred-mum"],
     joinedDate: "02 Jul 2026"
   },
@@ -171,11 +161,9 @@ export const INITIAL_PROMOTERS = [
     tier: "Platinum",
     ticketsSold: 184,
     nextTierTarget: 300,
+    totalRevenueGenerated: 610000,
     totalCommissionEarned: 74200,
-    cashCollected: 610000,
-    cashDeposited: 580000,
-    cashOwed: 30000,
-    depositStatus: "Up to Date",
+    status: "Active",
     assignedEvents: ["evt-gnr-blr", "evt-chainsmokers-blr"],
     joinedDate: "10 May 2026"
   },
@@ -191,11 +179,9 @@ export const INITIAL_PROMOTERS = [
     tier: "Silver",
     ticketsSold: 18,
     nextTierTarget: 50,
+    totalRevenueGenerated: 48000,
     totalCommissionEarned: 3950,
-    cashCollected: 48000,
-    cashDeposited: 15000,
-    cashOwed: 33000,
-    depositStatus: "Overdue",
+    status: "Active",
     assignedEvents: ["evt-anyma-mum"],
     joinedDate: "20 Aug 2026"
   }
@@ -214,11 +200,11 @@ export const INITIAL_SALES = [
     unitPrice: 1750,
     totalAmount: 3500,
     commissionEarned: 280,
-    paymentMethod: "Cash Collected (Bank Deposit Pending)",
+    paymentMethod: "UPI Direct",
+    paymentStatus: "Paid & Verified",
+    deliveryStatus: "Delivered to BookMyShow",
     buyerName: "Rohan Varma",
     buyerPhone: "+91 99100 87654",
-    depositDueDate: "25 Nov 2026",
-    depositStatus: "Pending Deposit",
     issuedAt: "2026-08-28 16:30"
   },
   {
@@ -233,11 +219,11 @@ export const INITIAL_SALES = [
     unitPrice: 3500,
     totalAmount: 14000,
     commissionEarned: 1188,
-    paymentMethod: "Cash Collected (Bank Deposit Pending)",
+    paymentMethod: "Card (Debit / Credit)",
+    paymentStatus: "Paid & Verified",
+    deliveryStatus: "Delivered to BookMyShow",
     buyerName: "Mehul Sen",
     buyerPhone: "+91 98101 23456",
-    depositDueDate: "25 Nov 2026",
-    depositStatus: "Pending Deposit",
     issuedAt: "2026-08-29 11:15"
   },
   {
@@ -252,11 +238,11 @@ export const INITIAL_SALES = [
     unitPrice: 8000,
     totalAmount: 16000,
     commissionEarned: 1360,
-    paymentMethod: "UPI / Online",
+    paymentMethod: "UPI Direct",
+    paymentStatus: "Paid & Verified",
+    deliveryStatus: "Delivered to District",
     buyerName: "Tanvi Saxena",
     buyerPhone: "+91 98202 33445",
-    depositDueDate: "11 Nov 2026",
-    depositStatus: "Deposited",
     issuedAt: "2026-08-25 19:40"
   },
   {
@@ -271,11 +257,11 @@ export const INITIAL_SALES = [
     unitPrice: 9000,
     totalAmount: 27000,
     commissionEarned: 2160,
-    paymentMethod: "Card / Bank Deposit",
+    paymentMethod: "Bank Transfer (IMPS/NEFT)",
+    paymentStatus: "Paid & Verified",
+    deliveryStatus: "Delivered to BookMyShow",
     buyerName: "Devansh Nair",
     buyerPhone: "+91 98450 67890",
-    depositDueDate: "04 Nov 2026",
-    depositStatus: "Deposited",
     issuedAt: "2026-08-22 14:00"
   }
 ];
@@ -285,8 +271,8 @@ export const COMMISSION_TIERS = [
     tier: "Silver",
     ticketRange: "10 – 50 tickets",
     commissionRange: "5.0% – 8.5%",
-    perks: ["Digital Campus Promoter ID", "Direct Card / UPI / Bank Deposit", "WhatsApp Promoter Group Access", "Instant QR Pass Issuance"],
-    color: "#a1a1aa", // Refined silver
+    perks: ["Digital Campus Promoter ID", "Instant Upfront Card / UPI / Bank Issuance", "WhatsApp Promoter Group Access", "Direct BookMyShow & District Delivery"],
+    color: "#a1a1aa",
     accent: "#e4e4e7",
     bgGradient: "linear-gradient(180deg, rgba(39, 39, 42, 0.4) 0%, rgba(24, 24, 27, 0.6) 100%)",
     border: "rgba(255, 255, 255, 0.1)"
@@ -295,8 +281,8 @@ export const COMMISSION_TIERS = [
     tier: "Gold",
     ticketRange: "51 – 150 tickets",
     commissionRange: "9.0% – 12.0%",
-    perks: ["Priority Artist Guestlist Access", "Early Access to Phase 1 allocations", "Instant UPI Settlement Clearance", "Dedicated Festival Ops Manager"],
-    color: "#f59e0b", // Clean warm gold
+    perks: ["Priority Artist Guestlist Access", "Early Access to Phase 1 allocations", "Instant Automated Verification Clearance", "Dedicated Festival Ops Manager"],
+    color: "#f59e0b",
     accent: "#fbbf24",
     bgGradient: "linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(24, 24, 27, 0.6) 100%)",
     border: "rgba(245, 158, 11, 0.25)"
@@ -306,7 +292,7 @@ export const COMMISSION_TIERS = [
     ticketRange: "151+ tickets",
     commissionRange: "13.0% – 16.0%",
     perks: ["Highest Commission Tier (up to 16%)", "All-Access Backstage / Artist Lounge Pass", "Direct Event Organizer Partner Share", "End-of-Tour Cash Bonus"],
-    color: "#ec4899", // Refined rose / platinum
+    color: "#ec4899",
     accent: "#f472b6",
     bgGradient: "linear-gradient(180deg, rgba(236, 72, 153, 0.08) 0%, rgba(24, 24, 27, 0.6) 100%)",
     border: "rgba(236, 72, 153, 0.25)"

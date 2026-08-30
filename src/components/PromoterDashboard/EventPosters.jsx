@@ -29,8 +29,8 @@ export const EventPosters = ({ onSelectEventForSale, onSelectEventForPriceList }
     const minPrice = Math.min(...event.priceList.map((p) => p.promoterPrice));
     const pitch = `🎟️ Official Passes for ${event.name}!
 📅 ${event.date} @ ${event.venue}
-💰 Passes start at ₹${minPrice.toLocaleString('en-IN')}. Cash & UPI accepted directly by me.
-🔒 100% digital QR passes issued to your phone with DigiLocker verification.
+💰 Passes start at ₹${minPrice.toLocaleString('en-IN')}. UPI, Card & Bank Transfer accepted.
+🔒 100% digital QR passes issued immediately to your BookMyShow / District account.
 DM me now to grab your tickets before current phase rates increase!`;
 
     navigator.clipboard.writeText(pitch);
@@ -51,8 +51,8 @@ DM me now to grab your tickets before current phase rates increase!`;
 🏷️ *Ticket Categories:*
 ${tiersText}
 ━━━━━━━━━━━━━━━━━━━━
-💰 *Payment:* Cash & UPI accepted
-🔒 100% DigiLocker Verified Digital Pass
+💰 *Payment:* UPI, Cards & Instant Bank Transfer
+🔒 100% DigiLocker Verified & BookMyShow Delivery
 📲 DM me to lock in your passes!`;
 
     navigator.clipboard.writeText(message);
@@ -236,9 +236,9 @@ ${tiersText}
                     <MapPin size={12} />
                     <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.venue}</span>
                   </div>
-                  <div className="flex items-center gap-2" style={{ fontSize: '0.74rem', color: '#fbbf24' }}>
-                    <Clock size={12} />
-                    <span>Deposit: {event.depositDeadline}</span>
+                  <div className="flex items-center gap-2" style={{ fontSize: '0.74rem', color: '#34d399' }}>
+                    <Check size={12} />
+                    <span>Instant Digital Pass Delivery</span>
                   </div>
                 </div>
 

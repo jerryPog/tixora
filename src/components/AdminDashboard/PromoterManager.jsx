@@ -15,9 +15,9 @@ export const PromoterManager = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       
       <div>
-        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Promoter Directory & Settlement Overview</h3>
+        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Promoter Network Directory</h3>
         <p className="text-muted" style={{ fontSize: '0.82rem' }}>
-          Monitor verified campus student promoters, track cash collection in the field, and review bank/UPI settlements.
+          Verified campus ambassadors issuing official concert passes with 100% upfront settlement.
         </p>
       </div>
 
@@ -29,24 +29,23 @@ export const PromoterManager = () => {
                 <th style={{ padding: '8px 6px' }}>PROMOTER</th>
                 <th style={{ padding: '8px 6px' }}>COLLEGE & CITY</th>
                 <th style={{ padding: '8px 6px' }}>TIER</th>
-                <th style={{ padding: '8px 6px' }}>TICKETS SOLD</th>
-                <th style={{ padding: '8px 6px' }}>TOTAL SETTLED</th>
-                <th style={{ padding: '8px 6px' }}>CASH IN HAND</th>
+                <th style={{ padding: '8px 6px' }}>PASSES SOLD</th>
+                <th style={{ padding: '8px 6px' }}>SALES VOLUME (GMV)</th>
+                <th style={{ padding: '8px 6px' }}>COMMISSION EARNED</th>
                 <th style={{ padding: '8px 6px' }}>STATUS</th>
                 <th style={{ padding: '8px 6px', textAlign: 'right' }}>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {promoters.map((p) => {
-                const isSuspended = p.depositStatus === 'Suspended';
-                const isOverdue = p.depositStatus === 'Overdue';
+                const isActive = p.status !== 'Inactive';
 
                 return (
                   <tr
                     key={p.id}
                     style={{
                       borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                      background: isSuspended ? 'rgba(244, 63, 94, 0.05)' : 'transparent'
+                      background: !isActive ? 'rgba(244, 63, 94, 0.05)' : 'transparent'
                     }}
                   >
                     {/* Promoter info */}
@@ -82,38 +81,29 @@ export const PromoterManager = () => {
                       </span>
                     </td>
 
-                    {/* Tickets sold & earnings */}
+                    {/* Tickets sold */}
                     <td style={{ padding: '12px 6px' }}>
                       <div style={{ fontWeight: 700, color: '#ffffff' }}>{p.ticketsSold} passes</div>
-                      <div style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 600 }}>
+                    </td>
+
+                    {/* Total Revenue Generated */}
+                    <td style={{ padding: '12px 6px' }}>
+                      <div style={{ fontWeight: 700, color: '#ffffff' }}>
+                        ₹{(p.totalRevenueGenerated || 0).toLocaleString('en-IN')}
+                      </div>
+                    </td>
+
+                    {/* Commission Earned */}
+                    <td style={{ padding: '12px 6px' }}>
+                      <div style={{ fontWeight: 700, color: '#10b981' }}>
                         +₹{p.totalCommissionEarned.toLocaleString('en-IN')}
-                      </div>
-                    </td>
-
-                    {/* Total Settled to Bank/UPI */}
-                    <td style={{ padding: '12px 6px' }}>
-                      <div style={{ fontWeight: 700, color: '#34d399' }}>
-                        ₹{p.cashDeposited.toLocaleString('en-IN')}
-                      </div>
-                      <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                        Card / UPI / Bank
-                      </div>
-                    </td>
-
-                    {/* Cash in Hand Owed */}
-                    <td style={{ padding: '12px 6px' }}>
-                      <div style={{ fontWeight: 700, color: p.cashOwed > 0 ? '#f59e0b' : '#ffffff' }}>
-                        ₹{p.cashOwed.toLocaleString('en-IN')}
-                      </div>
-                      <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                        {p.cashOwed > 0 ? 'Pending 10d deposit' : 'All Clear'}
                       </div>
                     </td>
 
                     {/* Status Badge */}
                     <td style={{ padding: '12px 6px' }}>
-                      <span className={isSuspended || isOverdue ? 'badge badge-rose' : p.depositStatus === 'Due Soon' ? 'badge badge-amber' : 'badge badge-emerald'}>
-                        {p.depositStatus}
+                      <span className={isActive ? 'badge badge-emerald' : 'badge badge-rose'}>
+                        {isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>
 
@@ -125,10 +115,10 @@ export const PromoterManager = () => {
                         style={{
                           padding: '4px 10px',
                           fontSize: '0.72rem',
-                          color: isSuspended ? '#34d399' : '#fb7185'
+                          color: !isActive ? '#34d399' : '#fb7185'
                         }}
                       >
-                        {isSuspended ? 'Reactivate' : 'Suspend'}
+                        {!isActive ? 'Activate' : 'Deactivate'}
                       </button>
                     </td>
                   </tr>

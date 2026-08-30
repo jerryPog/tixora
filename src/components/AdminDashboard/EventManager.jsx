@@ -56,7 +56,7 @@ export const EventManager = ({ onOpenCreateEvent, onEditEvent }) => {
                   <div className="flex items-center gap-4 text-muted" style={{ fontSize: '0.78rem', marginTop: '2px', flexWrap: 'wrap' }}>
                     <span className="flex items-center gap-1"><Calendar size={12} /> {event.date}</span>
                     <span className="flex items-center gap-1"><MapPin size={12} /> {event.venue}</span>
-                    <span className="flex items-center gap-1" style={{ color: '#fbbf24' }}><Clock size={12} /> Deposit Deadline: <strong>{event.depositDeadline}</strong></span>
+                    <span className="flex items-center gap-1" style={{ color: '#34d399' }}>✓ Instant BMS Delivery</span>
                   </div>
                 </div>
               </div>

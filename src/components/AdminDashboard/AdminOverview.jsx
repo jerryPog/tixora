@@ -2,12 +2,11 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   Users, 
-  Banknote, 
   Ticket, 
-  AlertTriangle, 
   TrendingUp, 
-  CalendarPlus,
-  Plus
+  CheckCircle2,
+  Plus,
+  Zap
 } from 'lucide-react';
 
 export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) => {
@@ -15,9 +14,7 @@ export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) =>
 
   const totalNetworkRevenue = sales.reduce((acc, s) => acc + s.totalAmount, 0);
   const totalTicketsIssued = sales.reduce((acc, s) => acc + s.quantity, 0);
-  const totalCashInField = promoters.reduce((acc, p) => acc + p.cashOwed, 0);
-  const suspendedCount = promoters.filter((p) => p.depositStatus === 'Suspended').length;
-  const overdueCount = promoters.filter((p) => p.depositStatus === 'Overdue').length;
+  const totalCommissionsPaid = sales.reduce((acc, s) => acc + s.commissionEarned, 0);
 
   return (
     <div style={{ marginBottom: '2rem' }}>
@@ -26,7 +23,7 @@ export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) =>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4" style={{ marginBottom: '1.5rem' }}>
         <div>
           <div className="badge badge-rose" style={{ marginBottom: '6px' }}>
-            Tixora Operations & Escrow Console
+            Tixora Operations & Console
           </div>
           <h1 style={{ fontSize: '1.85rem', fontWeight: 800 }}>
             Master Administration
@@ -59,25 +56,25 @@ export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) =>
             ₹{totalNetworkRevenue.toLocaleString('en-IN')}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            {totalTicketsIssued} passes sold across {events.length} concerts
+            100% Upfront Settled & Verified
           </div>
         </div>
 
-        {/* Cash in Field */}
+        {/* Total Tickets Delivered */}
         <div className="glass-card">
           <div className="flex justify-between items-center" style={{ marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Cash In Field (Risk)
+              Passes Delivered
             </span>
-            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Banknote size={15} color="#f59e0b" />
+            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Ticket size={15} color="#10b981" />
             </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#f59e0b', letterSpacing: '-0.02em' }}>
-            ₹{totalCashInField.toLocaleString('en-IN')}
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#10b981', letterSpacing: '-0.02em' }}>
+            {totalTicketsIssued}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            Unsettled cash across {promoters.length} promoters
+            Across {events.length} active concerts
           </div>
         </div>
 
@@ -99,21 +96,21 @@ export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) =>
           </div>
         </div>
 
-        {/* Risk Alerts */}
+        {/* Promoter Commissions */}
         <div className="glass-card">
           <div className="flex justify-between items-center" style={{ marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Risk Exposure
+              Promoter Payouts
             </span>
-            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(244, 63, 94, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <AlertTriangle size={15} color="#f43f5e" />
+            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(236, 72, 153, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Zap size={15} color="#ec4899" />
             </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: overdueCount > 0 ? '#f43f5e' : '#10b981', letterSpacing: '-0.02em' }}>
-            {overdueCount} Overdue
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#f472b6', letterSpacing: '-0.02em' }}>
+            ₹{totalCommissionsPaid.toLocaleString('en-IN')}
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            {suspendedCount} currently suspended
+            Calculated & credited in real-time
           </div>
         </div>
 
@@ -130,7 +127,7 @@ export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) =>
       }}>
         {[
           { id: 'events', label: 'Concert Inventory & Pricing', icon: <Ticket size={15} /> },
-          { id: 'promoters', label: 'Promoter Directory & Settlements', icon: <Users size={15} /> },
+          { id: 'promoters', label: 'Promoter Network Directory', icon: <Users size={15} /> },
           { id: 'sales', label: 'Global Transactions Feed', icon: <TrendingUp size={15} /> }
         ].map((tab) => (
           <button

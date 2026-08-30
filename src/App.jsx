@@ -8,7 +8,6 @@ import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
 import { SalesLedger } from './components/PromoterDashboard/SalesLedger';
 import { RecordSaleModal } from './components/PromoterDashboard/RecordSaleModal';
-import { DepositModal } from './components/PromoterDashboard/DepositModal';
 import { AdminOverview } from './components/AdminDashboard/AdminOverview';
 import { EventManager } from './components/AdminDashboard/EventManager';
 import { PromoterManager } from './components/AdminDashboard/PromoterManager';
@@ -141,7 +140,6 @@ const MainDashboard = () => {
   const [isRecordSaleOpen, setIsRecordSaleOpen] = useState(false);
   const [initialSaleEventId, setInitialSaleEventId] = useState(null);
   const [initialSaleCategory, setInitialSaleCategory] = useState(null);
-  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
 
   // Admin View State
@@ -206,9 +204,7 @@ const MainDashboard = () => {
           <div>
             
             {/* Top KPI Strip */}
-            <PromoterOverview
-              onOpenDepositModal={() => setIsDepositModalOpen(true)}
-            />
+            <PromoterOverview />
 
             {/* Desktop Navigation Tabs (Hidden on mobile) */}
             <div style={{
@@ -277,7 +273,7 @@ const MainDashboard = () => {
 
             {promoterTab === 'ledger' && (
               <SalesLedger
-                onOpenDepositModal={() => setIsDepositModalOpen(true)}
+                onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
               />
             )}
 
@@ -491,11 +487,6 @@ const MainDashboard = () => {
         onClose={() => setIsRecordSaleOpen(false)}
         initialEventId={initialSaleEventId}
         initialCategory={initialSaleCategory}
-      />
-
-      <DepositModal
-        isOpen={isDepositModalOpen}
-        onClose={() => setIsDepositModalOpen(false)}
       />
 
       <CreateEventModal

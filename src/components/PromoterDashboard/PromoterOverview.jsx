@@ -3,14 +3,12 @@ import { useApp } from '../../context/AppContext';
 import { 
   TrendingUp, 
   Banknote, 
-  Building2, 
-  Clock, 
-  AlertCircle,
+  ShieldCheck, 
   CheckCircle2,
-  CreditCard
+  Zap
 } from 'lucide-react';
 
-export const PromoterOverview = ({ onOpenDepositModal }) => {
+export const PromoterOverview = () => {
   const { activePromoter, commissionTiers } = useApp();
 
   if (!activePromoter) return null;
@@ -21,37 +19,6 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
       
-      {/* Suspension Alert if applicable */}
-      {activePromoter.depositStatus === 'Suspended' && (
-        <div style={{
-          background: 'rgba(244, 63, 94, 0.08)',
-          border: '1px solid rgba(244, 63, 94, 0.25)',
-          borderRadius: '12px',
-          padding: '0.85rem 1rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.6rem',
-          color: '#fca5a5'
-        }}>
-          <div className="flex items-center gap-2">
-            <AlertCircle size={20} color="#f43f5e" style={{ flexShrink: 0 }} />
-            <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#ffffff' }}>
-              Ticket Issuance Paused
-            </div>
-          </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-            Outstanding cash of ₹{activePromoter.cashOwed.toLocaleString('en-IN')} is overdue. Settle balance to resume.
-          </div>
-          <button
-            onClick={onOpenDepositModal}
-            className="btn"
-            style={{ background: '#f43f5e', color: '#ffffff', padding: '0.4rem 0.85rem', fontSize: '0.75rem', alignSelf: 'flex-start' }}
-          >
-            Settle Balance
-          </button>
-        </div>
-      )}
-
       {/* Main KPI Cards Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         
@@ -80,7 +47,7 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
           {/* Progress bar */}
           <div style={{ marginTop: '0.5rem' }}>
             <div className="flex justify-between" style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginBottom: '3px' }}>
-              <span>Target</span>
+              <span>Next Target</span>
               <span>{activePromoter.ticketsSold}/{activePromoter.nextTierTarget}</span>
             </div>
             <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '9999px', overflow: 'hidden' }}>
@@ -126,12 +93,12 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
           </div>
         </div>
 
-        {/* Cash In Hand / Due to Deposit */}
+        {/* Total Volume Generated */}
         <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Cash In Hand
+                Sales Volume
               </span>
               <div style={{
                 width: '24px', height: '24px', borderRadius: '6px',
@@ -140,43 +107,8 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
                 <Banknote size={13} color="#f59e0b" />
               </div>
             </div>
-            <div style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.85rem)', fontWeight: 800, color: activePromoter.cashOwed > 0 ? '#f59e0b' : '#ffffff', letterSpacing: '-0.02em' }}>
-              ₹{activePromoter.cashOwed.toLocaleString('en-IN')}
-            </div>
-          </div>
-
-          <div style={{ marginTop: '0.5rem' }}>
-            <button
-              onClick={onOpenDepositModal}
-              className="btn btn-secondary"
-              style={{
-                width: '100%',
-                padding: '4px 6px',
-                fontSize: '0.7rem',
-                minHeight: '28px'
-              }}
-            >
-              Deposit Cash
-            </button>
-          </div>
-        </div>
-
-        {/* Bank & Online Settlement Card (Zero Credit System) */}
-        <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
-          <div>
-            <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
-              <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Settled to Bank
-              </span>
-              <div style={{
-                width: '24px', height: '24px', borderRadius: '6px',
-                background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
-                <Building2 size={13} color="#3b82f6" />
-              </div>
-            </div>
-            <div style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.85rem)', fontWeight: 800, color: '#f4f4f6', letterSpacing: '-0.02em' }}>
-              ₹{activePromoter.cashDeposited.toLocaleString('en-IN')}
+            <div style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.85rem)', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em' }}>
+              ₹{(activePromoter.totalRevenueGenerated || 0).toLocaleString('en-IN')}
             </div>
           </div>
 
@@ -185,7 +117,37 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
             paddingTop: '0.35rem',
             borderTop: '1px solid var(--border-color)',
             fontSize: '0.68rem',
-            color: '#34d399',
+            color: 'var(--text-muted)'
+          }}>
+            {activePromoter.ticketsSold} passes issued
+          </div>
+        </div>
+
+        {/* Instant Settlement Clearance Mode */}
+        <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
+          <div>
+            <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
+              <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Settlement Model
+              </span>
+              <div style={{
+                width: '24px', height: '24px', borderRadius: '6px',
+                background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                <Zap size={13} color="#3b82f6" />
+              </div>
+            </div>
+            <div style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.35rem)', fontWeight: 800, color: '#34d399', letterSpacing: '-0.02em' }}>
+              100% Upfront
+            </div>
+          </div>
+
+          <div style={{
+            marginTop: '0.5rem',
+            paddingTop: '0.35rem',
+            borderTop: '1px solid var(--border-color)',
+            fontSize: '0.68rem',
+            color: '#93c5fd',
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
@@ -193,7 +155,7 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }}>
-            <CheckCircle2 size={11} /> Card • UPI • Bank Direct
+            <CheckCircle2 size={11} color="#34d399" /> Card • UPI • Bank IMPS
           </div>
         </div>
 

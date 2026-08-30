@@ -2,11 +2,12 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   Receipt, 
-  Clock, 
-  SendHorizontal
+  CheckCircle2, 
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 
-export const SalesLedger = ({ onOpenDepositModal }) => {
+export const SalesLedger = ({ onOpenRecordSale }) => {
   const { sales, activePromoter } = useApp();
 
   const promoterSales = sales.filter((s) => s.promoterId === activePromoter.id);
@@ -18,26 +19,26 @@ export const SalesLedger = ({ onOpenDepositModal }) => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3" style={{ marginBottom: '1rem' }}>
         <div>
           <h2 style={{ fontSize: '1.35rem', fontWeight: 800 }}>
-            Sales Ledger & Deadlines
+            Pass & Payment Ledger
           </h2>
           <p className="text-muted" style={{ fontSize: '0.8rem' }}>
-            Audit log of all digital passes issued, cash collected, and 10-day event deposit schedules.
+            Verified log of passes issued with upfront payment and instant BookMyShow / District delivery.
           </p>
         </div>
 
         <button
-          onClick={onOpenDepositModal}
+          onClick={onOpenRecordSale}
           className="btn btn-primary"
           style={{ padding: '7px 14px', fontSize: '0.78rem', gap: '5px', width: '100%', maxWidth: '200px' }}
         >
-          <SendHorizontal size={13} /> Settle Cash
+          <Zap size={13} /> Pay & Issue Pass
         </button>
       </div>
 
-      {/* Deposit Deadlines Alert Strip */}
+      {/* Upfront Payment Policy Strip */}
       <div style={{
-        background: 'rgba(245, 158, 11, 0.05)',
-        border: '1px solid rgba(245, 158, 11, 0.2)',
+        background: 'rgba(16, 185, 129, 0.05)',
+        border: '1px solid rgba(16, 185, 129, 0.2)',
         borderRadius: '10px',
         padding: '0.85rem 1rem',
         marginBottom: '1rem',
@@ -50,24 +51,24 @@ export const SalesLedger = ({ onOpenDepositModal }) => {
         <div className="flex items-center gap-2.5">
           <div style={{
             width: '32px', height: '32px', borderRadius: '7px',
-            background: 'rgba(245, 158, 11, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+            background: 'rgba(16, 185, 129, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
           }}>
-            <Clock size={16} color="#f59e0b" />
+            <ShieldCheck size={16} color="#10b981" />
           </div>
           <div>
             <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#ffffff' }}>
-              10-Day Pre-Concert Cash Settlement
+              100% Upfront Paid & Dispatched
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-              Cash collected from peer sales must be deposited at least 10 days prior to the show.
+              Passes are dispatched directly to the buyer's account immediately upon verified Card/UPI/Bank settlement.
             </div>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Outstanding</div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#f59e0b' }}>
-            ₹{activePromoter.cashOwed.toLocaleString('en-IN')}
+          <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Total Earnings</div>
+          <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#10b981' }}>
+            ₹{activePromoter.totalCommissionEarned.toLocaleString('en-IN')}
           </div>
         </div>
       </div>
@@ -78,21 +79,21 @@ export const SalesLedger = ({ onOpenDepositModal }) => {
           <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.82rem' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                <th style={{ padding: '6px 4px' }}>TICKET CODE</th>
+                <th style={{ padding: '6px 4px' }}>PASS CODE</th>
                 <th style={{ padding: '6px 4px' }}>EVENT & CATEGORY</th>
-                <th style={{ padding: '6px 4px' }}>BUYER</th>
+                <th style={{ padding: '6px 4px' }}>BUYER (BMS / DISTRICT)</th>
                 <th style={{ padding: '6px 4px' }}>QTY</th>
-                <th style={{ padding: '6px 4px' }}>AMOUNT</th>
+                <th style={{ padding: '6px 4px' }}>TOTAL PAID</th>
                 <th style={{ padding: '6px 4px' }}>COMMISSION</th>
-                <th style={{ padding: '6px 4px' }}>DEPOSIT DUE</th>
-                <th style={{ padding: '6px 4px', textAlign: 'right' }}>STATUS</th>
+                <th style={{ padding: '6px 4px' }}>PAYMENT CHANNEL</th>
+                <th style={{ padding: '6px 4px', textAlign: 'right' }}>DELIVERY</th>
               </tr>
             </thead>
             <tbody>
               {promoterSales.length === 0 ? (
                 <tr>
                   <td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                    No sales recorded yet. Click "Issue Ticket" to start selling to your network!
+                    No sales recorded yet. Click "Pay & Issue Pass" to start selling to your network!
                   </td>
                 </tr>
               ) : (
@@ -117,19 +118,16 @@ export const SalesLedger = ({ onOpenDepositModal }) => {
                     </td>
                     <td style={{ padding: '10px 4px', fontWeight: 600, color: '#ffffff' }}>
                       ₹{sale.totalAmount.toLocaleString('en-IN')}
-                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', display: 'block' }}>
-                        via {sale.paymentMethod}
-                      </span>
                     </td>
                     <td style={{ padding: '10px 4px', fontWeight: 600, color: '#10b981' }}>
                       +₹{sale.commissionEarned.toLocaleString('en-IN')}
                     </td>
-                    <td style={{ padding: '10px 4px', color: '#fbbf24', fontSize: '0.74rem' }}>
-                      {sale.depositDueDate}
+                    <td style={{ padding: '10px 4px', color: '#93c5fd', fontSize: '0.74rem' }}>
+                      {sale.paymentMethod}
                     </td>
                     <td style={{ padding: '10px 4px', textAlign: 'right' }}>
-                      <span className={sale.depositStatus === 'Deposited' ? 'badge badge-emerald' : 'badge badge-amber'}>
-                        {sale.depositStatus}
+                      <span className="badge badge-emerald">
+                        ✓ Delivered
                       </span>
                     </td>
                   </tr>

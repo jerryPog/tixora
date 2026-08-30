@@ -10,7 +10,6 @@ export const CreateEventModal = ({ isOpen, onClose, editingEvent }) => {
   const [date, setDate] = useState('');
   const [venue, setVenue] = useState('');
   const [city, setCity] = useState('Delhi NCR');
-  const [depositDeadline, setDepositDeadline] = useState('');
   const [posterUrl, setPosterUrl] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
   const [description, setDescription] = useState('');
@@ -26,7 +25,6 @@ export const CreateEventModal = ({ isOpen, onClose, editingEvent }) => {
       setDate(editingEvent.date);
       setVenue(editingEvent.venue);
       setCity(editingEvent.city || 'Delhi NCR');
-      setDepositDeadline(editingEvent.depositDeadline);
       setPosterUrl(editingEvent.posterUrl);
       setBannerUrl(editingEvent.bannerUrl || editingEvent.posterUrl);
       setDescription(editingEvent.description || '');
@@ -37,7 +35,6 @@ export const CreateEventModal = ({ isOpen, onClose, editingEvent }) => {
       setDate('10 Jan 2027, 5:00 PM');
       setVenue('JLN Stadium, Delhi');
       setCity('Delhi NCR');
-      setDepositDeadline('31 Dec 2026');
       setPosterUrl('/posters/guns-n-roses-india-poster.jpg');
       setBannerUrl('/posters/guns-n-roses-banner.webp');
       setDescription('Concert tour in India.');
@@ -104,7 +101,6 @@ export const CreateEventModal = ({ isOpen, onClose, editingEvent }) => {
       venue,
       city,
       status: 'active',
-      depositDeadline,
       posterUrl: posterUrl || '/posters/guns-n-roses-india-poster.jpg',
       bannerUrl: bannerUrl || posterUrl,
       description,
@@ -194,7 +190,7 @@ export const CreateEventModal = ({ isOpen, onClose, editingEvent }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="form-group">
               <label className="form-label">Date & Time</label>
               <input
@@ -220,18 +216,6 @@ export const CreateEventModal = ({ isOpen, onClose, editingEvent }) => {
                 <option value="Pune">Pune</option>
                 <option value="Goa">Goa</option>
               </select>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Deposit Due Date</label>
-              <input
-                type="text"
-                placeholder="e.g. 05 Jan 2027"
-                value={depositDeadline}
-                onChange={(e) => setDepositDeadline(e.target.value)}
-                className="form-input"
-                required
-              />
             </div>
           </div>
 

@@ -6,9 +6,12 @@ import {
   CheckCircle2, 
   Copy, 
   Check, 
-  Phone, 
-  Calendar,
-  AlertCircle
+  QrCode,
+  CreditCard,
+  Building2,
+  Lock,
+  ArrowRight,
+  ShieldCheck
 } from 'lucide-react';
 
 export const RecordSaleModal = ({ isOpen, onClose, initialEventId = null, initialCategory = null }) => {
@@ -17,9 +20,10 @@ export const RecordSaleModal = ({ isOpen, onClose, initialEventId = null, initia
   const [eventId, setEventId] = useState(initialEventId || events[0]?.id || '');
   const [ticketCategory, setTicketCategory] = useState(initialCategory || '');
   const [quantity, setQuantity] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('Cash'); // 'Cash' | 'Card / Online' | 'UPI'
+  const [paymentMethod, setPaymentMethod] = useState('UPI'); // 'UPI' | 'Card' | 'Bank Transfer'
   const [buyerName, setBuyerName] = useState('');
   const [buyerPhone, setBuyerPhone] = useState('');
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [agreedToMRPPolicy, setAgreedToMRPPolicy] = useState(true);
   const [issuedTicketResult, setIssuedTicketResult] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -40,7 +44,7 @@ export const RecordSaleModal = ({ isOpen, onClose, initialEventId = null, initia
   const totalAmount = (priceItem?.promoterPrice || 0) * quantity;
   const commissionEarned = Math.round((priceItem?.commissionAmount || 0) * quantity);
 
-  const handleSubmit = (e) => {
+  const handlePayAndIssue = (e) => {
     e.preventDefault();
     if (!buyerName.trim() || !buyerPhone.trim()) {
       showToast('Please enter buyer name and mobile number', 'error');
@@ -53,25 +57,26 @@ export const RecordSaleModal = ({ isOpen, onClose, initialEventId = null, initia
     }
 
     if (quantity > 10) {
-      showToast('Regulatory Limit: Maximum 10 tickets allowed per individual transaction under Section 269ST guidelines.', 'error');
+      showToast('Regulatory Limit: Maximum 10 tickets allowed per transaction under Section 269ST guidelines.', 'error');
       return;
     }
 
-    if (activePromoter.depositStatus === 'Suspended') {
-      showToast('Account suspended due to overdue deposits. Please settle cash first.', 'error');
-      return;
-    }
+    setIsProcessingPayment(true);
 
-    const sale = recordNewSale({
-      eventId,
-      ticketCategory: priceItem.category,
-      quantity,
-      paymentMethod,
-      buyerName,
-      buyerPhone
-    });
+    // Simulate instant secure payment clearance & BookMyShow/District ticket dispatch
+    setTimeout(() => {
+      const sale = recordNewSale({
+        eventId,
+        ticketCategory: priceItem.category,
+        quantity,
+        paymentMethod: paymentMethod === 'UPI' ? 'UPI Direct' : paymentMethod === 'Card' ? 'Card (Debit/Credit)' : 'Bank Transfer (IMPS/NEFT)',
+        buyerName,
+        buyerPhone
+      });
 
-    setIssuedTicketResult(sale);
+      setIsProcessingPayment(false);
+      setIssuedTicketResult(sale);
+    }, 600);
   };
 
   const handleCopyTicketDetails = () => {
@@ -81,9 +86,9 @@ Event: ${issuedTicketResult.eventName}
 Category: ${issuedTicketResult.ticketCategory} (x${issuedTicketResult.quantity})
 Pass Holder: ${issuedTicketResult.buyerName}
 Entry Code: *${issuedTicketResult.ticketCode}*
-Price Paid: ₹${issuedTicketResult.totalAmount.toLocaleString('en-IN')} (Official MRP incl. GST)
-Status: DigiLocker Verified & Active
-Platform: BookMyShow / District Direct Delivery
+Total Paid: ₹${issuedTicketResult.totalAmount.toLocaleString('en-IN')} (Official MRP incl. GST)
+Payment Mode: ${issuedTicketResult.paymentMethod} (Paid & Cleared)
+Delivery: Delivered directly to BookMyShow / District Account
 
 *Present this pass code and your mobile number at venue gate.*`;
 
@@ -98,6 +103,7 @@ Platform: BookMyShow / District Direct Delivery
     setBuyerName('');
     setBuyerPhone('');
     setQuantity(1);
+    setIsProcessingPayment(false);
     onClose();
   };
 
@@ -105,7 +111,7 @@ Platform: BookMyShow / District Direct Delivery
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'rgba(0,0,0,0.82)',
+      background: 'rgba(0,0,0,0.85)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
       zIndex: 1000,
@@ -114,7 +120,7 @@ Platform: BookMyShow / District Direct Delivery
       justifyContent: 'center',
       padding: '1rem'
     }}>
-      <div className="glass-card" style={{ maxWidth: '520px', width: '100%', maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}>
+      <div className="glass-card" style={{ maxWidth: '520px', width: '100%', maxHeight: '92vh', overflowY: 'auto', position: 'relative' }}>
         
         {/* Close button */}
         <button
@@ -139,7 +145,7 @@ Platform: BookMyShow / District Direct Delivery
         </button>
 
         {issuedTicketResult ? (
-          /* ================= SUCCESS CONFIRMATION STATE ================= */
+          /* ================= SUCCESS & ISSUED STATE ================= */
           <div style={{ padding: '0.5rem 0', textAlign: 'center' }}>
             <div style={{
               width: '56px',
@@ -156,27 +162,30 @@ Platform: BookMyShow / District Direct Delivery
               <CheckCircle2 size={32} />
             </div>
 
+            <div className="badge badge-emerald" style={{ marginBottom: '8px' }}>
+              Payment Verified • Pass Issued
+            </div>
+
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '0.25rem' }}>
-              Digital Pass Issued!
+              Digital Pass Dispatched!
             </h3>
             <p className="text-muted" style={{ fontSize: '0.82rem', marginBottom: '1.25rem' }}>
-              Verified and logged against promoter account <strong>{activePromoter.name}</strong>.
+              Payment settled via <strong>{issuedTicketResult.paymentMethod}</strong>. Delivered directly to BookMyShow/District account.
             </p>
 
             {/* Pass Ticket Stub */}
             <div style={{
-              background: 'rgba(0,0,0,0.6)',
+              background: 'rgba(0,0,0,0.65)',
               border: '1px dashed rgba(255,255,255,0.2)',
               borderRadius: '12px',
               padding: '1.25rem',
               textAlign: 'left',
-              marginBottom: '1.25rem',
-              position: 'relative'
+              marginBottom: '1.25rem'
             }}>
               <div className="flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
-                <span className="badge badge-emerald">Active Digital Pass</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  Delivery: BMS / District
+                <span className="badge badge-emerald">Official Verified Pass</span>
+                <span style={{ fontSize: '0.72rem', color: '#34d399', fontWeight: 600 }}>
+                  ✓ Instant Clearance
                 </span>
               </div>
 
@@ -212,14 +221,14 @@ Platform: BookMyShow / District Direct Delivery
               </div>
 
               <div className="flex justify-between items-center" style={{ fontSize: '0.78rem' }}>
-                <span className="text-muted">Payment Recorded:</span>
+                <span className="text-muted">Total Paid Upfront:</span>
                 <span style={{ fontWeight: 700, color: '#ffffff' }}>
-                  ₹{issuedTicketResult.totalAmount.toLocaleString('en-IN')} ({issuedTicketResult.paymentMethod})
+                  ₹{issuedTicketResult.totalAmount.toLocaleString('en-IN')}
                 </span>
               </div>
 
               <div className="flex justify-between items-center" style={{ fontSize: '0.78rem', marginTop: '4px' }}>
-                <span className="text-muted">Your Commission Cut:</span>
+                <span className="text-muted">Your Instant Promoter Commission:</span>
                 <span style={{ fontWeight: 700, color: '#10b981' }}>
                   +₹{issuedTicketResult.commissionEarned.toLocaleString('en-IN')}
                 </span>
@@ -227,7 +236,7 @@ Platform: BookMyShow / District Direct Delivery
             </div>
 
             {/* Actions */}
-            <div className="flex gap-2" style={{ marginBottom: '0.75rem' }}>
+            <div className="flex gap-2">
               <button
                 onClick={handleCopyTicketDetails}
                 className="btn btn-secondary"
@@ -252,16 +261,10 @@ Platform: BookMyShow / District Direct Delivery
                 Done
               </button>
             </div>
-
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-              {issuedTicketResult.paymentMethod === 'Cash' 
-                ? 'Remember to deposit collected cash to Tixora Bank Account before the 10-day deadline.'
-                : 'Payment settled instantly via Card / UPI.'}
-            </div>
           </div>
         ) : (
-          /* ================= FORM ENTRY STATE ================= */
-          <form onSubmit={handleSubmit}>
+          /* ================= FORM & UPFRONT PAYMENT SELECTION ================= */
+          <form onSubmit={handlePayAndIssue}>
             <div className="flex items-center gap-2" style={{ marginBottom: '1.25rem' }}>
               <div style={{
                 width: '36px',
@@ -276,9 +279,9 @@ Platform: BookMyShow / District Direct Delivery
                 <Ticket size={18} />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Issue Digital Pass</h3>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Pay & Issue Digital Pass</h3>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                  Direct settlement • Card, UPI & Bank Deposit • Exact MRP
+                  Pay via Card, UPI, or Bank Transfer • Ticket issues immediately on payment
                 </div>
               </div>
             </div>
@@ -319,39 +322,59 @@ Platform: BookMyShow / District Direct Delivery
               </select>
             </div>
 
-            {/* Quantity & Payment Mode */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="form-group">
-                <label className="form-label">Quantity (Max 10/txn)</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="10"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Math.min(10, Math.max(1, parseInt(e.target.value) || 1)))}
-                  className="form-input"
-                />
-              </div>
+            {/* Quantity */}
+            <div className="form-group">
+              <label className="form-label">Quantity (Max 10 passes)</label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                value={quantity}
+                onChange={(e) => setQuantity(Math.min(10, Math.max(1, parseInt(e.target.value) || 1)))}
+                className="form-input"
+              />
+            </div>
 
-              <div className="form-group">
-                <label className="form-label">Payment Settlement Mode</label>
-                <select
-                  className="form-select"
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  style={{ fontSize: '0.78rem' }}
+            {/* Payment Method Selector */}
+            <div className="form-group">
+              <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Select Payment Method</span>
+                <span style={{ color: '#34d399', fontSize: '0.7rem' }}>🔒 Instant Verification</span>
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod('UPI')}
+                  className={`btn ${paymentMethod === 'UPI' ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ padding: '8px 4px', fontSize: '0.76rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}
                 >
-                  <option value="Cash">Cash (Customer Cash Collection)</option>
-                  <option value="UPI">UPI Direct</option>
-                  <option value="Card">Card (Debit / Credit)</option>
-                  <option value="Bank Deposit">Bank Deposit</option>
-                </select>
+                  <QrCode size={16} />
+                  <span>UPI / QR</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod('Card')}
+                  className={`btn ${paymentMethod === 'Card' ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ padding: '8px 4px', fontSize: '0.76rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}
+                >
+                  <CreditCard size={16} />
+                  <span>Card</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod('Bank Transfer')}
+                  className={`btn ${paymentMethod === 'Bank Transfer' ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ padding: '8px 4px', fontSize: '0.76rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}
+                >
+                  <Building2 size={16} />
+                  <span>Bank (IMPS)</span>
+                </button>
               </div>
             </div>
 
             {/* Buyer Info */}
             <div className="form-group">
-              <label className="form-label">Buyer Full Name (For Ticket Accreditation)</label>
+              <label className="form-label">Buyer Full Name (BookMyShow / District Account Name)</label>
               <input
                 type="text"
                 placeholder="e.g. Yash Malhotra"
@@ -363,7 +386,7 @@ Platform: BookMyShow / District Direct Delivery
             </div>
 
             <div className="form-group">
-              <label className="form-label">Buyer WhatsApp / Mobile Number</label>
+              <label className="form-label">Buyer WhatsApp / Phone (For Digital Ticket Delivery)</label>
               <input
                 type="tel"
                 placeholder="+91 98765 43210"
@@ -383,26 +406,23 @@ Platform: BookMyShow / District Direct Delivery
               margin: '0.85rem 0',
               display: 'flex',
               flexDirection: 'column',
-              gap: '5px',
+              gap: '6px',
               fontSize: '0.82rem'
             }}>
               <div className="flex justify-between">
-                <span className="text-muted">Total Face Value to Collect:</span>
-                <span style={{ fontWeight: 700, color: '#ffffff' }}>₹{totalAmount.toLocaleString('en-IN')} (incl. GST)</span>
+                <span className="text-muted">Total Payable Amount:</span>
+                <span style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.05rem' }}>₹{totalAmount.toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted">Your Authorized Commission:</span>
+                <span className="text-muted">Your Authorized Promoter Cut:</span>
                 <span style={{ fontWeight: 700, color: '#10b981' }}>+₹{commissionEarned.toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted">Settlement Method:</span>
-                <span style={{ color: '#60a5fa', fontWeight: 600 }}>
-                  {paymentMethod === 'Cash' ? 'Cash collected (Deposit before 10d cutoff)' : 'Direct Settlement (Card / UPI / Bank)'}
-                </span>
+              <div style={{ fontSize: '0.72rem', color: '#93c5fd', marginTop: '2px' }}>
+                ⚡ Payment is settled via <strong>{paymentMethod}</strong>. The ticket is immediately generated and delivered to the buyer's account upon completion.
               </div>
             </div>
 
-            {/* Anti-Scalping & Legal Confirmation Checkbox */}
+            {/* Anti-Scalping & Legal Confirmation */}
             <div style={{
               background: 'rgba(16, 185, 129, 0.06)',
               border: '1px solid rgba(16, 185, 129, 0.2)',
@@ -422,18 +442,26 @@ Platform: BookMyShow / District Direct Delivery
                 required
               />
               <label htmlFor="antiScalp" style={{ fontSize: '0.74rem', color: '#e4e4e7', cursor: 'pointer', lineHeight: 1.35 }}>
-                <strong>Anti-Black Marketing Guarantee:</strong> I declare that this pass is sold strictly at official organizer MRP without any unauthorized extra markup or scalping fee.
+                <strong>Official MRP & Instant Delivery Guarantee:</strong> I confirm this pass is purchased strictly at official organizer MRP.
               </label>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit & Pay Button */}
             <button
               type="submit"
-              disabled={!agreedToMRPPolicy || activePromoter.depositStatus === 'Suspended'}
+              disabled={isProcessingPayment || !agreedToMRPPolicy}
               className="btn btn-primary"
-              style={{ width: '100%', padding: '11px', fontSize: '0.9rem', gap: '6px' }}
+              style={{ width: '100%', padding: '12px', fontSize: '0.92rem', gap: '8px' }}
             >
-              <CheckCircle2 size={16} /> Issue & Deliver Official Pass
+              {isProcessingPayment ? (
+                <span>Verifying Payment & Issuing Pass...</span>
+              ) : (
+                <>
+                  <Lock size={15} />
+                  <span>Pay ₹{totalAmount.toLocaleString('en-IN')} & Issue Pass</span>
+                  <ArrowRight size={15} />
+                </>
+              )}
             </button>
           </form>
         )}

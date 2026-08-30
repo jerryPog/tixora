@@ -113,7 +113,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
     {
       id: 'msg-welcome',
       sender: 'bot',
-      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about:\n• 🎟️ **Ticket Delivery:** How passes reach BookMyShow/District\n• 💰 **Cash Rules:** 10-day deposit cutoff, interim caps & penalties\n• 🏆 **Tiers:** Commission progressions & performance criteria\n• 🛡️ **DigiLocker & Disputes:** Verification & record authenticity\n• 🎵 **Artists & Songs:** Guns N' Roses, Anyma, Fred again.., Chainsmokers, Khalid\n\n📞 *Direct helpline: +91 78921 45475*",
+      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about:\n• 💳 **Upfront Payments:** Card, UPI & Bank instant clearance\n• 🎟️ **Ticket Delivery:** Instant dispatch to BookMyShow/District\n• 🏆 **Tiers:** Commission progression up to 16%\n• 🛡️ **DigiLocker & Verification:** Verified promoter authenticity\n• 🎵 **Artists & Songs:** Guns N' Roses, Anyma, Fred again.., Chainsmokers, Khalid\n\n📞 *Direct helpline: +91 78921 45475*",
       timestamp: 'Just now'
     }
   ]);
@@ -127,29 +127,24 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
       return `📞 **Tixora Helpline & Operations Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n• **Founders:** Ronak Jain R (Founder) & Anshul S Balan (Co-Founder)\n\nFeel free to call or WhatsApp +91 78921 45475 anytime for promoter onboarding, urgent cash settlement assistance, or event ticket allocations!`;
     }
 
-    // 1. FAQ: Missed deposit deadline & penalties
-    if (q.includes('miss') && (q.includes('deadline') || q.includes('deposit') || q.includes('cash') || q.includes('cutoff')) || q.includes('under review') || q.includes('late deposit') || q.includes('missed deadline')) {
-      return `⚠️ **What Happens If You Miss Your Cash Deposit Deadline:**\n\n• **10-Day Cutoff:** All cash collected from buyers must be deposited with Tixora no later than **10 days before the event**.\n• **'Under Review' Status:** If you miss this deadline, your account is immediately moved to **"Under Review"** and no new tickets can be issued to you until the deposit is made.\n• **Penalty Consequences:** Repeated late deposits will reset your commission rate to the base of your current tier and pause ticket issuance.\n• **Suspension:** Continued non-payment can result in account suspension and recovery action.`;
+    // 1. FAQ: Upfront Payment & Pass Issuance Flow
+    if (q.includes('how to pay') || q.includes('payment model') || q.includes('when is ticket issued') || q.includes('pay us') || q.includes('upfront') || q.includes('credit') || q.includes('how do promoters pay') || q.includes('payment method')) {
+      return `💳 **Upfront Payment & Instant Ticket Issuance:**\n\n• **Payment-First Model:** Promoters pay Tixora upfront via **Card (Debit/Credit)**, **UPI**, or **Instant Bank Transfer (IMPS/NEFT)**.\n• **When Tickets Are Issued:** Only when payment is completed does the ticket issuing process start. The digital pass is immediately generated and dispatched directly to the buyer's official **BookMyShow or District account**.\n• **No Post-Dated Deadlines:** There are no credit terms or deposit due dates. Every transaction is settled immediately.`;
     }
 
-    // 2. FAQ: How to actually deposit cash (Bank deposit vs UPI)
-    if ((q.includes('how') && (q.includes('deposit') || q.includes('pay cash') || q.includes('settle'))) || q.includes('deposit method') || q.includes('bank deposit') || q.includes('upi transfer') || q.includes('how do i actually deposit')) {
-      return `🏦 **How to Deposit Collected Cash:**\n\nYou have two official direct options:\n\n1. **Bank Deposit:** Deposit the cash directly into Tixora's designated bank account.\n2. **UPI Transfer:** Pay Tixora directly via UPI for the equivalent amount.\n\n⏱️ *Whichever method you use, ensure your deposit is completed before the 10-day-before-event cutoff so it is reflected against your account on time.*`;
+    // 2. FAQ: Collecting Cash from Customer
+    if (q.includes('collect cash') || q.includes('cash from buyer') || q.includes('customer cash') || q.includes('buyer pays cash')) {
+      return `💵 **Collecting Cash from Buyers:**\n\n• **Yes, you can collect physical cash from your customers!**\n• **Upfront Settlement:** When entering the order, you pay Tixora via your Card, UPI, or Bank Transfer. The official ticket will then be issued and sent straight to your buyer's BookMyShow / District account in real-time.`;
     }
 
-    // 3. FAQ: Limit on holding uncollected cash / Interim deposit cap
-    if (q.includes('limit to how much') || q.includes('limit') && (q.includes('hold') || q.includes('cash') || q.includes('uncollected')) || q.includes('interim deposit') || q.includes('cash cap')) {
-      return `💼 **Holding Cash Limit & Interim Deposits:**\n\n• **Yes, there is a cap!** There is a defined limit on how much uncollected cash you can hold at any one time before you're required to make an interim deposit, even before the 10-day cutoff.\n• **Purpose:** This protects both you and Tixora from holding large sums of physical cash unnecessarily.`;
+    // 3. FAQ: No deposit deadlines or credit terms
+    if (q.includes('deadline') || q.includes('deposit date') || q.includes('due date') || q.includes('late deposit') || q.includes('miss deadline')) {
+      return `⚡ **Zero Deposit Deadlines:**\n\n• Tixora operates on **100% Upfront Settlement**.\n• There are no post-dated deposit deadlines or credit quotas. You simply pay at the time of ticket booking via Card/UPI/Bank, and the digital pass is issued instantly.`;
     }
 
-    // 4. FAQ: Promoter Payment Methods & Zero Credit Policy
-    if (q.includes('how many tickets') || q.includes('sell at once') || q.includes('credit') || q.includes('how do promoters pay') || q.includes('payment method')) {
-      return `💳 **Promoter Payment Methods & Zero Credit Policy:**\n\n• **No Credit System:** Tixora operates strictly on direct settlement (no credit system).\n• **Payment Channels:** Promoters can pay for tickets directly via **Card (Debit/Credit)**, **UPI**, or **Bank Deposit**.\n• **Cash Collection:** You can collect physical cash directly from your buyers and deposit it into Tixora's bank account or settle via UPI before the 10-day pre-event cutoff.`;
-    }
-
-    // 5. FAQ: Move up a tier & better commission rate
+    // 4. FAQ: Move up a tier & better commission rate
     if (q.includes('move up') || q.includes('better commission') || q.includes('tier progression') || q.includes('increase commission') || q.includes('tier rate') || q.includes('upgrade tier')) {
-      return `📈 **How to Move Up Tiers & Get Higher Commission:**\n\n• **Cumulative Volume:** Tiers are determined by your cumulative tickets sold across events.\n• **Performance Criteria:** Within your tier's commission range, you move toward the higher end **only if you have no missed or late deposits and zero confirmed buyer complaints** in the recent period.\n• **Reset Rule:** A single late deposit resets you to the base rate for the following period!`;
+      return `📈 **How to Move Up Tiers & Earn Up to 16% Commission:**\n\n• **Cumulative Volume:** Tiers progress automatically as you sell more passes across concerts.\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per pass.\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage passes & tour bonuses.`;
     }
 
     // 6. FAQ: How tickets are delivered to buyer (BookMyShow / District)
@@ -224,7 +219,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
 
     // 14. Commission tiers summary
     if (q.includes('commission') || q.includes('tier') || q.includes('silver') || q.includes('gold') || q.includes('platinum')) {
-      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (Direct Card/UPI/Bank settlement).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access & early Phase 1 allocations.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*Note: A single late deposit resets you to the base rate of your tier!*`;
+      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (Instant Card/UPI/Bank clearance).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access & early Phase 1 allocations.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*All commissions are computed and settled immediately upon verified ticket booking.*`;
     }
 
     // 15. Founders
@@ -243,7 +238,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
     }
 
     // Default Fallback
-    return `✨ **I'm here to help! Ask me anything about:**\n\n• 🎟️ **Ticket Delivery:** How passes reach BookMyShow or District accounts\n• 💰 **Deposit Deadlines:** 10-day pre-event cutoff, Bank/UPI methods, interim caps\n• 🏆 **Promoter Tiers:** Silver, Gold, Platinum commission rates and reset rules\n• 🔄 **Cancellations & Refunds:** Platform refunds vs promoter cash returns\n• 🛡️ **DigiLocker & Disputes:** Identity verification and source of truth records\n• 🎸 **Artist Songs & Info:** Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid\n\n📞 *Or WhatsApp our team directly at +91 78921 45475.*`;
+    return `✨ **I'm here to help! Ask me anything about:**\n\n• 💳 **Upfront Payment:** How Card, UPI, and Bank settlements issue tickets\n• 🎟️ **Ticket Delivery:** How passes reach BookMyShow or District accounts\n• 🏆 **Promoter Tiers:** Silver, Gold, Platinum commission rates\n• 🔄 **Cancellations & Refunds:** Platform refunds vs promoter cash returns\n• 🛡️ **DigiLocker & Disputes:** Identity verification and source of truth records\n• 🎸 **Artist Songs & Info:** Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid\n\n📞 *Or WhatsApp our team directly at +91 78921 45475.*`;
   };
 
   const handleSend = (textToSend = null) => {
@@ -291,10 +286,10 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
   }, [externalQueryTrigger]);
 
   const QUICK_QUESTIONS = [
-    { label: "💳 Card / UPI / Bank Settlement", query: "How do promoters pay for tickets and is there a credit system?" },
+    { label: "💳 Pay via Card / UPI / Bank", query: "How does ticket payment and issuance work?" },
+    { label: "💵 Collecting Cash from Buyers", query: "Can promoters collect cash from their peer buyers?" },
+    { label: "⚡ Zero Deposit Deadlines", query: "Are there deposit due dates or post-event deadlines?" },
     { label: "🎟️ BMS / District Delivery", query: "How are tickets delivered to the buyer?" },
-    { label: "⚠️ Missed Deadline Rules", query: "What happens if I miss my cash deposit deadline?" },
-    { label: "🏦 Cash Deposit Methods", query: "How do I actually deposit the cash I've collected?" },
     { label: "🔄 Event Cancellations & Refunds", query: "What happens if an event is cancelled?" },
     { label: "🛡️ DigiLocker & Disputes", query: "Why do I need to verify with DigiLocker?" },
     { label: "📈 Move Up Commission Tiers", query: "How do I move up a tier and get a better commission rate?" },

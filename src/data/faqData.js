@@ -12,49 +12,40 @@ export const FAQ_CATEGORIES = [
 export const FAQ_DATA = [
   // --- For Promoters ---
   {
-    id: 'faq-promoter-deadline',
+    id: 'faq-promoter-payment-upfront',
     category: 'promoters',
     categoryLabel: 'For Promoters',
-    question: 'What happens if I miss my cash deposit deadline?',
-    answer: 'All cash collected from buyers must be deposited with Tixora no later than 10 days before the event. If you miss this deadline, your account is moved to "Under Review" and no new tickets can be issued to you until the deposit is made. Repeated late deposits will reset your commission rate to the base of your current tier and pause ticket issuance. Continued non-payment can result in suspension and recovery action.',
-    keywords: ['miss deadline', 'late deposit', '10 days', 'under review', 'penalty', 'deposit deadline', 'overdue cash'],
-    highlight: '10 days before the event deadline — missing it moves account to Under Review.'
+    question: 'How does ticket payment and issuance work?',
+    answer: 'Tickets are issued strictly on an upfront payment model. Promoters pay via **Card (Debit/Credit)**, **UPI**, or **Instant Bank Transfer (IMPS/NEFT)**. Only when the payment is completed and verified is the ticket issued and delivered directly to the buyer\'s BookMyShow / District account.',
+    keywords: ['how to pay', 'payment model', 'upfront payment', 'card', 'upi', 'bank transfer', 'when is ticket issued'],
+    highlight: 'Passes are issued and delivered only after payment is completed via Card, UPI, or Bank Transfer.'
   },
   {
-    id: 'faq-promoter-deposit-method',
+    id: 'faq-promoter-cash-collection',
     category: 'promoters',
     categoryLabel: 'For Promoters',
-    question: 'How do I actually deposit the cash I\'ve collected?',
-    answer: 'You have two official direct options:\n\n• **Bank deposit** — deposit the cash directly into Tixora\'s designated bank account.\n• **UPI transfer** — pay Tixora directly via UPI for the equivalent amount.\n\nWhichever method you use, make sure your deposit is completed before the 10-day-before-event cutoff so it\'s reflected against your account on time.',
-    keywords: ['how to deposit', 'deposit cash', 'bank deposit', 'upi transfer', 'payment method', 'settle cash'],
-    highlight: 'Direct Bank Deposit or UPI Transfer before the 10-day cutoff.'
+    question: 'Can promoters collect cash from their peer buyers?',
+    answer: 'Yes! You can collect cash directly from your customers. However, to issue the ticket, you pay Tixora upfront using your Card, UPI, or Bank Transfer at the time of order entry. The digital pass is generated and delivered to your buyer immediately upon payment.',
+    keywords: ['collect cash', 'customer cash', 'cash from buyer', 'how to handle cash', 'pay upfront'],
+    highlight: 'You can accept customer cash; pay Tixora upfront via Card/UPI/Bank to dispatch the ticket.'
   },
   {
-    id: 'faq-promoter-cash-limit',
+    id: 'faq-promoter-no-deposit-deadlines',
     category: 'promoters',
     categoryLabel: 'For Promoters',
-    question: 'What if I\'ve already collected cash but haven\'t hit the deadline yet — is there a limit to how much I can hold?',
-    answer: 'Yes. There\'s a cap on how much uncollected cash you can hold at any one time before you\'re required to make an interim deposit, even before the 10-day cutoff. This protects both you and Tixora from holding large sums of cash unnecessarily.',
-    keywords: ['holding cash', 'cash limit', 'interim deposit', 'cash cap', 'maximum cash', 'hold limit'],
-    highlight: 'Interim deposit required when reaching cash holding cap.'
-  },
-  {
-    id: 'faq-promoter-payment-methods',
-    category: 'promoters',
-    categoryLabel: 'For Promoters',
-    question: 'How do promoters pay for tickets and is there a credit system?',
-    answer: 'Tixora does **not** use a credit system. Promoters can pay for tickets directly via **Card (Debit/Credit)**, **UPI**, or **Bank Deposit**. When you collect physical cash from your buyers, you simply deposit the collected cash directly into Tixora\'s bank account or settle via UPI before the 10-day pre-event cutoff.',
-    keywords: ['how to pay', 'credit system', 'no credit', 'pay for tickets', 'card', 'upi', 'bank deposit', 'settlement'],
-    highlight: 'Direct settlement via Card, UPI, or Bank Deposit — zero credit system.'
+    question: 'Are there deposit due dates or post-event deadlines?',
+    answer: 'No. There are no post-dated deposit deadlines or credit terms. Every pass purchase is settled immediately upfront, ensuring zero liability, instant commission crediting, and instantaneous ticket delivery.',
+    keywords: ['deposit deadline', 'due date', 'credit terms', 'post event', 'settlement schedule'],
+    highlight: 'Zero post-dated deadlines — 100% upfront settlement with instant ticket dispatch.'
   },
   {
     id: 'faq-promoter-tier-up',
     category: 'promoters',
     categoryLabel: 'For Promoters',
     question: 'How do I move up a tier and get a better commission rate?',
-    answer: 'Tiers are based on your cumulative tickets sold. Within your tier\'s commission range, you move toward the higher end only if you have no missed or late deposits and no confirmed buyer complaints in the recent period. A single late deposit resets you to the base rate for the following period.',
-    keywords: ['move up tier', 'better commission', 'tier progression', 'increase cut', 'tier upgrade', 'late deposit reset'],
-    highlight: 'Based on cumulative sales + zero late deposits + zero buyer complaints.'
+    answer: 'Tiers are based on your cumulative tickets sold across events (Silver: 10–50 passes, Gold: 51–150 passes, Platinum: 151+ passes). As your volume grows, your commission percentage automatically scales up to 16% per pass.',
+    keywords: ['move up tier', 'better commission', 'tier progression', 'increase cut', 'tier upgrade', 'platinum'],
+    highlight: 'Progress automatically from Silver (5–8.5%) to Gold (9–12%) and Platinum (13–16%) based on sales volume.'
   },
 
   // --- Ticket Delivery ---

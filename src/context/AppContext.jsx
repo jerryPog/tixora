@@ -3,10 +3,10 @@ import { INITIAL_EVENTS, INITIAL_PROMOTERS, INITIAL_SALES, COMMISSION_TIERS } fr
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v7_no_credit';
+const STORAGE_VERSION = 'v8_upfront_payment';
 
 export const AppProvider = ({ children }) => {
-  // Persistence in localStorage with auto-migration to new poster paths
+  // Persistence in localStorage with auto-migration
   const [events, setEvents] = useState(() => {
     const saved = localStorage.getItem(`tixora_events_${STORAGE_VERSION}`);
     if (saved) {
@@ -71,7 +71,7 @@ export const AppProvider = ({ children }) => {
   // Get active promoter object
   const activePromoter = promoters.find((p) => p.id === activePromoterId) || promoters[0];
 
-  // Promoter Actions
+  // Upfront Payment & Instant Ticket Issuance
   const recordNewSale = ({ eventId, ticketCategory, quantity, paymentMethod, buyerName, buyerPhone }) => {
     const event = events.find((e) => e.id === eventId);
     if (!event) return;
@@ -96,10 +96,10 @@ export const AppProvider = ({ children }) => {
       totalAmount,
       commissionEarned,
       paymentMethod,
+      paymentStatus: 'Paid & Verified',
+      deliveryStatus: 'Delivered to BookMyShow / District',
       buyerName,
       buyerPhone,
-      depositDueDate: event.depositDeadline,
-      depositStatus: paymentMethod === 'Cash' ? 'Pending Deposit' : 'Deposited',
       issuedAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
     };
 
@@ -111,8 +111,7 @@ export const AppProvider = ({ children }) => {
         if (prom.id === activePromoter.id) {
           const newTicketsSold = prom.ticketsSold + quantity;
           const newTotalComm = prom.totalCommissionEarned + commissionEarned;
-          const newCashCollected = paymentMethod === 'Cash' ? prom.cashCollected + totalAmount : prom.cashCollected;
-          const newCashOwed = paymentMethod === 'Cash' ? prom.cashOwed + (totalAmount - commissionEarned) : prom.cashOwed;
+          const newRevenue = (prom.totalRevenueGenerated || 0) + totalAmount;
 
           // Check tier advancement
           let newTier = prom.tier;
@@ -128,9 +127,8 @@ export const AppProvider = ({ children }) => {
           return {
             ...prom,
             ticketsSold: newTicketsSold,
+            totalRevenueGenerated: newRevenue,
             totalCommissionEarned: newTotalComm,
-            cashCollected: newCashCollected,
-            cashOwed: newCashOwed,
             tier: newTier,
             nextTierTarget: newNextTarget
           };
@@ -157,28 +155,8 @@ export const AppProvider = ({ children }) => {
       })
     );
 
-    showToast(`Ticket issued! Code: ${randomTicketCode}. Cash logged: ₹${totalAmount.toLocaleString('en-IN')}`, 'success');
+    showToast(`Payment verified! Pass ${randomTicketCode} issued & sent to BMS/District. Commission: +₹${commissionEarned.toLocaleString('en-IN')}`, 'success');
     return newSale;
-  };
-
-  // Promoter records cash deposit settlement to Tixora
-  const submitCashDeposit = (amount) => {
-    setPromoters((prev) =>
-      prev.map((prom) => {
-        if (prom.id === activePromoter.id) {
-          const newOwed = Math.max(0, prom.cashOwed - amount);
-          const newDeposited = prom.cashDeposited + amount;
-          return {
-            ...prom,
-            cashDeposited: newDeposited,
-            cashOwed: newOwed,
-            depositStatus: newOwed === 0 ? 'Up to Date' : 'Due Soon'
-          };
-        }
-        return prom;
-      })
-    );
-    showToast(`Cash settlement of ₹${amount.toLocaleString('en-IN')} submitted to Tixora Ops!`, 'success');
   };
 
   // Admin Actions
@@ -206,10 +184,10 @@ export const AppProvider = ({ children }) => {
     setPromoters((prev) =>
       prev.map((p) => {
         if (p.id === promoterId) {
-          const isSuspended = p.depositStatus === 'Suspended';
-          const newStatus = isSuspended ? 'Up to Date' : 'Suspended';
-          showToast(`Promoter ${p.name} is now ${newStatus.toUpperCase()}`, isSuspended ? 'success' : 'error');
-          return { ...p, depositStatus: newStatus };
+          const isActive = p.status === 'Active';
+          const newStatus = isActive ? 'Inactive' : 'Active';
+          showToast(`Promoter ${p.name} is now ${newStatus}`, isActive ? 'error' : 'success');
+          return { ...p, status: newStatus };
         }
         return p;
       })
@@ -220,12 +198,7 @@ export const AppProvider = ({ children }) => {
     setEvents(INITIAL_EVENTS);
     setPromoters(INITIAL_PROMOTERS);
     setSales(INITIAL_SALES);
-    localStorage.removeItem(`tixora_events_${STORAGE_VERSION}`);
-    localStorage.removeItem(`tixora_promoters_${STORAGE_VERSION}`);
-    localStorage.removeItem(`tixora_sales_${STORAGE_VERSION}`);
-    localStorage.removeItem('tixora_events');
-    localStorage.removeItem('tixora_promoters');
-    localStorage.removeItem('tixora_sales');
+    localStorage.clear();
     showToast('Database reset to official 2026 concert lineup & posters', 'info');
   };
 
@@ -244,7 +217,6 @@ export const AppProvider = ({ children }) => {
         toasts,
         showToast,
         recordNewSale,
-        submitCashDeposit,
         addEvent,
         updateEvent,
         deleteEvent,
@@ -258,4 +230,10 @@ export const AppProvider = ({ children }) => {
   );
 };
 
-export const useApp = () => useContext(AppContext);
+export const useApp = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useApp must be used within an AppProvider');
+  }
+  return context;
+};
