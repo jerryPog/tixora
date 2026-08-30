@@ -10,6 +10,49 @@ export const ScrollBackgroundCanvas = () => {
   const targetFrameRef = useRef(0);
   const animationFrameId = useRef(null);
 
+  const resizeCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const displayWidth = window.innerWidth;
+    const displayHeight = window.innerHeight;
+
+    if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+      canvas.width = displayWidth * dpr;
+      canvas.height = displayHeight * dpr;
+    }
+  };
+
+  const drawFrame = (frameIndex) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) return;
+
+    const img = imagesRef.current[frameIndex];
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+
+    resizeCanvas();
+
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    // True 'background-size: cover' algorithm
+    const hRatio = canvasWidth / img.naturalWidth;
+    const vRatio = canvasHeight / img.naturalHeight;
+    const ratio = Math.max(hRatio, vRatio); // Max ensures 100% coverage on both width & height
+
+    const renderWidth = img.naturalWidth * ratio;
+    const renderHeight = img.naturalHeight * ratio;
+    const offsetX = (canvasWidth - renderWidth) / 2;
+    const offsetY = (canvasHeight - renderHeight) / 2;
+
+    ctx.fillStyle = '#090a0d';
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, offsetX, offsetY, renderWidth, renderHeight);
+  };
+
   // Preload all 93 frames
   useEffect(() => {
     const loadedImages = [];
@@ -22,7 +65,8 @@ export const ScrollBackgroundCanvas = () => {
       img.onload = () => {
         loadedCount++;
         if (loadedCount === 1) {
-          // Draw first frame immediately
+          // Resize and draw immediately
+          resizeCanvas();
           drawFrame(0);
         }
         if (loadedCount === TOTAL_FRAMES) {
@@ -41,50 +85,10 @@ export const ScrollBackgroundCanvas = () => {
     };
   }, []);
 
-  const drawFrame = (frameIndex) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const img = imagesRef.current[frameIndex];
-    if (!img || !img.complete || img.naturalWidth === 0) return;
-
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-
-    // Cover scale calculation
-    const imgRatio = img.naturalWidth / img.naturalHeight;
-    const canvasRatio = canvasWidth / canvasHeight;
-
-    let renderWidth, renderHeight, offsetX, offsetY;
-
-    if (canvasRatio > imgRatio) {
-      renderWidth = canvasWidth;
-      renderHeight = canvasWidth / imgRatio;
-      offsetX = 0;
-      offsetY = (canvasHeight - renderHeight) / 2;
-    } else {
-      renderWidth = canvasHeight * imgRatio;
-      renderHeight = canvasHeight;
-      offsetX = (canvasWidth - renderWidth) / 2;
-      offsetY = 0;
-    }
-
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx.drawImage(img, offsetX, offsetY, renderWidth, renderHeight);
-  };
-
-  // Resize canvas to match screen dimensions with DPR support
+  // Window resize handler
   useEffect(() => {
     const handleResize = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      
+      resizeCanvas();
       drawFrame(Math.round(currentFrameRef.current));
     };
 
@@ -106,12 +110,11 @@ export const ScrollBackgroundCanvas = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    // Smooth animation loop for silky frame transitions
+    // Smooth render loop for continuous silky frame playback
     const renderLoop = () => {
-      // Smooth lerp towards target frame
       const diff = targetFrameRef.current - currentFrameRef.current;
-      if (Math.abs(diff) > 0.01) {
-        currentFrameRef.current += diff * 0.15; // Smooth interpolation speed
+      if (Math.abs(diff) > 0.005) {
+        currentFrameRef.current += diff * 0.18; // Responsive interpolation
         const frameToDraw = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameRef.current)));
         drawFrame(frameToDraw);
       }
@@ -132,31 +135,37 @@ export const ScrollBackgroundCanvas = () => {
   return (
     <div style={{
       position: 'fixed',
-      inset: 0,
+      top: 0,
+      left: 0,
       width: '100vw',
       height: '100vh',
       zIndex: -1,
       pointerEvents: 'none',
       overflow: 'hidden'
     }}>
-      {/* Scroll-Driven Canvas */}
+      {/* Full-width full-height canvas */}
       <canvas
         ref={canvasRef}
         style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
           width: '100%',
           height: '100%',
-          display: 'block',
-          objectFit: 'cover'
+          display: 'block'
         }}
       />
 
       {/* Dark Ambient Scrim & Vignette for Readability */}
       <div style={{
         position: 'absolute',
-        inset: 0,
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
         background: `
-          radial-gradient(ellipse 100% 100% at 50% 50%, rgba(9, 10, 13, 0.45) 0%, rgba(9, 10, 13, 0.85) 100%),
-          linear-gradient(to bottom, rgba(9, 10, 13, 0.55) 0%, rgba(9, 10, 13, 0.75) 50%, rgba(9, 10, 13, 0.92) 100%)
+          radial-gradient(ellipse 100% 100% at 50% 50%, rgba(9, 10, 13, 0.4) 0%, rgba(9, 10, 13, 0.82) 100%),
+          linear-gradient(to bottom, rgba(9, 10, 13, 0.5) 0%, rgba(9, 10, 13, 0.72) 50%, rgba(9, 10, 13, 0.9) 100%)
         `,
         backdropFilter: 'blur(2px)',
         WebkitBackdropFilter: 'blur(2px)'
