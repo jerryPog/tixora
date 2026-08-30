@@ -57,20 +57,18 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
           <X size={16} />
         </button>
 
-        {/* Title */}
+        {/* Title & Brand */}
         <div className="flex items-center gap-3" style={{ marginBottom: '1.25rem' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '10px',
-            background: 'rgba(16, 185, 129, 0.12)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Scale size={20} color="#10b981" />
-          </div>
+          <img
+            src="/tixora-logo.png"
+            alt="Tixora Logo"
+            style={{
+              height: '42px',
+              width: 'auto',
+              borderRadius: '8px',
+              display: 'block'
+            }}
+          />
           <div>
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>
               Legal, Tax & Regulatory Policy

@@ -432,31 +432,30 @@ const MainDashboard = () => {
       {/* Action Toasts */}
       <ToastContainer />
 
-      {/* Footer with Founders Attribution & Helpline */}
+      {/* Footer with Official Logo, Founders Attribution & Helpline */}
       <footer style={{
         borderTop: '1px solid var(--border-color)',
         padding: '1.75rem 0',
-        background: 'rgba(7, 8, 10, 0.85)',
+        background: 'rgba(7, 8, 10, 0.88)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         marginTop: 'auto'
       }}>
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
           
-          {/* Brand & Founders Tag */}
+          {/* Brand Logo & Founders Tag */}
           <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left">
             <div className="flex items-center gap-2">
-              <div style={{
-                width: '26px', height: '26px', borderRadius: '7px',
-                background: '#ffffff',
-                color: '#090a0d',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
-                <Ticket size={15} strokeWidth={2.2} />
-              </div>
-              <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-                Tixora
-              </span>
+              <img
+                src="/tixora-logo.png"
+                alt="Tixora — LIVE THE HYPE"
+                style={{
+                  height: '32px',
+                  width: 'auto',
+                  borderRadius: '5px',
+                  display: 'block'
+                }}
+              />
             </div>
 
             <div style={{

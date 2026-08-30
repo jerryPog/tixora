@@ -289,18 +289,16 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList }) => {
             alignItems: 'center'
           }}>
             <div className="flex items-center gap-2.5">
-              <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: '#ffffff',
-                color: '#090a0d',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Bot size={18} />
-              </div>
+              <img
+                src="/tixora-logo.png"
+                alt="Tixora AI"
+                style={{
+                  height: '28px',
+                  width: 'auto',
+                  borderRadius: '5px',
+                  display: 'block'
+                }}
+              />
               <div>
                 <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>
                   Tixora AI Assistant

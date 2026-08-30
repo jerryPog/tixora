@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
-  Ticket, 
   ShieldCheck, 
   UserCheck, 
   SlidersHorizontal, 
@@ -30,52 +29,52 @@ export const Header = ({ onOpenRecordSale, onOpenCreateEvent, onOpenLegalComplia
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      background: 'rgba(9, 10, 13, 0.9)',
+      background: 'rgba(9, 10, 13, 0.92)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
       borderBottom: '1px solid var(--border-color)',
-      padding: '0.65rem 0'
+      padding: '0.55rem 0'
     }}>
       <div className="container flex items-center justify-between" style={{ gap: '0.75rem', flexWrap: 'wrap' }}>
         
-        {/* Brand & Portal Status */}
-        <div className="flex items-center gap-2.5">
+        {/* Brand Logo & Portal Status */}
+        <div className="flex items-center gap-3">
           <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            background: '#ffffff',
-            color: '#090a0d',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 900,
-            flexShrink: 0
+            gap: '8px'
           }}>
-            <Ticket size={18} strokeWidth={2.2} />
+            <img 
+              src="/tixora-logo.png" 
+              alt="Tixora — LIVE THE HYPE" 
+              style={{
+                height: '38px',
+                width: 'auto',
+                borderRadius: '6px',
+                display: 'block'
+              }}
+            />
           </div>
-          <div>
+
+          <div style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '10px' }}>
             <div className="flex items-center gap-1.5">
-              <span style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
-                Tixora
-              </span>
               <span style={{
                 background: currentRole === 'admin' ? 'rgba(244, 63, 94, 0.12)' : 'rgba(255, 255, 255, 0.08)',
                 color: currentRole === 'admin' ? '#fb7185' : '#e4e4e7',
                 border: `1px solid ${currentRole === 'admin' ? 'rgba(244, 63, 94, 0.25)' : 'var(--border-color)'}`,
                 fontSize: '0.65rem',
-                fontWeight: 600,
+                fontWeight: 700,
                 padding: '1px 6px',
                 borderRadius: '4px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em'
               }}>
-                {currentRole === 'admin' ? 'Staff' : 'Promoter'}
+                {currentRole === 'admin' ? 'Staff Admin' : 'Promoter Portal'}
               </span>
             </div>
-            <div className="flex items-center gap-2" style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
+            <div className="flex items-center gap-2" style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '1px' }}>
               <span className="flex items-center gap-1">
-                <ShieldCheck size={11} color="#10b981" /> Verified
+                <ShieldCheck size={11} color="#10b981" /> DigiLocker Verified
               </span>
               <span>•</span>
               <button
