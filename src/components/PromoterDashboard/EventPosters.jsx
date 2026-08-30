@@ -139,31 +139,53 @@ ${tiersText}
                 border: isAssigned ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid var(--border-color)'
               }}
             >
-              {/* Poster Image with overlays */}
-              <div style={{ position: 'relative', height: '270px', width: '100%', overflow: 'hidden', background: '#0e1017' }}>
+              {/* Poster Image Showcase: Ambient blurred backdrop + 100% Uncropped Sharp Artwork */}
+              <div style={{ 
+                position: 'relative', 
+                height: '320px', 
+                width: '100%', 
+                overflow: 'hidden', 
+                background: '#090a0d',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                {/* Ambient glowing backdrop fill */}
+                <div style={{ position: 'absolute', inset: -15, overflow: 'hidden', pointerEvents: 'none' }}>
+                  <img
+                    src={event.posterUrl}
+                    alt=""
+                    style={{ 
+                      width: '130%', 
+                      height: '130%', 
+                      objectFit: 'cover', 
+                      filter: 'blur(30px) brightness(0.35) saturate(1.3)',
+                      transform: 'translate(-10%, -10%)'
+                    }}
+                    loading="lazy"
+                  />
+                </div>
+                
+                {/* Sharp uncropped official poster */}
                 <img
                   src={event.posterUrl}
                   alt={event.name}
                   style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover', 
-                    objectPosition: event.posterPosition || 'center top',
+                    position: 'relative',
+                    maxHeight: '100%', 
+                    maxWidth: '100%', 
+                    width: 'auto',
+                    height: '100%',
+                    objectFit: 'contain',
+                    zIndex: 1,
+                    filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))',
                     transition: 'transform 0.3s ease'
                   }}
                   loading="lazy"
                 />
-                
-                {/* Subtle bottom-only gradient scrim (leaves artist face 100% crisp and unshaded) */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(9,10,13,0.95) 0%, rgba(9,10,13,0.35) 25%, transparent 60%)',
-                  pointerEvents: 'none'
-                }} />
 
                 {/* Badges on poster */}
-                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '5px', zIndex: 2 }}>
+                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '5px', zIndex: 3 }}>
                   <span className="badge" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}>
                     {event.city}
                   </span>
@@ -192,24 +214,20 @@ ${tiersText}
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
-                    zIndex: 2
+                    zIndex: 3
                   }}
                   title="View Posters"
                 >
                   <ImageIcon size={15} />
                 </button>
-
-                {/* Event Name on Poster bottom */}
-                <div style={{ position: 'absolute', bottom: '10px', left: '12px', right: '12px', zIndex: 2 }}>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
-                    {event.name}
-                  </h3>
-                </div>
               </div>
 
               {/* Event Details Content */}
-              <div style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div style={{ padding: '1.15rem 1rem 1rem 1rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '0.85rem' }}>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.25, marginBottom: '2px' }}>
+                    {event.name}
+                  </h3>
                   <div className="flex items-center gap-2" style={{ fontSize: '0.78rem', color: '#e4e4e7' }}>
                     <Calendar size={12} color="var(--text-muted)" />
                     <span>{event.date}</span>
