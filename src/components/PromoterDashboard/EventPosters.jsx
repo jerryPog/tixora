@@ -122,7 +122,7 @@ ${tiersText}
 
       {/* Events Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {filteredEvents.map((event) => {
+        {filteredEvents.map((event, index) => {
           const isAssigned = activePromoter.assignedEvents.includes(event.id);
           const minPrice = Math.min(...event.priceList.map((p) => p.promoterPrice));
           const maxCommission = Math.max(...event.priceList.map((p) => p.commissionAmount));
@@ -130,7 +130,7 @@ ${tiersText}
           return (
             <div
               key={event.id}
-              className="glass-card"
+              className={`glass-card card-interactive animate-slide-up stagger-${(index % 6) + 1}`}
               style={{
                 padding: 0,
                 overflow: 'hidden',
@@ -140,16 +140,19 @@ ${tiersText}
               }}
             >
               {/* Poster Image Showcase: Ambient blurred backdrop + 100% Uncropped Sharp Artwork */}
-              <div style={{ 
-                position: 'relative', 
-                height: '320px', 
-                width: '100%', 
-                overflow: 'hidden', 
-                background: '#090a0d',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <div 
+                className="poster-container"
+                style={{ 
+                  position: 'relative', 
+                  height: '320px', 
+                  width: '100%', 
+                  overflow: 'hidden', 
+                  background: '#090a0d',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
                 {/* Ambient glowing backdrop fill */}
                 <div style={{ position: 'absolute', inset: -15, overflow: 'hidden', pointerEvents: 'none' }}>
                   <img
@@ -170,16 +173,16 @@ ${tiersText}
                 <img
                   src={event.posterUrl}
                   alt={event.name}
+                  className="poster-img"
                   style={{ 
-                    position: 'relative',
+                    position: 'relative', 
                     maxHeight: '100%', 
                     maxWidth: '100%', 
                     width: 'auto',
                     height: '100%',
                     objectFit: 'contain',
                     zIndex: 1,
-                    filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))',
-                    transition: 'transform 0.3s ease'
+                    filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))'
                   }}
                   loading="lazy"
                 />
@@ -191,7 +194,7 @@ ${tiersText}
                   </span>
                   {isAssigned && (
                     <span className="badge badge-emerald" style={{ background: 'rgba(16, 185, 129, 0.25)', backdropFilter: 'blur(6px)' }}>
-                      Assigned
+                      <span className="pulse-dot" /> Assigned
                     </span>
                   )}
                 </div>

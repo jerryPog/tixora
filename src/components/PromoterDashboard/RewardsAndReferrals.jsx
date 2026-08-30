@@ -91,7 +91,7 @@ export const RewardsAndReferrals = () => {
 
         {/* Rewards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {rewards.map((reward) => {
+          {rewards.map((reward, index) => {
             const isUnlocked = ticketsSold >= reward.targetSales;
             const isClaimed = claimedRewardIds.includes(reward.id);
             const progress = Math.min(100, Math.round((ticketsSold / reward.targetSales) * 100));
@@ -99,7 +99,7 @@ export const RewardsAndReferrals = () => {
             return (
               <div
                 key={reward.id}
-                className="glass-card"
+                className={`glass-card card-interactive animate-slide-up stagger-${(index % 6) + 1}`}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -111,7 +111,7 @@ export const RewardsAndReferrals = () => {
                     ? '1px solid rgba(255, 255, 255, 0.1)' 
                     : '1px solid var(--border-color)',
                   background: isUnlocked && !isClaimed 
-                    ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, rgba(24, 24, 27, 0.7) 100%)' 
+                    ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(24, 24, 27, 0.7) 100%)' 
                     : 'rgba(18, 19, 24, 0.7)',
                   position: 'relative'
                 }}
@@ -218,7 +218,7 @@ export const RewardsAndReferrals = () => {
                     <div>
                       <button
                         onClick={() => claimReward(reward.id)}
-                        className="btn btn-primary"
+                        className="btn btn-primary btn-shimmer"
                         style={{
                           width: '100%',
                           padding: '8px',

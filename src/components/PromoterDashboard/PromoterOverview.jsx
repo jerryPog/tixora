@@ -23,7 +23,7 @@ export const PromoterOverview = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         
         {/* Tier & Commission Card */}
-        <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
+        <div className="glass-card card-interactive animate-slide-up stagger-1 flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -62,7 +62,7 @@ export const PromoterOverview = () => {
         </div>
 
         {/* Total Commission Earned Card */}
-        <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
+        <div className="glass-card card-interactive animate-slide-up stagger-2 flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -94,7 +94,7 @@ export const PromoterOverview = () => {
         </div>
 
         {/* Total Volume Generated */}
-        <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
+        <div className="glass-card card-interactive animate-slide-up stagger-3 flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -124,7 +124,7 @@ export const PromoterOverview = () => {
         </div>
 
         {/* Instant Settlement Clearance Mode */}
-        <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
+        <div className="glass-card card-interactive animate-slide-up stagger-4 flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
