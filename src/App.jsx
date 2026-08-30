@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
 import { ScrollBackgroundCanvas } from './components/ScrollBackgroundCanvas';
+import { ChatAssistant } from './components/ChatAssistant';
 import { PromoterOverview } from './components/PromoterDashboard/PromoterOverview';
 import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
@@ -25,8 +26,7 @@ import {
   Scale,
   Users,
   TrendingUp,
-  Plus,
-  Sparkles
+  Plus
 } from 'lucide-react';
 import './index.css';
 
@@ -286,6 +286,12 @@ const MainDashboard = () => {
         )}
 
       </main>
+
+      {/* AI Assistant Chatbox */}
+      <ChatAssistant
+        onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
+        onOpenPriceList={handleViewPriceList}
+      />
 
       {/* Mobile Sticky Bottom Navigation */}
       <nav className="mobile-bottom-nav">
