@@ -3,9 +3,11 @@ import { useApp } from '../../context/AppContext';
 import { 
   TrendingUp, 
   Banknote, 
-  CreditCard, 
+  Building2, 
   Clock, 
-  AlertCircle
+  AlertCircle,
+  CheckCircle2,
+  CreditCard
 } from 'lucide-react';
 
 export const PromoterOverview = ({ onOpenDepositModal }) => {
@@ -15,8 +17,6 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
 
   const currentTierInfo = commissionTiers.find((t) => t.tier === activePromoter.tier) || commissionTiers[0];
   const progressPct = Math.min(100, Math.round((activePromoter.ticketsSold / activePromoter.nextTierTarget) * 100));
-  const creditUsagePct = Math.min(100, Math.round((activePromoter.creditUsed / activePromoter.creditLimit) * 100));
-  const remainingCredit = Math.max(0, activePromoter.creditLimit - activePromoter.creditUsed);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -126,7 +126,7 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
           </div>
         </div>
 
-        {/* Cash Collected & Settlement Card */}
+        {/* Cash In Hand / Due to Deposit */}
         <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
@@ -161,39 +161,39 @@ export const PromoterOverview = ({ onOpenDepositModal }) => {
           </div>
         </div>
 
-        {/* Credit Limit Card */}
+        {/* Bank & Online Settlement Card (Zero Credit System) */}
         <div className="glass-card flex flex-col justify-between" style={{ padding: '1rem' }}>
           <div>
             <div className="flex justify-between items-center" style={{ marginBottom: '0.35rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Credit Limit
+                Settled to Bank
               </span>
               <div style={{
                 width: '24px', height: '24px', borderRadius: '6px',
                 background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}>
-                <CreditCard size={13} color="#3b82f6" />
+                <Building2 size={13} color="#3b82f6" />
               </div>
             </div>
             <div style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.85rem)', fontWeight: 800, color: '#f4f4f6', letterSpacing: '-0.02em' }}>
-              {remainingCredit} <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>/ {activePromoter.creditLimit}</span>
+              ₹{activePromoter.cashDeposited.toLocaleString('en-IN')}
             </div>
           </div>
 
-          {/* Credit Progress */}
-          <div style={{ marginTop: '0.5rem' }}>
-            <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '9999px', overflow: 'hidden' }}>
-              <div style={{
-                width: `${creditUsagePct}%`,
-                height: '100%',
-                background: creditUsagePct > 80 ? '#f43f5e' : '#3b82f6',
-                transition: 'width 0.3s ease'
-              }} />
-            </div>
-            <div className="flex justify-between" style={{ fontSize: '0.66rem', color: 'var(--text-muted)', marginTop: '3px' }}>
-              <span>{activePromoter.creditUsed} used</span>
-              <span>{remainingCredit} left</span>
-            </div>
+          <div style={{
+            marginTop: '0.5rem',
+            paddingTop: '0.35rem',
+            borderTop: '1px solid var(--border-color)',
+            fontSize: '0.68rem',
+            color: '#34d399',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }}>
+            <CheckCircle2 size={11} /> Card • UPI • Bank Direct
           </div>
         </div>
 

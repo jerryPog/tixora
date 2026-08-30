@@ -129,7 +129,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
 
     // 1. FAQ: Missed deposit deadline & penalties
     if (q.includes('miss') && (q.includes('deadline') || q.includes('deposit') || q.includes('cash') || q.includes('cutoff')) || q.includes('under review') || q.includes('late deposit') || q.includes('missed deadline')) {
-      return `⚠️ **What Happens If You Miss Your Cash Deposit Deadline:**\n\n• **10-Day Cutoff:** All cash collected from buyers must be deposited with Tixora no later than **10 days before the event**.\n• **'Under Review' Status:** If you miss this deadline, your account is immediately moved to **"Under Review"** and no new tickets can be issued to you until the deposit is made.\n• **Penalty Consequences:** Repeated late deposits will reset your commission rate to the base of your current tier and reduce your credit limit.\n• **Suspension:** Continued non-payment can result in account suspension and recovery action.`;
+      return `⚠️ **What Happens If You Miss Your Cash Deposit Deadline:**\n\n• **10-Day Cutoff:** All cash collected from buyers must be deposited with Tixora no later than **10 days before the event**.\n• **'Under Review' Status:** If you miss this deadline, your account is immediately moved to **"Under Review"** and no new tickets can be issued to you until the deposit is made.\n• **Penalty Consequences:** Repeated late deposits will reset your commission rate to the base of your current tier and pause ticket issuance.\n• **Suspension:** Continued non-payment can result in account suspension and recovery action.`;
     }
 
     // 2. FAQ: How to actually deposit cash (Bank deposit vs UPI)
@@ -142,9 +142,9 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
       return `💼 **Holding Cash Limit & Interim Deposits:**\n\n• **Yes, there is a cap!** There is a defined limit on how much uncollected cash you can hold at any one time before you're required to make an interim deposit, even before the 10-day cutoff.\n• **Purpose:** This protects both you and Tixora from holding large sums of physical cash unnecessarily.`;
     }
 
-    // 4. FAQ: How many tickets can I sell at once / Credit Limit
-    if (q.includes('how many tickets') || q.includes('sell at once') || q.includes('credit limit') || q.includes('quota') || q.includes('ticket limit')) {
-      return `🎟️ **Ticket Credit Limit & Issuance Quota:**\n\n• You're issued tickets on credit up to a limit based on your **commission tier**.\n• Once you reach your credit limit, no further tickets can be issued to you until you deposit collected cash or your limit is reviewed and raised by Tixora Admin.`;
+    // 4. FAQ: Promoter Payment Methods & Zero Credit Policy
+    if (q.includes('how many tickets') || q.includes('sell at once') || q.includes('credit') || q.includes('how do promoters pay') || q.includes('payment method')) {
+      return `💳 **Promoter Payment Methods & Zero Credit Policy:**\n\n• **No Credit System:** Tixora operates strictly on direct settlement (no credit system).\n• **Payment Channels:** Promoters can pay for tickets directly via **Card (Debit/Credit)**, **UPI**, or **Bank Deposit**.\n• **Cash Collection:** You can collect physical cash directly from your buyers and deposit it into Tixora's bank account or settle via UPI before the 10-day pre-event cutoff.`;
     }
 
     // 5. FAQ: Move up a tier & better commission rate
@@ -155,7 +155,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
     // 6. FAQ: How tickets are delivered to buyer (BookMyShow / District)
     if (q.includes('how are tickets') || q.includes('delivered') || q.includes('ticket delivery') || q.includes('where do tickets go') || q.includes('receive ticket') || q.includes('bookmyshow') || q.includes('district')) {
       if (q.includes('need') && (q.includes('account') || q.includes('bms') || q.includes('district'))) {
-        return `📱 **Buyer Account Requirements (BookMyShow / District):**\n\n• **Yes**, the buyer needs an account on the relevant platform (BookMyShow or District) to receive the ticket.\n• **No Credit Card Required:** If they don't have one, creating an account only requires a mobile phone number — no card or bank account needed, ensuring zero friction for cash buyers.`;
+        return `📱 **Buyer Account Requirements (BookMyShow / District):**\n\n• **Yes**, the buyer needs an account on the relevant platform (BookMyShow or District) to receive the ticket.\n• **No Bank Card Required for Buyers:** If they don't have one, creating an account only requires a mobile phone number — no card or bank account needed, ensuring zero friction for cash buyers.`;
       }
       return `📲 **How Tickets are Delivered to the Buyer:**\n\n• **Direct Platform Delivery:** Tickets are delivered digitally, directly into the buyer's own **BookMyShow or District account** — NOT through a separate Tixora app.\n• **Trust & Legitimacy:** The buyer gets an official, scannable ticket on a platform they already recognize and trust, accessible just like any other standard booking.`;
     }
@@ -224,7 +224,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
 
     // 14. Commission tiers summary
     if (q.includes('commission') || q.includes('tier') || q.includes('silver') || q.includes('gold') || q.includes('platinum')) {
-      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (50 ticket credit line).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access (100 ticket credit line).\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*Note: A single late deposit resets you to the base rate of your tier!*`;
+      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (Direct Card/UPI/Bank settlement).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access & early Phase 1 allocations.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*Note: A single late deposit resets you to the base rate of your tier!*`;
     }
 
     // 15. Founders
@@ -291,15 +291,14 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
   }, [externalQueryTrigger]);
 
   const QUICK_QUESTIONS = [
+    { label: "💳 Card / UPI / Bank Settlement", query: "How do promoters pay for tickets and is there a credit system?" },
     { label: "🎟️ BMS / District Delivery", query: "How are tickets delivered to the buyer?" },
     { label: "⚠️ Missed Deadline Rules", query: "What happens if I miss my cash deposit deadline?" },
-    { label: "💳 Deposit Methods (Bank/UPI)", query: "How do I actually deposit the cash I've collected?" },
+    { label: "🏦 Cash Deposit Methods", query: "How do I actually deposit the cash I've collected?" },
     { label: "🔄 Event Cancellations & Refunds", query: "What happens if an event is cancelled?" },
     { label: "🛡️ DigiLocker & Disputes", query: "Why do I need to verify with DigiLocker?" },
     { label: "📈 Move Up Commission Tiers", query: "How do I move up a tier and get a better commission rate?" },
     { label: "🎪 How Tixora Gets Tickets", query: "How does Tixora get tickets to sell?" },
-    { label: "🎵 Fred again.. top songs", query: "Top songs of Fred again.." },
-    { label: "🌌 Anyma tracklist", query: "Anyma top songs and tour info" },
     { label: "📞 Helpline: 78921 45475", query: "Contact phone number and helpline" }
   ];
 

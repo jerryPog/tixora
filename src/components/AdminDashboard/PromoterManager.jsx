@@ -1,39 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   ShieldCheck, 
-  Edit2
+  Building2,
+  Phone,
+  UserX,
+  UserCheck
 } from 'lucide-react';
 
 export const PromoterManager = () => {
-  const { promoters, updatePromoter, togglePromoterSuspension, showToast } = useApp();
-  const [selectedPromoter, setSelectedPromoter] = useState(null);
-  const [newCreditLimit, setNewCreditLimit] = useState(50);
-  const [showCreditModal, setShowCreditModal] = useState(false);
-
-  const handleEditCredit = (promoter) => {
-    setSelectedPromoter(promoter);
-    setNewCreditLimit(promoter.creditLimit);
-    setShowCreditModal(true);
-  };
-
-  const handleSaveCreditLimit = () => {
-    if (!selectedPromoter) return;
-    updatePromoter({
-      ...selectedPromoter,
-      creditLimit: Number(newCreditLimit)
-    });
-    setShowCreditModal(false);
-    showToast(`Credit limit updated to ${newCreditLimit} tickets for ${selectedPromoter.name}`, 'success');
-  };
+  const { promoters, togglePromoterSuspension, showToast } = useApp();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       
       <div>
-        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Promoter Directory & Credit Control</h3>
+        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Promoter Directory & Settlement Overview</h3>
         <p className="text-muted" style={{ fontSize: '0.82rem' }}>
-          Monitor verified campus student promoters, manage credit lines, track cash in field, and flag missed settlements.
+          Monitor verified campus student promoters, track cash collection in the field, and review bank/UPI settlements.
         </p>
       </div>
 
@@ -46,7 +30,7 @@ export const PromoterManager = () => {
                 <th style={{ padding: '8px 6px' }}>COLLEGE & CITY</th>
                 <th style={{ padding: '8px 6px' }}>TIER</th>
                 <th style={{ padding: '8px 6px' }}>TICKETS SOLD</th>
-                <th style={{ padding: '8px 6px' }}>CREDIT LINE</th>
+                <th style={{ padding: '8px 6px' }}>TOTAL SETTLED</th>
                 <th style={{ padding: '8px 6px' }}>CASH IN HAND</th>
                 <th style={{ padding: '8px 6px' }}>STATUS</th>
                 <th style={{ padding: '8px 6px', textAlign: 'right' }}>ACTIONS</th>
@@ -106,28 +90,13 @@ export const PromoterManager = () => {
                       </div>
                     </td>
 
-                    {/* Credit Line */}
+                    {/* Total Settled to Bank/UPI */}
                     <td style={{ padding: '12px 6px' }}>
-                      <div className="flex items-center gap-2">
-                        <span style={{ fontWeight: 600, color: '#ffffff' }}>
-                          {p.creditUsed} / {p.creditLimit}
-                        </span>
-                        <button
-                          onClick={() => handleEditCredit(p)}
-                          title="Adjust Limit"
-                          style={{
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--text-muted)',
-                            cursor: 'pointer',
-                            padding: '2px'
-                          }}
-                        >
-                          <Edit2 size={12} />
-                        </button>
+                      <div style={{ fontWeight: 700, color: '#34d399' }}>
+                        ₹{p.cashDeposited.toLocaleString('en-IN')}
                       </div>
-                      <div style={{ width: '70px', height: '4px', background: 'rgba(255,255,255,0.08)', borderRadius: '2px', marginTop: '4px', overflow: 'hidden' }}>
-                        <div style={{ width: `${Math.min(100, (p.creditUsed / p.creditLimit) * 100)}%`, height: '100%', background: '#ffffff' }} />
+                      <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
+                        Card / UPI / Bank
                       </div>
                     </td>
 
@@ -137,7 +106,7 @@ export const PromoterManager = () => {
                         ₹{p.cashOwed.toLocaleString('en-IN')}
                       </div>
                       <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                        ₹{p.cashDeposited.toLocaleString('en-IN')} settled
+                        {p.cashOwed > 0 ? 'Pending 10d deposit' : 'All Clear'}
                       </div>
                     </td>
 
@@ -159,10 +128,9 @@ export const PromoterManager = () => {
                           color: isSuspended ? '#34d399' : '#fb7185'
                         }}
                       >
-                        {isSuspended ? 'Unsuspend' : 'Suspend'}
+                        {isSuspended ? 'Reactivate' : 'Suspend'}
                       </button>
                     </td>
-
                   </tr>
                 );
               })}
@@ -170,60 +138,6 @@ export const PromoterManager = () => {
           </table>
         </div>
       </div>
-
-      {/* Credit Limit Modal */}
-      {showCreditModal && selectedPromoter && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,0.85)',
-          backdropFilter: 'blur(12px)',
-          zIndex: 1000,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1rem'
-        }}>
-          <div className="glass-card" style={{ maxWidth: '400px', width: '100%', position: 'relative' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.25rem' }}>
-              Adjust Credit Limit
-            </h3>
-            <p className="text-muted" style={{ fontSize: '0.82rem', marginBottom: '1rem' }}>
-              Set max simultaneous ticket credit for {selectedPromoter.name}.
-            </p>
-
-            <div className="form-group">
-              <label className="form-label">Ticket Credit Quota</label>
-              <input
-                type="number"
-                min="10"
-                max="500"
-                step="5"
-                value={newCreditLimit}
-                onChange={(e) => setNewCreditLimit(e.target.value)}
-                className="form-input"
-              />
-            </div>
-
-            <div className="flex gap-3" style={{ marginTop: '1.25rem' }}>
-              <button
-                onClick={() => setShowCreditModal(false)}
-                className="btn btn-secondary"
-                style={{ flex: 1 }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveCreditLimit}
-                className="btn btn-primary"
-                style={{ flex: 1 }}
-              >
-                Save Limit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

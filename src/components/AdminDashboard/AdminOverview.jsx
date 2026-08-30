@@ -130,7 +130,7 @@ export const AdminOverview = ({ activeTab, setActiveTab, onOpenCreateEvent }) =>
       }}>
         {[
           { id: 'events', label: 'Concert Inventory & Pricing', icon: <Ticket size={15} /> },
-          { id: 'promoters', label: 'Promoter Directory & Credit Limits', icon: <Users size={15} /> },
+          { id: 'promoters', label: 'Promoter Directory & Settlements', icon: <Users size={15} /> },
           { id: 'sales', label: 'Global Transactions Feed', icon: <TrendingUp size={15} /> }
         ].map((tab) => (
           <button

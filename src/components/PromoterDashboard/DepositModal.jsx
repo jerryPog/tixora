@@ -141,7 +141,7 @@ export const DepositModal = ({ isOpen, onClose }) => {
             border: '1px solid rgba(16, 185, 129, 0.2)'
           }}>
             <ShieldCheck size={16} color="#10b981" style={{ flexShrink: 0 }} />
-            <span>Settling on time builds promoter credit and unlocks Gold/Platinum backstage guestlist access.</span>
+            <span>Settling cash promptly on time maintains full promoter standing and unlocks Gold/Platinum higher commission tiers.</span>
           </div>
 
           <button

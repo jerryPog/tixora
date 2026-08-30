@@ -16,7 +16,7 @@ export const FAQ_DATA = [
     category: 'promoters',
     categoryLabel: 'For Promoters',
     question: 'What happens if I miss my cash deposit deadline?',
-    answer: 'All cash collected from buyers must be deposited with Tixora no later than 10 days before the event. If you miss this deadline, your account is moved to "Under Review" and no new tickets can be issued to you until the deposit is made. Repeated late deposits will reset your commission rate to the base of your current tier and reduce your credit limit. Continued non-payment can result in suspension and recovery action.',
+    answer: 'All cash collected from buyers must be deposited with Tixora no later than 10 days before the event. If you miss this deadline, your account is moved to "Under Review" and no new tickets can be issued to you until the deposit is made. Repeated late deposits will reset your commission rate to the base of your current tier and pause ticket issuance. Continued non-payment can result in suspension and recovery action.',
     keywords: ['miss deadline', 'late deposit', '10 days', 'under review', 'penalty', 'deposit deadline', 'overdue cash'],
     highlight: '10 days before the event deadline — missing it moves account to Under Review.'
   },
@@ -39,13 +39,13 @@ export const FAQ_DATA = [
     highlight: 'Interim deposit required when reaching cash holding cap.'
   },
   {
-    id: 'faq-promoter-credit-limit',
+    id: 'faq-promoter-payment-methods',
     category: 'promoters',
     categoryLabel: 'For Promoters',
-    question: 'How many tickets can I sell at once?',
-    answer: 'You\'re issued tickets on credit up to a limit based on your commission tier. Once you reach your credit limit, no further tickets can be issued to you until you deposit cash or your limit is reviewed and raised.',
-    keywords: ['sell at once', 'credit limit', 'quota', 'ticket limit', 'how many tickets', 'ticket allocation'],
-    highlight: 'Issued on credit up to your tier limit until deposited.'
+    question: 'How do promoters pay for tickets and is there a credit system?',
+    answer: 'Tixora does **not** use a credit system. Promoters can pay for tickets directly via **Card (Debit/Credit)**, **UPI**, or **Bank Deposit**. When you collect physical cash from your buyers, you simply deposit the collected cash directly into Tixora\'s bank account or settle via UPI before the 10-day pre-event cutoff.',
+    keywords: ['how to pay', 'credit system', 'no credit', 'pay for tickets', 'card', 'upi', 'bank deposit', 'settlement'],
+    highlight: 'Direct settlement via Card, UPI, or Bank Deposit — zero credit system.'
   },
   {
     id: 'faq-promoter-tier-up',

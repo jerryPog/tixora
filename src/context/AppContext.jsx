@@ -3,7 +3,7 @@ import { INITIAL_EVENTS, INITIAL_PROMOTERS, INITIAL_SALES, COMMISSION_TIERS } fr
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v6_gnr_poster';
+const STORAGE_VERSION = 'v7_no_credit';
 
 export const AppProvider = ({ children }) => {
   // Persistence in localStorage with auto-migration to new poster paths
@@ -110,7 +110,6 @@ export const AppProvider = ({ children }) => {
       prev.map((prom) => {
         if (prom.id === activePromoter.id) {
           const newTicketsSold = prom.ticketsSold + quantity;
-          const newCreditUsed = prom.creditUsed + quantity;
           const newTotalComm = prom.totalCommissionEarned + commissionEarned;
           const newCashCollected = paymentMethod === 'Cash' ? prom.cashCollected + totalAmount : prom.cashCollected;
           const newCashOwed = paymentMethod === 'Cash' ? prom.cashOwed + (totalAmount - commissionEarned) : prom.cashOwed;
@@ -129,7 +128,6 @@ export const AppProvider = ({ children }) => {
           return {
             ...prom,
             ticketsSold: newTicketsSold,
-            creditUsed: newCreditUsed,
             totalCommissionEarned: newTotalComm,
             cashCollected: newCashCollected,
             cashOwed: newCashOwed,
