@@ -17,6 +17,7 @@ import { CreateEventModal } from './components/AdminDashboard/CreateEventModal';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
 import { FAQSection } from './components/FAQSection';
 import { ToastContainer } from './components/Toast';
+import { LiveActivityPopup } from './components/LiveActivityPopup';
 import { 
   Ticket, 
   Tag, 
@@ -511,8 +512,9 @@ const MainDashboard = () => {
         onClose={() => setIsLegalModalOpen(false)}
       />
 
-      {/* Action Toasts */}
+      {/* Action Toasts & Realtime Live Activity FOMO Pulse */}
       <ToastContainer />
+      <LiveActivityPopup onSelectEvent={handleSelectEventForSale} />
 
       {/* Footer with Official Logo, Founders Attribution & Helpline */}
       <footer style={{
