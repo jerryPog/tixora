@@ -6,7 +6,8 @@ import {
   FileText, 
   Lock, 
   CheckCircle2, 
-  X 
+  X,
+  Users
 } from 'lucide-react';
 
 export const LegalComplianceModal = ({ isOpen, onClose }) => {
@@ -18,6 +19,7 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
       inset: 0,
       background: 'rgba(0,0,0,0.85)',
       backdropFilter: 'blur(14px)',
+      WebkitBackdropFilter: 'blur(14px)',
       zIndex: 2000,
       display: 'flex',
       alignItems: 'center',
@@ -70,29 +72,53 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
           </div>
           <div>
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800 }}>
-              Legal, Tax & Regulatory Compliance Policy
+              Legal, Tax & Regulatory Policy
             </h3>
             <p className="text-muted" style={{ fontSize: '0.78rem' }}>
-              Compliant with Indian Law (Consumer Protection Act 2019, IT Act 2000, Income Tax Act 1961)
+              Tixora Technologies • Compliant with Indian Law (Consumer Protection Act 2019, IT Act 2000, Income Tax Act 1961)
             </p>
           </div>
         </div>
 
+        {/* Founders Accreditation Card */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.04)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          borderRadius: '10px',
+          padding: '0.85rem 1rem',
+          marginBottom: '1rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '8px'
+        }}>
+          <div className="flex items-center gap-2">
+            <Users size={16} color="#38bdf8" />
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>Leadership & Founding Team:</span>
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#e4e4e7', display: 'flex', gap: '8px' }}>
+            <span><strong>Ronak Jain R</strong> — Founder</span>
+            <span style={{ color: 'var(--text-muted)' }}>|</span>
+            <span><strong>Anshul S Balan</strong> — Co-Founder</span>
+          </div>
+        </div>
+
         {/* Policy Sections */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.85rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.85rem' }}>
           
           {/* 1. Anti-Black Marketing & Strict MRP Lock */}
           <div style={{
             background: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid var(--border-color)',
             borderRadius: '10px',
-            padding: '1rem'
+            padding: '0.85rem 1rem'
           }}>
-            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.35rem' }}>
-              <ShieldCheck size={16} color="#10b981" />
+            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.25rem' }}>
+              <ShieldCheck size={15} color="#10b981" />
               <span>1. Zero-Markup & Anti-Black Marketing Guarantee (Official MRP Only)</span>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: 1.45 }}>
+            <p className="text-muted" style={{ fontSize: '0.78rem', lineHeight: 1.45 }}>
               Under the <strong>Consumer Protection Act, 2019</strong> and State Police Acts, selling event tickets above the printed Maximum Retail Price (MRP) or charging unauthorized scalping markups is illegal. Tixora strictly enforces fixed MRP pricing; promoters earn transparent commissions from organizers and are legally barred from charging buyer markups.
             </p>
           </div>
@@ -102,13 +128,13 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
             background: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid var(--border-color)',
             borderRadius: '10px',
-            padding: '1rem'
+            padding: '0.85rem 1rem'
           }}>
-            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.35rem' }}>
-              <Lock size={16} color="#f59e0b" />
+            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.25rem' }}>
+              <Lock size={15} color="#f59e0b" />
               <span>2. Cash Handling & Section 269ST Compliance</span>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: 1.45 }}>
+            <p className="text-muted" style={{ fontSize: '0.78rem', lineHeight: 1.45 }}>
               Under <strong>Section 269ST of the Income Tax Act, 1961</strong>, no single cash transaction or aggregate receipt from a single person may exceed ₹2,00,000 in a day. Tixora enforces individual order caps (maximum 10 tickets per cash transaction) and mandates strict escrow settlement 10 days before events.
             </p>
           </div>
@@ -118,13 +144,13 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
             background: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid var(--border-color)',
             borderRadius: '10px',
-            padding: '1rem'
+            padding: '0.85rem 1rem'
           }}>
-            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.35rem' }}>
-              <CheckCircle2 size={16} color="#3b82f6" />
+            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.25rem' }}>
+              <CheckCircle2 size={15} color="#3b82f6" />
               <span>3. DigiLocker KYC & 18+ Promoter Accreditation</span>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: 1.45 }}>
+            <p className="text-muted" style={{ fontSize: '0.78rem', lineHeight: 1.45 }}>
               Promoters operating on Tixora must be 18+ college students verified via <strong>DigiLocker / Aadhaar / PAN</strong> under the <strong>Information Technology Act, 2000</strong>. Promoters act as authorized campus distribution representatives of organizers.
             </p>
           </div>
@@ -134,13 +160,13 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
             background: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid var(--border-color)',
             borderRadius: '10px',
-            padding: '1rem'
+            padding: '0.85rem 1rem'
           }}>
-            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.35rem' }}>
-              <FileText size={16} color="#ec4899" />
+            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.25rem' }}>
+              <FileText size={15} color="#ec4899" />
               <span>4. GST (Goods & Services Tax) & TDS (Section 194H)</span>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: 1.45 }}>
+            <p className="text-muted" style={{ fontSize: '0.78rem', lineHeight: 1.45 }}>
               All published face-value ticket prices are inclusive of applicable GST (18%/28%). Organizer payouts and promoter commission disbursements comply with TDS deduction requirements under Section 194H of the Indian Income Tax Act where statutory limits are reached.
             </p>
           </div>
@@ -150,13 +176,13 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
             background: 'rgba(255, 255, 255, 0.03)',
             border: '1px solid var(--border-color)',
             borderRadius: '10px',
-            padding: '1rem'
+            padding: '0.85rem 1rem'
           }}>
-            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.35rem' }}>
-              <AlertTriangle size={16} color="#f43f5e" />
+            <div className="flex items-center gap-2" style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.25rem' }}>
+              <AlertTriangle size={15} color="#f43f5e" />
               <span>5. Fraud Prevention & Digital Pass Authentication</span>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem', lineHeight: 1.45 }}>
+            <p className="text-muted" style={{ fontSize: '0.78rem', lineHeight: 1.45 }}>
               No physical black-box paper tickets are issued. All passes generate unique encrypted digital QR codes tied to buyer phone numbers, preventing counterfeiting, duplicate entry, and fraudulent secondary market transfers.
             </p>
           </div>

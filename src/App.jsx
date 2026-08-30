@@ -25,7 +25,8 @@ import {
   Scale,
   Users,
   TrendingUp,
-  Plus
+  Plus,
+  Sparkles
 } from 'lucide-react';
 import './index.css';
 
@@ -424,29 +425,51 @@ const MainDashboard = () => {
       {/* Action Toasts */}
       <ToastContainer />
 
-      {/* Footer */}
+      {/* Footer with Founders Attribution */}
       <footer style={{
         borderTop: '1px solid var(--border-color)',
-        padding: '1.5rem 0',
+        padding: '1.75rem 0',
         background: 'rgba(7, 8, 10, 0.85)',
-        backdropFilter: 'blur(12px)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         marginTop: 'auto'
       }}>
-        <div className="container flex flex-col md:flex-row justify-between items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div style={{
-              width: '24px', height: '24px', borderRadius: '6px',
-              background: '#ffffff',
-              color: '#090a0d',
-              display: 'flex', alignItems: 'center', justifyContent: 'center'
-            }}>
-              <Ticket size={14} strokeWidth={2.2} />
+        <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
+          
+          {/* Brand & Founders Tag */}
+          <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left">
+            <div className="flex items-center gap-2">
+              <div style={{
+                width: '26px', height: '26px', borderRadius: '7px',
+                background: '#ffffff',
+                color: '#090a0d',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                <Ticket size={15} strokeWidth={2.2} />
+              </div>
+              <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
+                Tixora
+              </span>
             </div>
-            <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-              Tixora
-            </span>
+
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '9999px',
+              padding: '3px 12px',
+              fontSize: '0.74rem',
+              color: '#e4e4e7',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span><strong>Ronak Jain R</strong> (Founder)</span>
+              <span style={{ color: 'var(--text-muted)' }}>•</span>
+              <span><strong>Anshul S Balan</strong> (Co-Founder)</span>
+            </div>
           </div>
 
+          {/* Legal & Policy Links */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', fontSize: '0.74rem', color: 'var(--text-muted)', justifyContent: 'center' }}>
             <span className="flex items-center gap-1">
               <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
