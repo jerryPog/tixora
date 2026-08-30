@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
+import { ScrollBackgroundCanvas } from './components/ScrollBackgroundCanvas';
 import { PromoterOverview } from './components/PromoterDashboard/PromoterOverview';
 import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
@@ -165,8 +166,11 @@ const MainDashboard = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       
+      {/* Scroll-Driven Dynamic Video Frame Background */}
+      <ScrollBackgroundCanvas />
+
       {/* Universal Header */}
       <Header
         onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
@@ -424,7 +428,8 @@ const MainDashboard = () => {
       <footer style={{
         borderTop: '1px solid var(--border-color)',
         padding: '1.5rem 0',
-        background: '#07080a',
+        background: 'rgba(7, 8, 10, 0.85)',
+        backdropFilter: 'blur(12px)',
         marginTop: 'auto'
       }}>
         <div className="container flex flex-col md:flex-row justify-between items-center gap-3">
