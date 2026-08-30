@@ -1,170 +1,177 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Eye, TrendingUp, ShieldCheck, X, Sparkles } from 'lucide-react';
+import { useApp } from '../context/AppContext';
+import { ShoppingBag, Eye, TrendingUp, Sparkles, X, CheckCircle } from 'lucide-react';
 
-const SAMPLE_ACTIVITIES = [
-  {
-    id: 'act-1',
-    type: 'sale',
-    promoter: 'Priya',
-    city: 'Bangalore',
-    event: 'The Chainsmokers',
-    category: '2 Fanpits',
-    poster: '/posters/chainsmokers-bengaluru-banner.jpg',
-    timeAgo: 'Just now',
-    highlight: '₹1,020 commission earned'
-  },
-  {
-    id: 'act-2',
-    type: 'view',
-    promoter: 'Priya',
-    city: 'Bangalore',
-    event: 'The Chainsmokers — Bengaluru',
-    poster: '/posters/chainsmokers-bengaluru-banner.jpg',
-    timeAgo: '2m ago',
-    highlight: 'High demand • 88 sold'
-  },
-  {
-    id: 'act-3',
-    type: 'sale',
-    promoter: 'Aarav',
-    city: 'Delhi NCR',
-    event: 'Fred again.. — Delhi NCR',
-    category: '1 Student Pass',
-    poster: '/posters/fred-again-india-poster-1.png',
-    timeAgo: 'Just now',
-    highlight: 'DigiLocker verified sale'
-  },
-  {
-    id: 'act-4',
-    type: 'view',
-    promoter: 'Rohan',
-    city: 'Mumbai',
-    event: 'Anyma presents ÆDEN — Mumbai',
-    poster: '/posters/anyma-aeden-poster-1.jpg',
-    timeAgo: '1m ago',
-    highlight: 'Phase 1 filling fast'
-  },
-  {
-    id: 'act-5',
-    type: 'sale',
-    promoter: 'Sneha',
-    city: 'Bangalore',
-    event: "Guns N' Roses — Bengaluru",
-    category: '2 Gold Passes',
-    poster: '/posters/guns-n-roses-india-poster.jpg',
-    timeAgo: 'Just now',
-    highlight: '₹1,440 commission'
-  },
-  {
-    id: 'act-6',
-    type: 'sale',
-    promoter: 'Kabir',
-    city: 'Mumbai',
-    event: 'Anyma presents ÆDEN — Mumbai',
-    category: '4 GA Front Passes',
-    poster: '/posters/anyma-aeden-poster-1.jpg',
-    timeAgo: '3m ago',
-    highlight: '₹2,720 commission'
-  },
-  {
-    id: 'act-7',
-    type: 'view',
-    promoter: 'Ananya',
-    city: 'Delhi',
-    event: 'Khalid — Delhi NCR',
-    poster: '/posters/khalid-india-banner.jpg',
-    timeAgo: 'Just now',
-    highlight: 'Tour announcement'
-  },
-  {
-    id: 'act-8',
-    type: 'sale',
-    promoter: 'Riya',
-    city: 'Mumbai',
-    event: 'Fred again.. — Mumbai',
-    category: '2 GA Tickets',
-    poster: '/posters/fred-again-india-poster-2.png',
-    timeAgo: 'Just now',
-    highlight: 'BMS digital pass issued'
-  }
+const RANDOM_NAMES = [
+  'Aarav', 'Priya', 'Rohan', 'Sneha', 'Kabir', 'Ananya', 'Vikram', 'Riya',
+  'Aditya', 'Tanvi', 'Dev', 'Neha', 'Varun', 'Pooja', 'Sameer', 'Ishaan',
+  'Shreya', 'Aryan', 'Tara', 'Siddharth', 'Meera', 'Karan', 'Diya', 'Nikhil',
+  'Natasha', 'Ayush', 'Alisha', 'Kunal', 'Sanjana', 'Yash', 'Armaan', 'Rhea',
+  'Dhruv', 'Kritika', 'Pranav', 'Divya', 'Tushar', 'Simran', 'Akash', 'Bhavya'
 ];
 
+const RANDOM_CITIES = [
+  'Bengaluru', 'Mumbai', 'Delhi NCR', 'Pune', 'Hyderabad',
+  'Chennai', 'Kolkata', 'Ahmedabad', 'Chandigarh', 'Jaipur',
+  'DU North Campus', 'Manipal', 'NMIMS Mumbai', 'Christ Bengaluru'
+];
+
+const TIME_AGOS = ['Just now', '15s ago', '45s ago', '1m ago', '2m ago', '3m ago'];
+
 export const LiveActivityPopup = ({ onSelectEvent }) => {
+  const { events } = useApp();
   const [currentActivity, setCurrentActivity] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
-  const activityIndexRef = useRef(0);
   const timerRef = useRef(null);
+  const hideTimerRef = useRef(null);
+
+  // Helper to pick random item from array
+  const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  const generateDynamicActivity = () => {
+    const eventList = events && events.length > 0 ? events : [
+      { id: 'evt-chainsmokers-blr', name: 'The Chainsmokers — Bengaluru', posterUrl: '/posters/chainsmokers-bengaluru-banner.jpg', priceList: [{ category: 'Fanpit Phase 1', commissionAmount: 510 }, { category: 'GA Phase 1', commissionAmount: 150 }] },
+      { id: 'evt-anyma-mum', name: 'Anyma presents ÆDEN — Mumbai', posterUrl: '/posters/anyma-aeden-poster-1.jpg', priceList: [{ category: 'GA Front', commissionAmount: 680 }, { category: 'VIP Lounge', commissionAmount: 3200 }] },
+      { id: 'evt-gnr-blr', name: "Guns N' Roses — Bengaluru", posterUrl: '/posters/guns-n-roses-india-poster.jpg', priceList: [{ category: 'Gold (Phase 1)', commissionAmount: 720 }, { category: 'Silver (Phase 1)', commissionAmount: 300 }] },
+      { id: 'evt-fred-del', name: 'Fred again.. — Delhi NCR', posterUrl: '/posters/fred-again-india-poster-1.png', priceList: [{ category: 'Student Pass (Verified)', commissionAmount: 140 }, { category: 'General Admission (GA)', commissionAmount: 297 }] },
+      { id: 'evt-fred-mum', name: 'Fred again.. — Mumbai', posterUrl: '/posters/fred-again-india-poster-2.png', priceList: [{ category: 'Student Pass (Verified)', commissionAmount: 140 }, { category: 'General Admission (GA)', commissionAmount: 297 }] },
+      { id: 'evt-khalid-del', name: 'Khalid — Delhi NCR', posterUrl: '/posters/khalid-india-banner.jpg', priceList: [{ category: 'General Access', commissionAmount: 191 }, { category: 'Phase 1 Fanpit', commissionAmount: 595 }] }
+    ];
+
+    const ev = getRandom(eventList);
+    const name = getRandom(RANDOM_NAMES);
+    const city = getRandom(RANDOM_CITIES);
+    const timeAgo = getRandom(TIME_AGOS);
+    const tier = ev.priceList && ev.priceList.length > 0 ? getRandom(ev.priceList) : { category: 'GA Pass', commissionAmount: 300 };
+
+    const types = ['sale', 'sale', 'view', 'commission'];
+    const chosenType = getRandom(types);
+
+    const qty = Math.floor(Math.random() * 4) + 1; // 1 to 4 tickets
+    const totalComm = (tier.commissionAmount || 300) * qty;
+
+    if (chosenType === 'sale') {
+      return {
+        id: `act-${Date.now()}-${Math.random()}`,
+        type: 'sale',
+        promoter: name,
+        city: city,
+        event: ev.name,
+        eventId: ev.id,
+        category: `${qty}x ${tier.category}`,
+        poster: ev.posterUrl,
+        timeAgo: timeAgo,
+        highlight: `+₹${totalComm.toLocaleString('en-IN')} promoter cut`
+      };
+    } else if (chosenType === 'view') {
+      const viewRemarks = ['High demand phase', 'Quota filling quickly', 'Active buyer inquiry', 'Phase 1 live'];
+      return {
+        id: `act-${Date.now()}-${Math.random()}`,
+        type: 'view',
+        promoter: name,
+        city: city,
+        event: ev.name,
+        eventId: ev.id,
+        poster: ev.posterUrl,
+        timeAgo: timeAgo,
+        highlight: getRandom(viewRemarks)
+      };
+    } else {
+      return {
+        id: `act-${Date.now()}-${Math.random()}`,
+        type: 'commission',
+        promoter: name,
+        city: city,
+        event: ev.name,
+        eventId: ev.id,
+        category: `${qty} tickets`,
+        poster: ev.posterUrl,
+        timeAgo: timeAgo,
+        highlight: `Earned ₹${totalComm.toLocaleString('en-IN')} on ${ev.name.split('—')[0].trim()}`
+      };
+    }
+  };
+
+  const showNextRandomActivity = () => {
+    if (isDismissed) return;
+
+    const activity = generateDynamicActivity();
+    setCurrentActivity(activity);
+    setIsVisible(true);
+
+    // Keep visible for 5 seconds, then animate out
+    hideTimerRef.current = setTimeout(() => {
+      setIsVisible(false);
+
+      // Random delay between 6.5s and 11s before the next random popup
+      const nextDelay = 6500 + Math.random() * 4500;
+      timerRef.current = setTimeout(() => {
+        showNextRandomActivity();
+      }, nextDelay);
+    }, 5000);
+  };
 
   useEffect(() => {
     if (isDismissed) return;
 
-    // Show initial notification after 3.5 seconds
-    const initialTimeout = setTimeout(() => {
-      showNextActivity();
-    }, 3500);
+    // Trigger first random activity 3 seconds after page load
+    const initialTimer = setTimeout(() => {
+      showNextRandomActivity();
+    }, 3000);
 
     return () => {
-      clearTimeout(initialTimeout);
+      clearTimeout(initialTimer);
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     };
-  }, [isDismissed]);
-
-  const showNextActivity = () => {
-    if (isDismissed) return;
-
-    const activity = SAMPLE_ACTIVITIES[activityIndexRef.current % SAMPLE_ACTIVITIES.length];
-    activityIndexRef.current += 1;
-
-    setCurrentActivity(activity);
-    setIsVisible(true);
-
-    // Keep visible for 5.5 seconds, then hide and queue next
-    timerRef.current = setTimeout(() => {
-      setIsVisible(false);
-
-      // Next popup appears in 7-11 seconds
-      const nextDelay = 7000 + Math.random() * 4000;
-      timerRef.current = setTimeout(() => {
-        showNextActivity();
-      }, nextDelay);
-    }, 5500);
-  };
+  }, [isDismissed, events]);
 
   const handleDismiss = (e) => {
     e.stopPropagation();
     setIsVisible(false);
     setIsDismissed(true);
     if (timerRef.current) clearTimeout(timerRef.current);
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+  };
+
+  const handleCardClick = () => {
+    if (currentActivity && currentActivity.eventId && onSelectEvent) {
+      onSelectEvent(currentActivity.eventId);
+    }
   };
 
   if (!currentActivity || !isVisible) return null;
 
   const isSale = currentActivity.type === 'sale';
+  const isComm = currentActivity.type === 'commission';
 
   return (
     <div
+      onClick={handleCardClick}
       style={{
         position: 'fixed',
         bottom: '24px',
         left: '24px',
         zIndex: 998,
-        maxWidth: '380px',
+        maxWidth: '390px',
         width: 'calc(100% - 48px)',
         animation: 'slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-        transition: 'all 0.3s ease'
+        cursor: 'pointer',
+        transition: 'all 0.2s ease'
       }}
       className="live-activity-container"
+      title="Click to view event details & rates"
     >
       <div
         style={{
-          background: 'rgba(14, 16, 23, 0.88)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: isSale ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255, 255, 255, 0.15)',
-          boxShadow: isSale 
-            ? '0 12px 32px rgba(0, 0, 0, 0.6), 0 0 16px rgba(16, 185, 129, 0.15)' 
-            : '0 12px 32px rgba(0, 0, 0, 0.6)',
+          background: 'rgba(12, 14, 20, 0.92)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
+          border: isSale || isComm ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(59, 130, 246, 0.3)',
+          boxShadow: isSale || isComm 
+            ? '0 12px 32px rgba(0, 0, 0, 0.65), 0 0 16px rgba(16, 185, 129, 0.15)' 
+            : '0 12px 32px rgba(0, 0, 0, 0.65), 0 0 16px rgba(59, 130, 246, 0.12)',
           borderRadius: '14px',
           padding: '10px 14px 10px 10px',
           display: 'flex',
@@ -175,14 +182,14 @@ export const LiveActivityPopup = ({ onSelectEvent }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Top green live pulse bar */}
+        {/* Top active pulse highlight bar */}
         <div style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
           height: '2px',
-          background: isSale 
+          background: isSale || isComm
             ? 'linear-gradient(90deg, #10b981 0%, #34d399 50%, #10b981 100%)' 
             : 'linear-gradient(90deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%)'
         }} />
@@ -211,7 +218,7 @@ export const LiveActivityPopup = ({ onSelectEvent }) => {
             width: '18px',
             height: '18px',
             borderRadius: '50%',
-            background: isSale ? '#10b981' : '#3b82f6',
+            background: isSale || isComm ? '#10b981' : '#3b82f6',
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
@@ -219,7 +226,7 @@ export const LiveActivityPopup = ({ onSelectEvent }) => {
             fontSize: '10px',
             boxShadow: '0 2px 6px rgba(0,0,0,0.5)'
           }}>
-            {isSale ? <ShoppingBag size={10} /> : <Eye size={10} />}
+            {isSale ? <ShoppingBag size={10} /> : isComm ? <CheckCircle size={10} /> : <Eye size={10} />}
           </div>
         </div>
 
@@ -230,12 +237,12 @@ export const LiveActivityPopup = ({ onSelectEvent }) => {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              background: isSale ? '#10b981' : '#3b82f6',
-              boxShadow: isSale ? '0 0 8px #10b981' : '0 0 8px #3b82f6',
+              background: isSale || isComm ? '#10b981' : '#3b82f6',
+              boxShadow: isSale || isComm ? '0 0 8px #10b981' : '0 0 8px #3b82f6',
               display: 'inline-block'
             }} />
-            <span style={{ fontSize: '0.68rem', fontWeight: 700, color: isSale ? '#34d399' : '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              {isSale ? 'Verified Promoter Sale' : 'Live Promoter Activity'}
+            <span style={{ fontSize: '0.68rem', fontWeight: 700, color: isSale || isComm ? '#34d399' : '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              {isSale ? 'Verified Promoter Sale' : isComm ? 'Promoter Commission Earned' : 'Live Promoter Activity'}
             </span>
             <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginLeft: 'auto', marginRight: '16px' }}>
               {currentActivity.timeAgo}
@@ -253,18 +260,22 @@ export const LiveActivityPopup = ({ onSelectEvent }) => {
           }}>
             {isSale ? (
               <>
-                <strong>{currentActivity.promoter}</strong> from <span style={{ color: '#e4e4e7' }}>{currentActivity.city}</span> sold <strong style={{ color: '#ffffff' }}>{currentActivity.category}</strong> of <em>{currentActivity.event}</em>
+                <strong style={{ color: '#ffffff' }}>{currentActivity.promoter}</strong> from <span style={{ color: '#d4d4d8' }}>{currentActivity.city}</span> sold <strong style={{ color: '#34d399' }}>{currentActivity.category}</strong> of <em>{currentActivity.event}</em>
+              </>
+            ) : isComm ? (
+              <>
+                <strong style={{ color: '#ffffff' }}>{currentActivity.promoter}</strong> ({currentActivity.city}) just earned commission on <em>{currentActivity.event}</em>
               </>
             ) : (
               <>
-                <strong>{currentActivity.promoter}</strong> ({currentActivity.city}) just viewed <em>{currentActivity.event}</em>
+                <strong style={{ color: '#ffffff' }}>{currentActivity.promoter}</strong> ({currentActivity.city}) is viewing <em>{currentActivity.event}</em>
               </>
             )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
             <span style={{ fontSize: '0.7rem', color: '#a1a1aa', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              {isSale ? <Sparkles size={10} color="#10b981" /> : <TrendingUp size={10} color="#3b82f6" />}
+              {isSale || isComm ? <Sparkles size={10} color="#10b981" /> : <TrendingUp size={10} color="#3b82f6" />}
               {currentActivity.highlight}
             </span>
           </div>
