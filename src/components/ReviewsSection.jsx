@@ -139,23 +139,28 @@ export const ReviewsSection = () => {
   };
 
   return (
-    <section className="reviews-section" style={{ marginBottom: '3rem' }}>
-      
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem', color: '#f59e0b', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>
-            <Sparkles size={13} />
-            <span>REAL STORIES & VERIFIED REPUTATION</span>
+    <section className="reviews-section" style={{ marginBottom: '3.5rem' }}>
+      {/* Watermark Section Header */}
+      <div className="section-watermark-wrapper" style={{ marginBottom: '1.75rem' }}>
+        <div className="section-watermark-bg" aria-hidden="true">
+          REVIEWS
+        </div>
+        <div className="section-watermark-front">
+          <div className="festival-tag">
+            <Sparkles size={12} style={{ display: 'inline', marginRight: '4px' }} />
+            VERIFIED REPUTATION & STORIES
           </div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800 }}>
-            Student Promoters & Concert-Goer Reviews
+          <h2 className="festival-heading">
+            Student Promoters & Fan Reviews
           </h2>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-            Real feedback from verified campus ambassadors across top universities in India.
+          <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '520px', margin: '0.35rem auto 0' }}>
+            Real feedback from verified campus ambassadors and attendees across Delhi University, St. Xavier's, RVCE, & NMIMS.
           </p>
         </div>
+      </div>
 
+      {/* Controls Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           
           {/* Filter Pills */}

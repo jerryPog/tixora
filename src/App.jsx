@@ -14,6 +14,14 @@ import { AboutPage } from './components/Pages/AboutPage';
 import { ContactPage } from './components/Pages/ContactPage';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
 
+import { FestivalCountdown } from './components/FestivalCountdown';
+import { TourSchedule } from './components/TourSchedule';
+import { ArtistLineupShowcase } from './components/ArtistLineupShowcase';
+import { ExperienceTeaser } from './components/ExperienceTeaser';
+import { PartnerLogoStrip } from './components/PartnerLogoStrip';
+import { FestivalStatsStrip } from './components/FestivalStatsStrip';
+import { TourNewsSection } from './components/TourNewsSection';
+
 import { PromoterOverview } from './components/PromoterDashboard/PromoterOverview';
 import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
@@ -360,10 +368,10 @@ const MainDashboard = () => {
               ))}
             </div>
 
-            {/* Subview 1: Concert Lineup & Hero CTA */}
+            {/* Subview 1: Concert Lineup & Festival Experience Flow */}
             {activeView === 'posters' && (
               <>
-                {/* High-Impact Above The Fold Hero CTA */}
+                {/* 1. Electrifying Above The Fold Festival Hero */}
                 <HeroCTA
                   onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
                   onNavigateToWaitlist={() => navigateTo('waitlist')}
@@ -371,17 +379,60 @@ const MainDashboard = () => {
                   onNavigateToReviews={() => navigateTo('reviews')}
                 />
 
-                <EventPosters
-                  onSelectEventForSale={(eId) => handleOpenSaleWithCategory(eId, null)}
-                  onSelectEventForPriceList={handleViewPriceList}
+                {/* 2. Real-Time Tour Countdown Clock */}
+                <FestivalCountdown
+                  targetDate="2026-11-14T16:00:00"
+                  eventName="Guns N' Roses — Bengaluru Tour (Nov 14, 2026)"
+                  onBookTicket={() => handleViewPriceList('evt-gnr-blr')}
                 />
-                
-                {/* Real Reviews Section on Homepage */}
-                <div style={{ marginTop: '3rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
-                  <ReviewsSection />
+
+                {/* 3. Official Concert Postings & Tier Passes */}
+                <div style={{ marginBottom: '3.5rem' }}>
+                  <div className="section-watermark-wrapper">
+                    <div className="section-watermark-bg" aria-hidden="true">
+                      LINEUP
+                    </div>
+                    <div className="section-watermark-front">
+                      <div className="festival-tag">
+                        2026 PUBLISHED MEGA TOURS
+                      </div>
+                      <h2 className="festival-heading">
+                        Explore Concert Lineup & Official Passes
+                      </h2>
+                      <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '520px', margin: '0.35rem auto 0' }}>
+                        100% verified digital passes with instant QR issuance and transparent student commission breakdowns.
+                      </p>
+                    </div>
+                  </div>
+
+                  <EventPosters
+                    onSelectEventForSale={(eId) => handleOpenSaleWithCategory(eId, null)}
+                    onSelectEventForPriceList={handleViewPriceList}
+                  />
                 </div>
 
-                {/* Live FAQ Section on Homepage */}
+                {/* 4. Interactive Tour Schedule & Timetable */}
+                <TourSchedule onSelectEvent={handleViewPriceList} />
+
+                {/* 5. Headlining Artists & Special Guests Showcase */}
+                <ArtistLineupShowcase onSelectEvent={handleViewPriceList} />
+
+                {/* 6. Cinematic Audiovisual Experience Teaser */}
+                <ExperienceTeaser onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)} />
+
+                {/* 7. Official Ecosystem Partners & Ticketing Brands */}
+                <PartnerLogoStrip />
+
+                {/* 8. Live Festival & Campus Stats Metric Strip */}
+                <FestivalStatsStrip />
+
+                {/* 9. Latest Tour News & Phase Updates */}
+                <TourNewsSection onSelectArticle={() => {}} />
+
+                {/* 10. Real Verified Student & Fan Reviews */}
+                <ReviewsSection />
+
+                {/* 11. Live Operational FAQ Center */}
                 <div style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
                   <FAQSection onAskInChat={handleAskInChat} />
                 </div>

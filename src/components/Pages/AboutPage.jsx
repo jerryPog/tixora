@@ -16,31 +16,23 @@ export const AboutPage = ({ onNavigateToEvents, onNavigateToWaitlist, onNavigate
   return (
     <div style={{ maxWidth: '960px', margin: '0 auto', paddingBottom: '3.5rem' }}>
       
-      {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '6px',
-          background: 'rgba(255, 255, 255, 0.08)',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
-          borderRadius: '9999px',
-          padding: '4px 14px',
-          fontSize: '0.74rem',
-          fontWeight: 700,
-          marginBottom: '0.85rem'
-        }}>
-          <Sparkles size={13} color="#f59e0b" />
-          <span>OUR MISSION & FOUNDING STORY</span>
+      {/* Watermark Section Header */}
+      <div className="section-watermark-wrapper">
+        <div className="section-watermark-bg" aria-hidden="true">
+          ABOUT
         </div>
-
-        <h1 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 800, marginBottom: '0.75rem', lineHeight: 1.2 }}>
-          Live The Hype. Democratizing Youth Concert Culture Across India.
-        </h1>
-
-        <p style={{ fontSize: '0.94rem', color: 'var(--text-muted)', maxWidth: '680px', margin: '0 auto', lineHeight: 1.6 }}>
-          Tixora was built to eliminate black-market scalping, empower passionate student music lovers, and provide direct, verified event access for India's massive youth generation.
-        </p>
+        <div className="section-watermark-front">
+          <div className="festival-tag">
+            <Sparkles size={12} style={{ display: 'inline', marginRight: '4px' }} />
+            OUR MISSION & FOUNDING STORY
+          </div>
+          <h1 className="festival-heading">
+            Live The Hype. Democratizing Youth Concert Culture.
+          </h1>
+          <p style={{ fontSize: '0.94rem', color: 'var(--text-muted)', maxWidth: '680px', margin: '0.5rem auto 0', lineHeight: 1.6 }}>
+            Tixora was built to eliminate black-market scalping, empower passionate student music lovers, and provide direct, verified event access for India's massive youth generation.
+          </p>
+        </div>
       </div>
 
       {/* Founders Spotlight Card */}

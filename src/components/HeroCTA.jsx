@@ -7,7 +7,10 @@ import {
   Users, 
   Zap, 
   Ticket, 
-  Star 
+  Star,
+  Flame,
+  Calendar,
+  MapPin
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -16,26 +19,50 @@ export const HeroCTA = ({ onOpenRecordSale, onNavigateToWaitlist, onNavigateToEv
 
   return (
     <section 
-      className="hero-cta-section"
+      className="hero-festival-section"
       style={{
-        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0) 100%)',
-        border: '1px solid var(--border-color)',
-        borderRadius: '16px',
-        padding: '1.75rem 1.5rem',
-        marginBottom: '2rem',
+        background: 'linear-gradient(180deg, rgba(236, 72, 153, 0.12) 0%, rgba(139, 92, 246, 0.06) 40%, rgba(7, 8, 11, 0.95) 100%)',
+        border: '1px solid rgba(236, 72, 153, 0.25)',
+        borderRadius: '24px',
+        padding: 'clamp(2rem, 4.5vw, 3.25rem) clamp(1.25rem, 3vw, 2.5rem)',
+        marginBottom: '3rem',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        boxShadow: '0 16px 50px rgba(0, 0, 0, 0.7)'
       }}
     >
-      {/* Background Glow Accent */}
+      {/* Background Giant Stylized "T" Monogram Watermark */}
       <div 
         style={{
           position: 'absolute',
-          top: '-40px',
-          right: '-40px',
-          width: '240px',
-          height: '240px',
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0) 70%)',
+          top: '50%',
+          right: '5%',
+          transform: 'translateY(-50%)',
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(14rem, 28vw, 26rem)',
+          fontWeight: 900,
+          background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(139, 92, 246, 0.03) 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 1,
+          lineHeight: 0.8
+        }}
+        aria-hidden="true"
+      >
+        T
+      </div>
+
+      {/* Ambient Neon Lasers & Glow */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: '-60px',
+          left: '20%',
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%)',
           pointerEvents: 'none',
           borderRadius: '50%'
         }} 
@@ -43,29 +70,31 @@ export const HeroCTA = ({ onOpenRecordSale, onNavigateToWaitlist, onNavigateToEv
 
       <div style={{ position: 'relative', zIndex: 2 }}>
         
-        {/* Top Badges */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '0.85rem' }}>
+        {/* Top Badges & Tour Routing Tag */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '1rem' }}>
+          
           <div style={{
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+            background: 'rgba(236, 72, 153, 0.15)',
+            border: '1px solid rgba(236, 72, 153, 0.35)',
             borderRadius: '9999px',
-            padding: '3px 10px',
+            padding: '4px 12px',
             fontSize: '0.72rem',
-            color: '#ffffff',
-            fontWeight: 700,
+            color: '#f472b6',
+            fontWeight: 800,
             display: 'flex',
             alignItems: 'center',
-            gap: '5px'
+            gap: '5px',
+            letterSpacing: '0.04em'
           }}>
-            <Sparkles size={12} color="#f59e0b" />
-            <span>INDIA'S #1 YOUTH PROMOTER NETWORK</span>
+            <Flame size={13} color="#ec4899" />
+            <span>INDIA'S PREMIER YOUTH CONCERT & PROMOTER PORTAL</span>
           </div>
 
           <div style={{
             background: 'rgba(16, 185, 129, 0.1)',
             border: '1px solid rgba(16, 185, 129, 0.25)',
             borderRadius: '9999px',
-            padding: '3px 10px',
+            padding: '4px 12px',
             fontSize: '0.72rem',
             color: '#10b981',
             fontWeight: 600,
@@ -78,77 +107,98 @@ export const HeroCTA = ({ onOpenRecordSale, onNavigateToWaitlist, onNavigateToEv
           </div>
         </div>
 
+        {/* Script Subheading (Inspired by Reference Design) */}
+        <div style={{
+          fontFamily: 'var(--font-script)',
+          fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+          color: '#ffffff',
+          lineHeight: 1,
+          transform: 'rotate(-2deg)',
+          display: 'inline-block',
+          marginBottom: '0.25rem',
+          textShadow: '0 0 16px rgba(236, 72, 153, 0.6)'
+        }}>
+          Live The Hype
+        </div>
+
+        {/* Tour Date & Location Badge */}
+        <div style={{
+          fontSize: '0.84rem',
+          color: '#f472b6',
+          fontWeight: 700,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          marginBottom: '0.75rem'
+        }}>
+          [ Nov 14 – Dec 20 • Bengaluru • Mumbai • Delhi NCR • Live Concerts ]
+        </div>
+
         {/* Hero Title & Pitch */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           <div className="lg:col-span-8">
             <h1 style={{ 
-              fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', 
-              fontWeight: 800, 
+              fontFamily: 'var(--font-outfit)',
+              fontSize: 'clamp(1.8rem, 3.8vw, 2.75rem)', 
+              fontWeight: 900, 
               lineHeight: 1.15, 
-              marginBottom: '0.65rem',
-              color: '#ffffff'
+              marginBottom: '0.85rem',
+              color: '#ffffff',
+              letterSpacing: '-0.025em'
             }}>
-              Live The Hype. Official Concert Tickets, Zero Scalping & Top Campus Commissions.
+              Official Youth Passes, Zero Scalping & Top Campus Commissions.
             </h1>
             
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.5, maxWidth: '680px', marginBottom: '1.25rem' }}>
-              Sell verified concert passes to your college network for Guns N' Roses, Anyma, Fred again.., & The Chainsmokers. Instant digital QR pass delivery with 7.5%–10% promoter payouts.
+            <p style={{ fontSize: '0.92rem', color: '#d4d4d8', lineHeight: 1.6, maxWidth: '660px', marginBottom: '1.75rem' }}>
+              Grab verified tickets for Guns N' Roses, Anyma presents ÆDEN, Fred again.., & The Chainsmokers. Instant digital QR pass delivery to your BookMyShow account with up to 10% promoter payouts.
             </p>
 
             {/* CTAs Above The Fold */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
               
               {currentRole === 'promoter' ? (
                 <button
                   onClick={onOpenRecordSale}
-                  className="btn btn-primary"
+                  className="neon-btn-pink"
                   style={{
-                    padding: '10px 20px',
-                    fontSize: '0.88rem',
-                    fontWeight: 700,
-                    gap: '8px',
-                    boxShadow: '0 4px 20px rgba(255, 255, 255, 0.25)'
+                    padding: '12px 24px',
+                    fontSize: '0.92rem',
+                    gap: '8px'
                   }}
                   id="hero-issue-ticket-cta"
                 >
-                  <Ticket size={16} />
-                  <span>Issue Ticket Instant</span>
-                  <ArrowRight size={14} />
+                  <Ticket size={17} />
+                  <span>Issue Pass Instant</span>
+                  <ArrowRight size={15} />
                 </button>
               ) : (
                 <button
                   onClick={onNavigateToEvents}
-                  className="btn btn-primary"
+                  className="neon-btn-pink"
                   style={{
-                    padding: '10px 20px',
-                    fontSize: '0.88rem',
-                    fontWeight: 700,
-                    gap: '8px',
-                    boxShadow: '0 4px 20px rgba(255, 255, 255, 0.25)'
+                    padding: '12px 24px',
+                    fontSize: '0.92rem',
+                    gap: '8px'
                   }}
                 >
-                  <Ticket size={16} />
-                  <span>Explore Live Roster</span>
-                  <ArrowRight size={14} />
+                  <Ticket size={17} />
+                  <span>Explore 2026 Lineup</span>
+                  <ArrowRight size={15} />
                 </button>
               )}
 
               <button
                 onClick={onNavigateToWaitlist}
-                className="btn btn-secondary"
+                className="neon-btn-outline"
                 style={{
-                  padding: '10px 18px',
-                  fontSize: '0.86rem',
-                  fontWeight: 600,
-                  gap: '6px',
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  borderColor: 'rgba(255, 255, 255, 0.18)'
+                  padding: '12px 20px',
+                  fontSize: '0.88rem',
+                  gap: '6px'
                 }}
                 id="hero-join-waitlist-cta"
               >
-                <Zap size={15} color="#f59e0b" />
-                <span>Join Campus Ambassador Waitlist</span>
+                <Zap size={16} color="#f59e0b" />
+                <span>Join Ambassador Waitlist</span>
               </button>
 
               <button
@@ -157,7 +207,7 @@ export const HeroCTA = ({ onOpenRecordSale, onNavigateToWaitlist, onNavigateToEv
                   background: 'transparent',
                   border: 'none',
                   color: 'var(--text-muted)',
-                  fontSize: '0.82rem',
+                  fontSize: '0.84rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '5px',
@@ -181,38 +231,39 @@ export const HeroCTA = ({ onOpenRecordSale, onNavigateToWaitlist, onNavigateToEv
           {/* Quick Metrics Pillar */}
           <div className="lg:col-span-4">
             <div style={{
-              background: '#090a0d',
-              border: '1px solid var(--border-color)',
-              borderRadius: '12px',
-              padding: '1rem',
+              background: 'rgba(12, 14, 20, 0.95)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              borderRadius: '16px',
+              padding: '1.25rem',
               display: 'flex',
               flexDirection: 'column',
-              gap: '0.75rem'
+              gap: '0.85rem',
+              boxShadow: '0 12px 30px rgba(0,0,0,0.5)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ background: 'rgba(16, 185, 129, 0.12)', color: '#10b981', padding: '6px', borderRadius: '6px' }}>
-                    <TrendingUp size={16} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ background: 'rgba(236, 72, 153, 0.15)', color: '#ec4899', padding: '8px', borderRadius: '8px' }}>
+                    <TrendingUp size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>August 2026 Payouts</div>
-                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>₹8,42,500+</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>August 2026 Payouts</div>
+                    <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>₹8,42,500+</div>
                   </div>
                 </div>
-                <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: 700 }}>+42% MoM</span>
+                <span style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 700 }}>+42% MoM</span>
               </div>
 
-              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ background: 'rgba(59, 130, 246, 0.12)', color: '#60a5fa', padding: '6px', borderRadius: '6px' }}>
-                    <Users size={16} />
+              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#a78bfa', padding: '8px', borderRadius: '8px' }}>
+                    <Users size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Verified Campus Promoters</div>
-                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>450+ College Leads</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Verified Campus Network</div>
+                    <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>450+ Promoters</div>
                   </div>
                 </div>
-                <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>32 Metros</span>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>32 Metros</span>
               </div>
             </div>
           </div>
