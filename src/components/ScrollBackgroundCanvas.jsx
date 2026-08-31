@@ -214,7 +214,7 @@ export const ScrollBackgroundCanvas = () => {
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
           }
 
-          // 2. Stage Volumetric Light Beams (Soft, elegant concert sweeps with reduced opacity & no flashing)
+          // 2. Stage Volumetric Light Beams (Vibrant, cinematic concert sweeps with balanced opacity)
           ctx.save();
           ctx.globalCompositeOperation = 'screen';
 
@@ -240,13 +240,13 @@ export const ScrollBackgroundCanvas = () => {
             const targetX = stageOriginX + Math.cos(angle) * beamLength;
             const targetY = stageOriginY + Math.sin(angle) * beamLength;
 
-            const beamWidth = Math.sin(time * 1.2 + i) * 3 + 14;
+            const beamWidth = Math.sin(time * 1.2 + i) * 4 + 18;
 
             const laserGrad = ctx.createLinearGradient(stageOriginX, stageOriginY, targetX, targetY);
-            // Reduced, soft atmospheric opacity (comfortable and gentle on the eyes)
-            const baseAlpha = 0.08 + Math.sin(time * 1.5 + i) * 0.02;
-            laserGrad.addColorStop(0, `${laserColors[i % laserColors.length]}${baseAlpha * 1.4})`);
-            laserGrad.addColorStop(0.4, `${laserColors[i % laserColors.length]}${baseAlpha * 0.7})`);
+            // Balanced, rich atmospheric opacity (clear & vibrant without harsh strobing)
+            const baseAlpha = 0.20 + Math.sin(time * 1.5 + i) * 0.04;
+            laserGrad.addColorStop(0, `${laserColors[i % laserColors.length]}${baseAlpha * 1.6})`);
+            laserGrad.addColorStop(0.35, `${laserColors[i % laserColors.length]}${baseAlpha * 0.9})`);
             laserGrad.addColorStop(1, `${laserColors[i % laserColors.length]}0)`);
 
             ctx.lineWidth = beamWidth;
@@ -256,22 +256,22 @@ export const ScrollBackgroundCanvas = () => {
             ctx.lineTo(targetX, targetY);
             ctx.stroke();
 
-            // Soft core highlight (subtle, low-contrast, non-glaring)
-            ctx.lineWidth = Math.max(1, beamWidth * 0.12);
-            ctx.strokeStyle = `${laserColors[i % laserColors.length]}${baseAlpha * 0.85})`;
+            // Inner core laser beam sheen
+            ctx.lineWidth = Math.max(1.2, beamWidth * 0.14);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${baseAlpha * 0.6})`;
             ctx.beginPath();
             ctx.moveTo(stageOriginX, stageOriginY);
             ctx.lineTo(targetX, targetY);
             ctx.stroke();
           }
 
-          // Gentle Ambient Horizon Flare (Soft stage glow)
+          // Gentle Ambient Horizon Flare (Vibrant stage glow)
           const glowGrad = ctx.createRadialGradient(
             stageOriginX, stageOriginY + canvasHeight * 0.05, 10,
-            stageOriginX, stageOriginY + canvasHeight * 0.05, canvasWidth * 0.55
+            stageOriginX, stageOriginY + canvasHeight * 0.05, canvasWidth * 0.6
           );
-          glowGrad.addColorStop(0, 'rgba(236, 72, 153, 0.12)');
-          glowGrad.addColorStop(0.4, 'rgba(139, 92, 246, 0.06)');
+          glowGrad.addColorStop(0, 'rgba(236, 72, 153, 0.24)');
+          glowGrad.addColorStop(0.4, 'rgba(139, 92, 246, 0.14)');
           glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
           ctx.fillStyle = glowGrad;
