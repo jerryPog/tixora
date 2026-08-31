@@ -179,25 +179,47 @@ const MainDashboard = () => {
   // Dynamic SEO Page Title & Meta Tags Hook
   usePageSEO(activeView);
 
-  // Hash-based Deep Linking Listener
+  // Always reset to main home page upon page reload / refresh
   useEffect(() => {
+    // Disable browser automatic scroll restoration to ensure top placement on refresh
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Clear hash and force activeView to main home page ('posters') on fresh load / reload
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    setActiveView('posters');
+    window.scrollTo(0, 0);
+
+    // Clean hash on beforeunload / pagehide so any subsequent refresh lands on home
+    const handleBeforeUnload = () => {
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    };
+
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
       const validViews = ['events', 'posters', 'waitlist', 'prices', 'ledger', 'rewards', 'tiers', 'reviews', 'about', 'contact', 'faqs', 'thank-you', '404'];
       
-      if (hash === 'events') {
+      if (hash === 'events' || !hash) {
         setActiveView('posters');
       } else if (validViews.includes(hash)) {
         setActiveView(hash);
       }
     };
 
-    if (window.location.hash) {
-      handleHashChange();
-    }
-
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handleBeforeUnload);
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handleBeforeUnload);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
   }, []);
 
   const navigateTo = (viewId) => {
