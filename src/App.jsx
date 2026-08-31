@@ -810,8 +810,6 @@ const MainDashboard = () => {
                 <span style={{ color: 'var(--text-muted)' }}>•</span>
                 <span><strong>Prajwal Gowrish H S</strong> (Co-Founder)</span>
                 <span style={{ color: 'var(--text-muted)' }}>•</span>
-                <span><strong>Anshul S Balan</strong> (Co-Founder)</span>
-                <span style={{ color: 'var(--text-muted)' }}>•</span>
                 <span><strong>Kanishk Jhunjhunwala</strong> (Co-Founder)</span>
               </div>
             </div>

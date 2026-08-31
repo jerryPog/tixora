@@ -245,7 +245,6 @@ export const ContactPage = ({ onOpenFAQ, onNavigateToEvents }) => {
                 {[
                   { name: "Ronak Jain R", role: "Founder", email: "ronakj303@gmail.com", phone: "+91 78921 45475" },
                   { name: "Prajwal Gowrish H S", role: "Co-Founder", email: "gowrishprajwal123@gmail.com", phone: "+91 88612 00170" },
-                  { name: "Anshul S Balan", role: "Co-Founder", email: "anshulsb70@gmail.com", phone: "+91 70125 37541" },
                   { name: "Kanishk Jhunjhunwala", role: "Co-Founder", email: "kanishkjhunjhunwala@gmail.com", phone: "+91 91045 73147" }
                 ].map((item, idx) => (
                   <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.06)' }}>

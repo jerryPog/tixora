@@ -18,7 +18,7 @@ const NEWS_ARTICLES = [
     date: '28 Aug 2026',
     image: '/posters/anyma-aeden-poster-2.jpg',
     snippet: 'The colossal 40-meter LED hyper-structure will be deployed at Mahalaxmi Racecourse with custom 3D visuals tailored for the Mumbai skyline.',
-    author: 'Anshul S Balan'
+    author: 'Tixora Operations'
   },
   {
     id: 'news-3',

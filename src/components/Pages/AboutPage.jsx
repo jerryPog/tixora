@@ -56,8 +56,8 @@ export const AboutPage = ({ onNavigateToEvents, onNavigateToWaitlist, onNavigate
           As avid concert-goers in college, our leadership team witnessed the extreme frustration of sold-out shows, fake Instagram DM tickets, and predatory black-market markups. Tixora was engineered to solve this crisis by turning trusted campus community leaders into certified, DigiLocker-backed event ambassadors with instant pass issuance.
         </p>
 
-        {/* 4-Column Responsive Grid for Board of Directors */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* 3-Column Responsive Grid for Board of Directors */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             {
               name: "Ronak Jain R",
@@ -74,14 +74,6 @@ export const AboutPage = ({ onNavigateToEvents, onNavigateToWaitlist, onNavigate
               phone: "+91 88612 00170",
               roleColor: "#60a5fa",
               initials: "PG"
-            },
-            {
-              name: "Anshul S Balan",
-              role: "Co-Founder",
-              email: "anshulsb70@gmail.com",
-              phone: "+91 70125 37541",
-              roleColor: "#a855f7",
-              initials: "AB"
             },
             {
               name: "Kanishk Jhunjhunwala",

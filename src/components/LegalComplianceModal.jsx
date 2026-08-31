@@ -96,7 +96,7 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
             <Users size={16} color="#38bdf8" />
             <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>Board of Directors:</span>
             <span style={{ fontSize: '0.78rem', color: '#e4e4e7' }}>
-              <strong>Ronak Jain R</strong> (Founder), <strong>Prajwal Gowrish H S</strong> (Co-Founder), <strong>Anshul S Balan</strong> (Co-Founder), <strong>Kanishk Jhunjhunwala</strong> (Co-Founder)
+              <strong>Ronak Jain R</strong> (Founder), <strong>Prajwal Gowrish H S</strong> (Co-Founder), <strong>Kanishk Jhunjhunwala</strong> (Co-Founder)
             </span>
           </div>
 

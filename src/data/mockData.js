@@ -13,10 +13,59 @@ export const INITIAL_EVENTS = [
     bannerUrl: "/posters/guns-n-roses-banner.webp",
     posterPosition: "center 25%",
     description: "The American hard-rock legends Axl Rose, Slash & Duff McKagan live in Bengaluru with iconic hits like Sweet Child O' Mine and November Rain.",
+    venueLayout: {
+      type: "guns-n-roses",
+      title: "GUNS N' ROSES — VENUE LAYOUT",
+      subtitle: "NICE Grounds, Bengaluru • 14 November 2026",
+      image: "/layouts/guns-n-roses-layout.png",
+      sections: [
+        { name: "STAGE", type: "stage", color: "#9ca3af", textColor: "#000000" },
+        { 
+          name: "VIP", 
+          type: "vip", 
+          price: "FROM ₹10,999", 
+          color: "#b91c1c", 
+          textColor: "#ffffff",
+          perks: [
+            "Each ticket grants entry to one person in the VIP area",
+            "Front of house viewing space",
+            "Access to food stalls, bars and washrooms in the VIP area",
+            "Dedicated entry lane to the concert"
+          ]
+        },
+        { 
+          name: "KOTAK LOUNGE & PLATINUM LOUNGE", 
+          type: "lounge", 
+          price: "FROM ₹28,999", 
+          color: "#000000", 
+          textColor: "#ffffff",
+          perks: [
+            "Each ticket grants entry to one person in the Kotak Lounge/Platinum Lounge",
+            "Elevated premium viewing deck in a prime location",
+            "Inclusive of appetizers and alco-beverages in the Kotak Lounge/Platinum Lounge",
+            "Dedicated washrooms",
+            "Dedicated entry lane to the concert",
+            "Dedicated free parking* with pick-up and drop-off service from the wooden gate (*Available on first arrival basis only)"
+          ]
+        },
+        { 
+          name: "GENERAL ADMISSION", 
+          type: "ga", 
+          price: "FROM ₹4,499", 
+          color: "#facc15", 
+          textColor: "#000000",
+          perks: [
+            "Each ticket grants entry to one person in the GA area",
+            "Access to food stalls, bars and washrooms in the GA area"
+          ]
+        }
+      ],
+      footerNote: "*This layout is not drawn to scale & is subject to change without prior notice.*"
+    },
     priceList: [
-      { id: "p1", category: "Silver (Phase 1)", faceValue: 4000, promoterPrice: 4000, commissionPct: 7.5, commissionAmount: 300, quotaTotal: 100, quotaSold: 42 },
-      { id: "p2", category: "Gold (Phase 1)", faceValue: 9000, promoterPrice: 9000, commissionPct: 8.0, commissionAmount: 720, quotaTotal: 50, quotaSold: 28 },
-      { id: "p3", category: "Platinum Lounge (Phase 1)", faceValue: 16000, promoterPrice: 16000, commissionPct: 9.0, commissionAmount: 1440, quotaTotal: 20, quotaSold: 11 }
+      { id: "p1", category: "General Admission (GA)", faceValue: 4499, promoterPrice: 4499, commissionPct: 7.5, commissionAmount: 337, quotaTotal: 120, quotaSold: 58 },
+      { id: "p2", category: "VIP Pass", faceValue: 10999, promoterPrice: 10999, commissionPct: 8.5, commissionAmount: 935, quotaTotal: 50, quotaSold: 31 },
+      { id: "p3", category: "Kotak / Platinum Lounge", faceValue: 28999, promoterPrice: 28999, commissionPct: 10.0, commissionAmount: 2900, quotaTotal: 20, quotaSold: 12 }
     ]
   },
   {
@@ -65,19 +114,58 @@ export const INITIAL_EVENTS = [
     description: "British electronic producer and live performer bringing emotionally raw, high-energy live sampling and beats from Actual Life to USB.",
     venueLayout: {
       type: "fred-again",
-      title: "Fred again.. India Tour 2026 - Delhi NCR",
-      subtitle: "Leisure Valley Ground, Gurugram • 05 December 2026",
+      title: "again.. फिर से.. पुन्हा.. ಮತ್ತೆ..",
+      subtitle: "Fred again.. India Tour 2026 - Delhi NCR",
+      image: "/layouts/fred-again-layout.png",
+      tourDates: [
+        { date: "05 Dec 2026", venue: "Leisure Valley Ground", city: "Delhi NCR" },
+        { date: "08 Dec 2026", venue: "Mahalaxmi Race Course", city: "Mumbai" },
+        { date: "09 Dec 2026", venue: "Mahalaxmi Race Course", city: "Mumbai" },
+        { date: "12 Dec 2026", venue: "NICE Grounds", city: "Bengaluru" },
+        { date: "13 Dec 2026", venue: "NICE Grounds", city: "Bengaluru" }
+      ],
       sections: [
         { name: "STAGE", type: "stage", color: "#000000", textColor: "#ffffff" },
-        { name: "GA", type: "ga", color: "#090a0d", textColor: "#ffffff", price: "₹1,750 – ₹3,500" }
+        { name: "GA", type: "ga", color: "#000000", textColor: "#ffffff" }
       ],
-      legend: [
-        { label: "STUDENT GA", price: "₹1,750", color: "#000000" }
-      ]
+      categories: [
+        {
+          name: "STUDENT GA",
+          price: "₹1,750",
+          perks: [
+            "Entry into the common GA area",
+            "A valid student ID card picture must be submitted",
+            "Dedicated entry lane",
+            "Students will be checked for ID at the gate",
+            "Ticket holders without a valid student ID shall be denied entry",
+            "Please read all student ticket guidelines on the ticketing page"
+          ]
+        },
+        {
+          name: "GA",
+          price: "₹3,500",
+          perks: [
+            "Entry into the common GA area",
+            "Access to food stalls, bars and washrooms"
+          ]
+        },
+        {
+          name: "GA+",
+          price: "₹6,000",
+          perks: [
+            "Entry into the common GA area",
+            "Access to dedicated food stalls, bars & washrooms",
+            "Dedicated entry lane for smooth access",
+            "Early access into venue (Gate timings closer to show day)"
+          ]
+        }
+      ],
+      footerNote: "*This layout is not drawn to scale & is subject to change without prior notice.*"
     },
     priceList: [
-      { id: "p8", category: "Student Pass (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 250, quotaSold: 180 },
-      { id: "p9", category: "General Admission (GA)", faceValue: 3500, promoterPrice: 3500, commissionPct: 8.5, commissionAmount: 297, quotaTotal: 200, quotaSold: 145 }
+      { id: "p8", category: "Student GA (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 250, quotaSold: 180 },
+      { id: "p9", category: "General Admission (GA)", faceValue: 3500, promoterPrice: 3500, commissionPct: 8.5, commissionAmount: 297, quotaTotal: 200, quotaSold: 145 },
+      { id: "p9b", category: "GA+ (Early Access & Dedicated Bars)", faceValue: 6000, promoterPrice: 6000, commissionPct: 9.0, commissionAmount: 540, quotaTotal: 80, quotaSold: 46 }
     ]
   },
   {
@@ -92,9 +180,60 @@ export const INITIAL_EVENTS = [
     bannerUrl: "/posters/fred-again-india-poster-1.png",
     posterPosition: "center 18%",
     description: "Two consecutive nights of unmatched electronic music magic under the Mumbai skyline.",
+    venueLayout: {
+      type: "fred-again",
+      title: "again.. फिर से.. पुन्हा.. ಮತ್ತೆ..",
+      subtitle: "Fred again.. India Tour 2026 - Mumbai",
+      image: "/layouts/fred-again-layout.png",
+      tourDates: [
+        { date: "05 Dec 2026", venue: "Leisure Valley Ground", city: "Delhi NCR" },
+        { date: "08 Dec 2026", venue: "Mahalaxmi Race Course", city: "Mumbai" },
+        { date: "09 Dec 2026", venue: "Mahalaxmi Race Course", city: "Mumbai" },
+        { date: "12 Dec 2026", venue: "NICE Grounds", city: "Bengaluru" },
+        { date: "13 Dec 2026", venue: "NICE Grounds", city: "Bengaluru" }
+      ],
+      sections: [
+        { name: "STAGE", type: "stage", color: "#000000", textColor: "#ffffff" },
+        { name: "GA", type: "ga", color: "#000000", textColor: "#ffffff" }
+      ],
+      categories: [
+        {
+          name: "STUDENT GA",
+          price: "₹1,750",
+          perks: [
+            "Entry into the common GA area",
+            "A valid student ID card picture must be submitted",
+            "Dedicated entry lane",
+            "Students will be checked for ID at the gate",
+            "Ticket holders without a valid student ID shall be denied entry",
+            "Please read all student ticket guidelines on the ticketing page"
+          ]
+        },
+        {
+          name: "GA",
+          price: "₹3,500",
+          perks: [
+            "Entry into the common GA area",
+            "Access to food stalls, bars and washrooms"
+          ]
+        },
+        {
+          name: "GA+",
+          price: "₹6,000",
+          perks: [
+            "Entry into the common GA area",
+            "Access to dedicated food stalls, bars & washrooms",
+            "Dedicated entry lane for smooth access",
+            "Early access into venue (Gate timings closer to show day)"
+          ]
+        }
+      ],
+      footerNote: "*This layout is not drawn to scale & is subject to change without prior notice.*"
+    },
     priceList: [
-      { id: "p10", category: "Student Pass (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 300, quotaSold: 210 },
-      { id: "p11", category: "General Admission (GA)", faceValue: 3500, promoterPrice: 3500, commissionPct: 8.5, commissionAmount: 297, quotaTotal: 250, quotaSold: 160 }
+      { id: "p10", category: "Student GA (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 300, quotaSold: 210 },
+      { id: "p11", category: "General Admission (GA)", faceValue: 3500, promoterPrice: 3500, commissionPct: 8.5, commissionAmount: 297, quotaTotal: 250, quotaSold: 160 },
+      { id: "p11b", category: "GA+ (Early Access & Dedicated Bars)", faceValue: 6000, promoterPrice: 6000, commissionPct: 9.0, commissionAmount: 540, quotaTotal: 100, quotaSold: 62 }
     ]
   },
   {

@@ -160,7 +160,7 @@ export const ChatAssistant = ({
     // 1. Helpline / Phone Number / Founders
     if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('helpline')) {
       return {
-        text: `📞 **Tixora Helpline & Leadership Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n\n**🏛️ Founding Team & Leadership:**\n• **Ronak Jain R** (Founder) — ronakj303@gmail.com | +91 78921 45475\n• **Prajwal Gowrish H S** (Co-Founder) — gowrishprajwal123@gmail.com | +91 88612 00170\n• **Anshul S Balan** (Co-Founder) — anshulsb70@gmail.com | +91 70125 37541\n• **Kanishk Jhunjhunwala** (Co-Founder) — kanishkjhunjhunwala@gmail.com | +91 91045 73147`,
+        text: `📞 **Tixora Helpline & Leadership Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n\n**🏛️ Founding Team & Leadership:**\n• **Ronak Jain R** (Founder) — ronakj303@gmail.com | +91 78921 45475\n• **Prajwal Gowrish H S** (Co-Founder) — gowrishprajwal123@gmail.com | +91 88612 00170\n• **Kanishk Jhunjhunwala** (Co-Founder) — kanishkjhunjhunwala@gmail.com | +91 91045 73147`,
         actions: [
           { label: "💬 Message on WhatsApp", url: "https://wa.me/917892145475" },
           { label: "📬 Contact Form", view: "contact" }
@@ -320,7 +320,7 @@ export const ChatAssistant = ({
     // 11. Founders & Board of Directors
     if (q.includes('founder') || q.includes('who made') || q.includes('created by') || q.includes('team') || q.includes('bod') || q.includes('director')) {
       return {
-        text: `🏛️ **Tixora Board of Directors & Founding Team:**\n\n• **Ronak Jain R** — Founder (ronakj303@gmail.com | +91 78921 45475)\n• **Prajwal Gowrish H S** — Co-Founder (gowrishprajwal123@gmail.com | +91 88612 00170)\n• **Anshul S Balan** — Co-Founder (anshulsb70@gmail.com | +91 70125 37541)\n• **Kanishk Jhunjhunwala** — Co-Founder (kanishkjhunjhunwala@gmail.com | +91 91045 73147)\n\n• **Primary Support Helpline:** +91 78921 45475`,
+        text: `🏛️ **Tixora Board of Directors & Founding Team:**\n\n• **Ronak Jain R** — Founder (ronakj303@gmail.com | +91 78921 45475)\n• **Prajwal Gowrish H S** — Co-Founder (gowrishprajwal123@gmail.com | +91 88612 00170)\n• **Kanishk Jhunjhunwala** — Co-Founder (kanishkjhunjhunwala@gmail.com | +91 91045 73147)\n\n• **Primary Support Helpline:** +91 78921 45475`,
         actions: [
           { label: "📖 About Tixora", view: "about" },
           { label: "📞 Helpline WhatsApp", url: "https://wa.me/917892145475" }
