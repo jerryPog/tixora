@@ -75,14 +75,13 @@ export const Header = ({
         {/* Brand Logo & Portal Tag */}
         <div className="flex items-center gap-3">
           
-          {/* Mobile Hamburger Toggle */}
+          {/* Mobile Hamburger Toggle (Visible only on small screens) */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="btn-ghost md:hidden"
-            style={{ padding: '6px', color: '#ffffff' }}
+            className="header-mobile-toggle"
             aria-label="Toggle Navigation Menu"
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
 
           <div 
@@ -99,7 +98,7 @@ export const Header = ({
               src="/tixora-logo.png" 
               alt="Tixora official logo — Live The Hype youth concert ticketing" 
               style={{
-                height: '36px',
+                height: '34px',
                 width: 'auto',
                 borderRadius: '6px',
                 display: 'block'
@@ -107,7 +106,7 @@ export const Header = ({
             />
           </div>
 
-          <div className="hidden sm:flex items-center" style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '10px' }}>
+          <div className="header-brand-badge" style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '10px' }}>
             <div>
               <div className="flex items-center gap-1.5">
                 <span style={{
@@ -133,8 +132,8 @@ export const Header = ({
           </div>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
+        {/* Desktop Navigation Links (Horizontal Row on Desktop) */}
+        <nav className="header-nav-desktop" aria-label="Main Navigation">
           {navLinks.map((link) => {
             const isActive = currentView === link.id;
 
@@ -155,6 +154,7 @@ export const Header = ({
                   display: 'flex',
                   alignItems: 'center',
                   gap: '5px',
+                  whiteSpace: 'nowrap',
                   transition: 'all 0.15s ease'
                 }}
                 onMouseOver={(e) => {
@@ -186,7 +186,8 @@ export const Header = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '4px',
-                marginLeft: '4px'
+                marginLeft: '4px',
+                whiteSpace: 'nowrap'
               }}
               title="Audit Active Row-Level Security Policies"
             >
@@ -197,7 +198,7 @@ export const Header = ({
         </nav>
 
         {/* Controls Right */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" style={{ flexShrink: 0 }}>
           
           {/* Role Switcher Pill */}
           <div style={{

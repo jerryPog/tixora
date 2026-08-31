@@ -96,6 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
 .items-center { align-items: center; }
 .items-start { align-items: flex-start; }
 .justify-center { justify-content: center; }
@@ -107,6 +108,93 @@ h1, h2, h3, h4, h5, h6 {
 .gap-6 { gap: 1.5rem; }
 .gap-8 { gap: 2rem; }
 .text-center { text-align: center; }
+
+.hidden { display: none !important; }
+.block { display: block !important; }
+
+@media (min-width: 640px) {
+  .sm\:flex { display: flex !important; }
+  .sm\:hidden { display: none !important; }
+  .sm\:block { display: block !important; }
+}
+
+@media (min-width: 768px) {
+  .md\:flex { display: flex !important; }
+  .md\:hidden { display: none !important; }
+  .md\:block { display: block !important; }
+  .md\:flex-row { flex-direction: row !important; }
+  .md\:items-center { align-items: center !important; }
+  .md\:text-left { text-align: left !important; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:flex { display: flex !important; flex-direction: row !important; }
+  .lg\:hidden { display: none !important; }
+  .lg\:block { display: block !important; }
+}
+
+/* Button Ghost */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Header Dedicated Styles */
+.header-nav-desktop {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  flex-direction: row;
+}
+
+@media (min-width: 1024px) {
+  .header-nav-desktop {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+
+.header-mobile-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .header-mobile-toggle {
+    display: none !important;
+  }
+}
+
+.header-brand-badge {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .header-brand-badge {
+    display: flex !important;
+    align-items: center;
+  }
+}
 
 /* Buttons - Touch Friendly & Minimalist */
 .btn {
