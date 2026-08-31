@@ -214,21 +214,64 @@ export const ScrollBackgroundCanvas = () => {
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
           }
 
-          // 2. Soft Ambient Stage Glow (Steady, non-flashing, comfortable dark atmospheric lighting)
+          // 2. Stage Volumetric Light Beams (Soft, elegant concert sweeps with reduced opacity & no flashing)
           ctx.save();
           ctx.globalCompositeOperation = 'screen';
 
           const stageOriginX = canvasWidth * 0.5;
           const stageOriginY = canvasHeight * 0.28;
 
-          // Gentle Ambient Horizon Flare
+          const laserCount = 6;
+          const laserColors = [
+            'rgba(236, 72, 153, ', // Pink / Magenta
+            'rgba(6, 182, 212, ',  // Cyan
+            'rgba(168, 85, 247, ', // Purple
+            'rgba(245, 158, 11, ', // Amber
+            'rgba(16, 185, 129, ', // Emerald
+            'rgba(59, 130, 246, '  // Electric Blue
+          ];
+
+          for (let i = 0; i < laserCount; i++) {
+            const angleOffset = ((i - (laserCount - 1) / 2) * 0.26);
+            const sweep = Math.sin(time * 0.8 + i * 1.3 + progress * Math.PI * 1.5) * 0.28;
+            const angle = Math.PI * 0.5 + angleOffset + sweep;
+
+            const beamLength = Math.max(canvasWidth, canvasHeight) * 1.35;
+            const targetX = stageOriginX + Math.cos(angle) * beamLength;
+            const targetY = stageOriginY + Math.sin(angle) * beamLength;
+
+            const beamWidth = Math.sin(time * 1.2 + i) * 3 + 14;
+
+            const laserGrad = ctx.createLinearGradient(stageOriginX, stageOriginY, targetX, targetY);
+            // Reduced, soft atmospheric opacity (comfortable and gentle on the eyes)
+            const baseAlpha = 0.08 + Math.sin(time * 1.5 + i) * 0.02;
+            laserGrad.addColorStop(0, `${laserColors[i % laserColors.length]}${baseAlpha * 1.4})`);
+            laserGrad.addColorStop(0.4, `${laserColors[i % laserColors.length]}${baseAlpha * 0.7})`);
+            laserGrad.addColorStop(1, `${laserColors[i % laserColors.length]}0)`);
+
+            ctx.lineWidth = beamWidth;
+            ctx.strokeStyle = laserGrad;
+            ctx.beginPath();
+            ctx.moveTo(stageOriginX, stageOriginY);
+            ctx.lineTo(targetX, targetY);
+            ctx.stroke();
+
+            // Soft core highlight (subtle, low-contrast, non-glaring)
+            ctx.lineWidth = Math.max(1, beamWidth * 0.12);
+            ctx.strokeStyle = `${laserColors[i % laserColors.length]}${baseAlpha * 0.85})`;
+            ctx.beginPath();
+            ctx.moveTo(stageOriginX, stageOriginY);
+            ctx.lineTo(targetX, targetY);
+            ctx.stroke();
+          }
+
+          // Gentle Ambient Horizon Flare (Soft stage glow)
           const glowGrad = ctx.createRadialGradient(
             stageOriginX, stageOriginY + canvasHeight * 0.05, 10,
             stageOriginX, stageOriginY + canvasHeight * 0.05, canvasWidth * 0.55
           );
-          // Very soft steady glow without flashing or harsh color switching
-          glowGrad.addColorStop(0, 'rgba(236, 72, 153, 0.16)');
-          glowGrad.addColorStop(0.4, 'rgba(139, 92, 246, 0.08)');
+          glowGrad.addColorStop(0, 'rgba(236, 72, 153, 0.12)');
+          glowGrad.addColorStop(0.4, 'rgba(139, 92, 246, 0.06)');
           glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
           ctx.fillStyle = glowGrad;
