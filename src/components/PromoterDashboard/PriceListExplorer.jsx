@@ -6,12 +6,15 @@ import {
   ArrowRight,
   Ticket,
   Copy,
-  Check
+  Check,
+  Map as MapIcon
 } from 'lucide-react';
+import { VenueLayoutModal } from '../VenueLayoutModal';
 
 export const PriceListExplorer = ({ selectedEventId, onSelectEventForSale }) => {
   const { events, showToast } = useApp();
   const [activeEventId, setActiveEventId] = useState(selectedEventId || events[0]?.id);
+  const [selectedVenueLayoutModal, setSelectedVenueLayoutModal] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
 
   const activeEvent = events.find((e) => e.id === activeEventId) || events[0];
@@ -140,6 +143,22 @@ ${tiersText}
               <span className="badge badge-emerald">
                 Official MRP
               </span>
+              {activeEvent.venueLayout && (
+                <button
+                  onClick={() => setSelectedVenueLayoutModal(activeEvent)}
+                  className="btn btn-secondary"
+                  style={{
+                    padding: '3px 8px',
+                    fontSize: '0.7rem',
+                    gap: '4px',
+                    borderColor: 'rgba(168, 85, 247, 0.5)',
+                    color: '#c084fc'
+                  }}
+                  title="View Official Seating & Standing Layout"
+                >
+                  <MapIcon size={11} /> Venue Map
+                </button>
+              )}
               <button
                 onClick={handleCopyPriceList}
                 className="btn btn-secondary"
@@ -211,8 +230,50 @@ ${tiersText}
             </table>
           </div>
 
+          {/* Venue Layout Callout */}
+          {activeEvent.venueLayout && (
+            <div style={{
+              marginTop: '0.85rem',
+              padding: '8px 12px',
+              background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(236, 72, 153, 0.06))',
+              borderRadius: '8px',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '8px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <MapIcon size={15} color="#c084fc" />
+                <div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#f3e8ff' }}>
+                    Venue & Seating Chart Available
+                  </div>
+                  <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
+                    Share stage zones and category maps with your buyers.
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedVenueLayoutModal(activeEvent)}
+                className="btn btn-secondary"
+                style={{
+                  padding: '4px 10px',
+                  fontSize: '0.72rem',
+                  gap: '4px',
+                  borderColor: 'rgba(168, 85, 247, 0.4)',
+                  color: '#f3e8ff',
+                  background: 'rgba(168, 85, 247, 0.2)'
+                }}
+              >
+                <MapIcon size={11} /> View Venue Chart
+              </button>
+            </div>
+          )}
+
           <div style={{
-            marginTop: '0.85rem',
+            marginTop: '0.6rem',
             padding: '8px 10px',
             background: 'rgba(255, 255, 255, 0.02)',
             borderRadius: '8px',
@@ -326,6 +387,15 @@ ${tiersText}
         </div>
 
       </div>
+
+      {/* Official Venue & Seating Layout Modal */}
+      <VenueLayoutModal
+        event={selectedVenueLayoutModal}
+        isOpen={!!selectedVenueLayoutModal}
+        onClose={() => setSelectedVenueLayoutModal(null)}
+        onSelectSaleCategory={onSelectEventForSale}
+      />
+
     </div>
   );
 };

@@ -8,13 +8,16 @@ import {
   Copy, 
   Check, 
   Image as ImageIcon, 
-  Clock
+  Clock,
+  Map as MapIcon
 } from 'lucide-react';
+import { VenueLayoutModal } from '../VenueLayoutModal';
 
 export const EventPosters = ({ onSelectEventForSale, onSelectEventForPriceList }) => {
   const { events, activePromoter, showToast } = useApp();
   const [selectedCityFilter, setSelectedCityFilter] = useState('All');
   const [selectedPosterModal, setSelectedPosterModal] = useState(null);
+  const [selectedVenueLayoutModal, setSelectedVenueLayoutModal] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [copiedPriceId, setCopiedPriceId] = useState(null);
 
@@ -189,10 +192,33 @@ ${tiersText}
                 />
 
                 {/* Badges on poster */}
-                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '5px', zIndex: 3 }}>
+                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', flexWrap: 'wrap', gap: '5px', zIndex: 3, maxWidth: '80%' }}>
                   <span className="badge" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}>
                     {event.city}
                   </span>
+                  {event.venueLayout && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedVenueLayoutModal(event);
+                      }}
+                      className="badge badge-purple"
+                      style={{
+                        background: 'rgba(168, 85, 247, 0.3)',
+                        backdropFilter: 'blur(6px)',
+                        border: '1px solid rgba(192, 132, 252, 0.4)',
+                        color: '#f3e8ff',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '2px 8px'
+                      }}
+                      title="View Official Venue & Seating Layout"
+                    >
+                      <MapIcon size={11} /> <span>Venue Map</span>
+                    </button>
+                  )}
                   {isAssigned && (
                     <span className="badge badge-emerald" style={{ background: 'rgba(16, 185, 129, 0.25)', backdropFilter: 'blur(6px)' }}>
                       <span className="pulse-dot" /> Assigned
@@ -274,7 +300,11 @@ ${tiersText}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: 'auto' }}>
                   
                   {/* Share actions row */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: event.venueLayout ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)', 
+                    gap: '4px' 
+                  }}>
                     <button
                       onClick={() => handleDownloadPoster(event, 'Story')}
                       className="btn btn-secondary"
@@ -283,6 +313,23 @@ ${tiersText}
                     >
                       <Download size={11} /> Poster
                     </button>
+
+                    {event.venueLayout && (
+                      <button
+                        onClick={() => setSelectedVenueLayoutModal(event)}
+                        className="btn btn-secondary"
+                        style={{
+                          padding: '6px 4px',
+                          fontSize: '0.72rem',
+                          gap: '3px',
+                          borderColor: 'rgba(168, 85, 247, 0.4)',
+                          color: '#c084fc'
+                        }}
+                        title="View & Share Venue Seating Layout"
+                      >
+                        <MapIcon size={11} /> Layout
+                      </button>
+                    )}
 
                     <button
                       onClick={() => handleCopyPriceList(event)}
@@ -457,17 +504,46 @@ ${tiersText}
               <div>
                 <strong>Tip:</strong> Share 9:16 on WhatsApp or Instagram Story!
               </div>
-              <button
-                onClick={() => handleCopyPriceList(selectedPosterModal)}
-                className="btn btn-secondary"
-                style={{ padding: '4px 8px', fontSize: '0.72rem', gap: '3px' }}
-              >
-                <Copy size={11} /> Copy Price List
-              </button>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {selectedPosterModal.venueLayout && (
+                  <button
+                    onClick={() => {
+                      const ev = selectedPosterModal;
+                      setSelectedPosterModal(null);
+                      setSelectedVenueLayoutModal(ev);
+                    }}
+                    className="btn btn-secondary"
+                    style={{
+                      padding: '4px 8px',
+                      fontSize: '0.72rem',
+                      gap: '4px',
+                      borderColor: 'rgba(168, 85, 247, 0.4)',
+                      color: '#c084fc'
+                    }}
+                  >
+                    <MapIcon size={11} /> View Venue Layout
+                  </button>
+                )}
+                <button
+                  onClick={() => handleCopyPriceList(selectedPosterModal)}
+                  className="btn btn-secondary"
+                  style={{ padding: '4px 8px', fontSize: '0.72rem', gap: '3px' }}
+                >
+                  <Copy size={11} /> Copy Price List
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Official Venue & Seating Layout Modal */}
+      <VenueLayoutModal
+        event={selectedVenueLayoutModal}
+        isOpen={!!selectedVenueLayoutModal}
+        onClose={() => setSelectedVenueLayoutModal(null)}
+        onSelectSaleCategory={onSelectEventForSale}
+      />
 
     </div>
   );

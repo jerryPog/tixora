@@ -31,6 +31,19 @@ export const INITIAL_EVENTS = [
     bannerUrl: "/posters/anyma-aeden-poster-2.jpg",
     posterPosition: "center 20%",
     description: "Matteo Milleri's groundbreaking melodic-techno and audiovisual immersive production combining cinematic visuals and futuristic themes.",
+    venueLayout: {
+      type: "anyma",
+      title: "ANYMA presents AEDEN - Mumbai",
+      subtitle: "Mahalaxmi Racecourse, Mumbai • 21 November 2026",
+      sections: [
+        { name: "STAGE", type: "stage" },
+        { name: "GA FRONT", type: "ga-front", price: "₹8,000" },
+        { name: "GA BACK", type: "ga-back", price: "₹4,250" },
+        { name: "VVIP EXPERIENCE", type: "vvip", price: "₹17,500+" },
+        { name: "LOUNGE", type: "lounge", price: "₹32,000" }
+      ],
+      footerNote: "CO-PRESENTED BY RuPay | PRODUCED & PROMOTED BY sunburn / LIVE NATION"
+    },
     priceList: [
       { id: "p4", category: "GA Back", faceValue: 4250, promoterPrice: 4250, commissionPct: 7.5, commissionAmount: 318, quotaTotal: 150, quotaSold: 94 },
       { id: "p5", category: "GA Front", faceValue: 8000, promoterPrice: 8000, commissionPct: 8.5, commissionAmount: 680, quotaTotal: 80, quotaSold: 61 },
@@ -50,6 +63,18 @@ export const INITIAL_EVENTS = [
     bannerUrl: "/posters/fred-again-india-poster-2.png",
     posterPosition: "center 18%",
     description: "British electronic producer and live performer bringing emotionally raw, high-energy live sampling and beats from Actual Life to USB.",
+    venueLayout: {
+      type: "fred-again",
+      title: "Fred again.. India Tour 2026 - Delhi NCR",
+      subtitle: "Leisure Valley Ground, Gurugram • 05 December 2026",
+      sections: [
+        { name: "STAGE", type: "stage", color: "#000000", textColor: "#ffffff" },
+        { name: "GA", type: "ga", color: "#090a0d", textColor: "#ffffff", price: "₹1,750 – ₹3,500" }
+      ],
+      legend: [
+        { label: "STUDENT GA", price: "₹1,750", color: "#000000" }
+      ]
+    },
     priceList: [
       { id: "p8", category: "Student Pass (Verified)", faceValue: 1750, promoterPrice: 1750, commissionPct: 8.0, commissionAmount: 140, quotaTotal: 250, quotaSold: 180 },
       { id: "p9", category: "General Admission (GA)", faceValue: 3500, promoterPrice: 3500, commissionPct: 8.5, commissionAmount: 297, quotaTotal: 200, quotaSold: 145 }
@@ -84,6 +109,21 @@ export const INITIAL_EVENTS = [
     bannerUrl: "/posters/chainsmokers-india-banner.jpg",
     posterPosition: "center 20%",
     description: "Grammy-winning electronic duo Andrew Taggart and Alex Pall performing Closer, Paris, Something Just Like This and explosive new drops.",
+    venueLayout: {
+      type: "chainsmokers",
+      title: "Sunburn Arena Ft. The Chainsmokers",
+      subtitle: "NICE Grounds, Bengaluru • 20 December 2026",
+      sections: [
+        { name: "STAGE", type: "stage", color: "#ffffff", textColor: "#000000" },
+        { name: "FANPIT", type: "fanpit", color: "#eab308", textColor: "#ffffff", price: "₹6,000" },
+        { name: "VIP", type: "vip", color: "#ea580c", textColor: "#ffffff", price: "₹2,500 (Early Bird)" },
+        { name: "GA", type: "ga", color: "#fed7aa", textColor: "#000000", price: "₹1,500 (Early Bird)" }
+      ],
+      legend: [
+        { label: "EARLY BIRD GA", price: "₹1,500", color: "#3f3f46" },
+        { label: "EARLY BIRD VIP", price: "₹2,500", color: "#ea580c" }
+      ]
+    },
     priceList: [
       { id: "p12", category: "Early Bird GA", faceValue: 1500, promoterPrice: 1500, commissionPct: 7.0, commissionAmount: 105, quotaTotal: 120, quotaSold: 120 },
       { id: "p13", category: "GA Phase 1", faceValue: 2000, promoterPrice: 2000, commissionPct: 7.5, commissionAmount: 150, quotaTotal: 150, quotaSold: 88 },
@@ -104,6 +144,18 @@ export const INITIAL_EVENTS = [
     bannerUrl: "/posters/khalid-india-banner.jpg",
     posterPosition: "center 25%",
     description: "Multi-platinum R&B/pop superstar Khalid bringing the soulful warmth of Location, Young Dumb & Broke, and Talk to Delhi NCR.",
+    venueLayout: {
+      type: "khalid",
+      title: "KHALID LIVE IN DELHI NCR",
+      subtitle: "HUDA Gymkhana Club, Gurugram • 13 December 2026 | 06:00 PM Onwards",
+      sections: [
+        { name: "STAGE", type: "stage", color: "#3f3f46", textColor: "#ffffff" },
+        { name: "FANPIT", type: "section", color: "#fce7f3", borderColor: "#fda4af", textColor: "#831843", price: "₹6,999" },
+        { name: "GA (+)", type: "section", color: "#fef3c7", borderColor: "#fde047", textColor: "#78350f", price: "₹3,549" },
+        { name: "GA", type: "section", color: "#dcfce7", borderColor: "#86efac", textColor: "#14532d", price: "₹2,549" }
+      ],
+      note: "Standing Section/s"
+    },
     priceList: [
       { id: "p17", category: "General Access", faceValue: 2549, promoterPrice: 2549, commissionPct: 7.5, commissionAmount: 191, quotaTotal: 100, quotaSold: 25 },
       { id: "p18", category: "General Access+", faceValue: 3549, promoterPrice: 3549, commissionPct: 8.0, commissionAmount: 284, quotaTotal: 80, quotaSold: 19 },

@@ -255,6 +255,17 @@ export const ChatAssistant = ({
       };
     }
 
+    // 9b. Venue & Seating Layouts
+    if (q.includes('layout') || q.includes('seating') || q.includes('standing') || q.includes('stage') || q.includes('venue map') || q.includes('fanpit') || q.includes('where is the stage')) {
+      return {
+        text: `🗺️ **Official 2026 Concert Venue Layouts:**\n\nPromoters can view, download, and share high-res stage & seating layouts directly with buyers:\n\n• 💖 **Khalid Delhi NCR:** STAGE → FANPIT (₹6,999) → GA(+) (₹3,549) → GA (₹2,549)\n• 🟡 **The Chainsmokers Bengaluru:** STAGE → Centered FANPIT (₹6,000) → VIP (₹2,500/₹3,000) → GA (₹1,500/₹2,000)\n• 🎹 **Fred again.. Delhi NCR:** STAGE → Massive Arena GA (₹1,750 Student / ₹3,500 GA)\n• 🌌 **Anyma ÆDEN Mumbai:** Stage flanked by Backstage → GA Front (₹8,000) & GA Back (₹4,250) + VVIP Experience pillars & VIP Lounge\n\n*Click "Concert Posters" or "Price Lists" to open the interactive Venue Chart!*`,
+        actions: [
+          { label: "🗺️ Explore Concert Posters & Maps", view: "posters" },
+          { label: "💰 View Official Price Lists", view: "prices" }
+        ]
+      };
+    }
+
     // 10. Artist Songs & Info Matching
     if (q.includes('fred') || q.includes('again')) {
       const a = ARTIST_KNOWLEDGE['fred again'];

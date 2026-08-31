@@ -11,7 +11,7 @@ import {
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v10_support_tickets';
+const STORAGE_VERSION = 'v11_venue_layouts';
 
 const INITIAL_SUPPORT_TICKETS = [
   {
