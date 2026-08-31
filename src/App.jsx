@@ -349,8 +349,8 @@ const MainDashboard = () => {
                 { id: 'reviews', label: 'Reviews', icon: <Star size={15} color="#f59e0b" /> },
                 { id: 'about', label: 'About Us', icon: <Info size={15} /> },
                 { id: 'contact', label: 'Contact', icon: <Phone size={15} /> },
-                { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={15} /> },
-                { id: 'support', label: 'Support requests', icon: <Headphones size={15} /> }
+                { id: 'tickets', label: 'Support Tickets', icon: <LifeBuoy size={15} color="#ec4899" /> },
+                { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
