@@ -818,7 +818,6 @@ const MainDashboard = () => {
                   <button onClick={() => navigateTo('about')} className="footer-link">About Us & Founders</button>
                   <button onClick={() => navigateTo('reviews')} className="footer-link">Verified Reviews</button>
                   <button onClick={() => navigateTo('contact')} className="footer-link">Contact & Help Desk</button>
-                  <button onClick={() => navigateTo('404')} className="footer-link">404 Recovery Test</button>
                 </div>
               </div>
 
@@ -828,7 +827,7 @@ const MainDashboard = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <button onClick={() => setIsLegalModalOpen(true)} className="footer-link">Compliance Policy</button>
-                  <button onClick={() => setIsRLSModalOpen(true)} className="footer-link">Row-Level Security (RLS)</button>
+                  <button onClick={() => setIsLegalModalOpen(true)} className="footer-link">Terms & Privacy</button>
                   <button onClick={handleOpenFAQ} className="footer-link">FAQ Center</button>
                 </div>
               </div>
@@ -848,8 +847,20 @@ const MainDashboard = () => {
             fontSize: '0.74rem',
             color: 'var(--text-muted)'
           }}>
-            <div>
-              © 2026 Tixora India. All rights reserved. 100% verified digital pass issuance.
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>© 2026 Tixora India. All rights reserved.</span>
+              <span style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid var(--border-color)',
+                padding: '2px 7px',
+                borderRadius: '4px',
+                fontSize: '0.68rem',
+                color: '#a1a1aa',
+                fontWeight: 600,
+                letterSpacing: '0.02em'
+              }}>
+                v1.12.3
+              </span>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
@@ -871,10 +882,6 @@ const MainDashboard = () => {
               <span>•</span>
               <span className="flex items-center gap-1">
                 <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <Lock size={11} color="#60a5fa" /> Supabase RLS Protected
               </span>
             </div>
           </div>

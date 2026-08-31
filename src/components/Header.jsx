@@ -169,32 +169,6 @@ export const Header = ({
               </button>
             );
           })}
-
-          {/* RLS Security Inspector Trigger */}
-          {onOpenRLSInspector && (
-            <button
-              onClick={onOpenRLSInspector}
-              style={{
-                background: 'rgba(16, 185, 129, 0.1)',
-                border: '1px solid rgba(16, 185, 129, 0.25)',
-                color: '#10b981',
-                padding: '4px 9px',
-                borderRadius: '6px',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                marginLeft: '4px',
-                whiteSpace: 'nowrap'
-              }}
-              title="Audit Active Row-Level Security Policies"
-            >
-              <Lock size={11} />
-              <span>RLS Active</span>
-            </button>
-          )}
         </nav>
 
         {/* Controls Right */}
@@ -427,7 +401,7 @@ export const Header = ({
           </div>
 
           {/* Quick Helpline in Mobile Menu */}
-          <div style={{ marginTop: '0.5rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ marginTop: '0.5rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border-color)' }}>
             <a
               href="https://wa.me/917892145475"
               target="_blank"
@@ -436,25 +410,6 @@ export const Header = ({
             >
               <Phone size={12} /> Helpline: +91 78921 45475
             </a>
-
-            {onOpenRLSInspector && (
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenRLSInspector();
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#60a5fa',
-                  fontSize: '0.72rem',
-                  textDecoration: 'underline',
-                  cursor: 'pointer'
-                }}
-              >
-                Security Matrix
-              </button>
-            )}
           </div>
         </div>
       )}
