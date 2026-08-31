@@ -207,7 +207,7 @@ export const LiveActivityPopup = ({ onSelectEvent }) => {
         }}>
           <img
             src={currentActivity.poster}
-            alt={currentActivity.event}
+            alt={`Live ticketing activity for ${currentActivity.event}`}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
           {/* Status Icon Badge */}

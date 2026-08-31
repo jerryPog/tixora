@@ -53,7 +53,7 @@ export const PromoterManager = () => {
                       <div className="flex items-center gap-2.5">
                         <img
                           src={p.avatar}
-                          alt={p.name}
+                          alt={`Profile photo of verified promoter ${p.name}`}
                           style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
                         />
                         <div>

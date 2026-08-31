@@ -3,12 +3,24 @@ import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
 import { ScrollBackgroundCanvas } from './components/ScrollBackgroundCanvas';
 import { ChatAssistant } from './components/ChatAssistant';
+import { HeroCTA } from './components/HeroCTA';
+import { Breadcrumbs } from './components/Breadcrumbs';
+import { ReviewsSection } from './components/ReviewsSection';
+import { CookieConsent } from './components/CookieConsent';
+import { RLSInspectorModal } from './components/RLSInspectorModal';
+import { WaitlistPage } from './components/Pages/WaitlistPage';
+import { ThankYouPage } from './components/Pages/ThankYouPage';
+import { AboutPage } from './components/Pages/AboutPage';
+import { ContactPage } from './components/Pages/ContactPage';
+import { NotFoundPage } from './components/Pages/NotFoundPage';
+
 import { PromoterOverview } from './components/PromoterDashboard/PromoterOverview';
 import { EventPosters } from './components/PromoterDashboard/EventPosters';
 import { PriceListExplorer } from './components/PromoterDashboard/PriceListExplorer';
 import { SalesLedger } from './components/PromoterDashboard/SalesLedger';
 import { RecordSaleModal } from './components/PromoterDashboard/RecordSaleModal';
 import { RewardsAndReferrals } from './components/PromoterDashboard/RewardsAndReferrals';
+
 import { AdminOverview } from './components/AdminDashboard/AdminOverview';
 import { EventManager } from './components/AdminDashboard/EventManager';
 import { PromoterManager } from './components/AdminDashboard/PromoterManager';
@@ -18,20 +30,26 @@ import { LegalComplianceModal } from './components/LegalComplianceModal';
 import { FAQSection } from './components/FAQSection';
 import { ToastContainer } from './components/Toast';
 import { LiveActivityPopup } from './components/LiveActivityPopup';
+import { usePageSEO } from './hooks/usePageSEO';
+
 import { 
   Ticket, 
   Tag, 
   Receipt, 
   Award, 
   Gift,
-  CheckCircle2,
-  ShieldCheck,
-  Scale,
-  Users,
-  TrendingUp,
-  Plus,
-  Phone,
-  HelpCircle
+  CheckCircle2, 
+  ShieldCheck, 
+  Scale, 
+  Users, 
+  TrendingUp, 
+  Plus, 
+  Phone, 
+  HelpCircle,
+  Zap,
+  Star,
+  Info,
+  Lock
 } from 'lucide-react';
 import './index.css';
 
@@ -133,42 +151,62 @@ const PromoterCommissionRules = () => {
 const MainDashboard = () => {
   const { currentRole } = useApp();
 
-  // Promoter View State
-  const [promoterTab, setPromoterTab] = useState('posters'); // 'posters' | 'prices' | 'ledger' | 'tiers' | 'faqs'
+  // Active View Navigation State
+  // Views: 'posters' | 'prices' | 'ledger' | 'rewards' | 'tiers' | 'faqs' | 'waitlist' | 'about' | 'contact' | 'reviews' | 'thank-you' | '404'
+  const [activeView, setActiveView] = useState('posters');
   const [selectedEventForPrices, setSelectedEventForPrices] = useState(null);
   const [externalChatQuery, setExternalChatQuery] = useState(null);
+  const [lastOrderData, setLastOrderData] = useState(null);
 
-  // Modals
+  // Modals State
   const [isRecordSaleOpen, setIsRecordSaleOpen] = useState(false);
   const [initialSaleEventId, setInitialSaleEventId] = useState(null);
   const [initialSaleCategory, setInitialSaleCategory] = useState(null);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+  const [isRLSModalOpen, setIsRLSModalOpen] = useState(false);
 
   // Admin View State
   const [adminTab, setAdminTab] = useState('events'); // 'events' | 'promoters' | 'sales' | 'faqs'
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
 
-  // On page load or browser refresh, always return to the top of the home page
-  useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-    window.scrollTo(0, 0);
+  // Dynamic SEO Page Title & Meta Tags Hook
+  usePageSEO(activeView);
 
-    // Clean any trailing hashes or query params so the user always lands at root home
-    if (window.location.hash || window.location.search) {
-      window.history.replaceState(null, '', window.location.pathname);
+  // Hash-based Deep Linking Listener
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      const validViews = ['events', 'posters', 'waitlist', 'prices', 'ledger', 'rewards', 'tiers', 'reviews', 'about', 'contact', 'faqs', 'thank-you', '404'];
+      
+      if (hash === 'events') {
+        setActiveView('posters');
+      } else if (validViews.includes(hash)) {
+        setActiveView(hash);
+      }
+    };
+
+    if (window.location.hash) {
+      handleHashChange();
     }
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  const navigateTo = (viewId) => {
+    setActiveView(viewId);
+    window.location.hash = viewId === 'posters' ? 'events' : viewId;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleGoHome = () => {
-    setPromoterTab('posters');
+    navigateTo('posters');
     setAdminTab('events');
     setIsRecordSaleOpen(false);
     setIsCreateEventOpen(false);
     setIsLegalModalOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsRLSModalOpen(false);
   };
 
   const handleOpenSaleWithCategory = (eventId, category = null) => {
@@ -179,8 +217,7 @@ const MainDashboard = () => {
 
   const handleViewPriceList = (eventId) => {
     setSelectedEventForPrices(eventId);
-    setPromoterTab('prices');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigateTo('prices');
   };
 
   const handleEditEvent = (event) => {
@@ -201,9 +238,43 @@ const MainDashboard = () => {
     if (currentRole === 'admin') {
       setAdminTab('faqs');
     } else {
-      setPromoterTab('faqs');
+      navigateTo('faqs');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleWaitlistSuccess = (data) => {
+    setLastOrderData(data);
+    navigateTo('thank-you');
+  };
+
+  // Breadcrumbs Generator
+  const getBreadcrumbs = () => {
+    switch (activeView) {
+      case 'waitlist':
+        return [{ label: 'Campus Ambassador Waitlist', view: 'waitlist' }];
+      case 'about':
+        return [{ label: 'About Tixora & Founders', view: 'about' }];
+      case 'contact':
+        return [{ label: 'Contact Support & Helpline', view: 'contact' }];
+      case 'reviews':
+        return [{ label: 'Verified Reviews & Stories', view: 'reviews' }];
+      case 'prices':
+        return [{ label: 'Concert Rates & Price Calculator', view: 'prices' }];
+      case 'ledger':
+        return [{ label: 'Promoter Sales Ledger', view: 'ledger' }];
+      case 'rewards':
+        return [{ label: 'Rewards & Referrals', view: 'rewards' }];
+      case 'tiers':
+        return [{ label: 'Commission Tiers', view: 'tiers' }];
+      case 'faqs':
+        return [{ label: 'FAQ & Policies Center', view: 'faqs' }];
+      case 'thank-you':
+        return [{ label: 'Confirmation & Digital Pass', view: 'thank-you' }];
+      case '404':
+        return [{ label: '404 Page Not Found', view: '404' }];
+      default:
+        return [];
+    }
   };
 
   return (
@@ -212,11 +283,14 @@ const MainDashboard = () => {
       {/* Scroll-Driven Dynamic Video Frame Background */}
       <ScrollBackgroundCanvas />
 
-      {/* Universal Header */}
+      {/* Universal Responsive Header & Navigation Bar */}
       <Header
+        currentView={activeView}
+        onNavigate={navigateTo}
         onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
         onOpenCreateEvent={handleAddNewEvent}
         onOpenLegalCompliance={() => setIsLegalModalOpen(true)}
+        onOpenRLSInspector={() => setIsRLSModalOpen(true)}
         onOpenFAQ={handleOpenFAQ}
         onGoHome={handleGoHome}
       />
@@ -224,14 +298,21 @@ const MainDashboard = () => {
       {/* Main Content Area */}
       <main className="container section" style={{ flex: 1, paddingTop: '1.25rem' }}>
         
-        {/* ================= PROMOTER DASHBOARD ================= */}
+        {/* Dynamic Breadcrumb Navigation */}
+        {activeView !== 'posters' && (
+          <Breadcrumbs items={getBreadcrumbs()} onNavigate={navigateTo} />
+        )}
+
+        {/* ================= PROMOTER / PUBLIC DASHBOARD ================= */}
         {currentRole === 'promoter' ? (
           <div>
             
-            {/* Top KPI Strip */}
-            <PromoterOverview />
+            {/* Top KPI Strip (Visible on Dashboard Tabs) */}
+            {['posters', 'prices', 'ledger', 'rewards', 'tiers'].includes(activeView) && (
+              <PromoterOverview />
+            )}
 
-            {/* Desktop Navigation Tabs (Hidden on mobile) */}
+            {/* Desktop Navigation Tabs */}
             <div style={{
               display: 'flex',
               gap: '0.35rem',
@@ -242,21 +323,25 @@ const MainDashboard = () => {
               WebkitOverflowScrolling: 'touch'
             }}>
               {[
-                { id: 'posters', label: 'Events & Posters', icon: <Ticket size={15} /> },
+                { id: 'posters', label: 'Events & Lineup', icon: <Ticket size={15} /> },
+                { id: 'waitlist', label: 'Ambassador Waitlist', icon: <Zap size={15} color="#f59e0b" /> },
                 { id: 'prices', label: 'Price Lists & Calculator', icon: <Tag size={15} /> },
                 { id: 'ledger', label: 'My Sales Ledger', icon: <Receipt size={15} /> },
                 { id: 'rewards', label: 'Rewards & Referrals', icon: <Gift size={15} /> },
                 { id: 'tiers', label: 'Tier Milestones', icon: <Award size={15} /> },
-                { id: 'faqs', label: 'FAQs & Policies', icon: <HelpCircle size={15} /> }
+                { id: 'reviews', label: 'Reviews', icon: <Star size={15} color="#f59e0b" /> },
+                { id: 'about', label: 'About Us', icon: <Info size={15} /> },
+                { id: 'contact', label: 'Contact', icon: <Phone size={15} /> },
+                { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setPromoterTab(tab.id)}
+                  onClick={() => navigateTo(tab.id)}
                   style={{
-                    background: promoterTab === tab.id ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                    color: promoterTab === tab.id ? '#ffffff' : 'var(--text-muted)',
+                    background: activeView === tab.id ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                    color: activeView === tab.id ? '#ffffff' : 'var(--text-muted)',
                     border: 'none',
-                    borderBottom: promoterTab === tab.id ? '2px solid #ffffff' : '2px solid transparent',
+                    borderBottom: activeView === tab.id ? '2px solid #ffffff' : '2px solid transparent',
                     padding: '8px 14px',
                     borderRadius: '6px 6px 0 0',
                     fontSize: '0.82rem',
@@ -275,14 +360,27 @@ const MainDashboard = () => {
               ))}
             </div>
 
-            {/* Subviews */}
-            {promoterTab === 'posters' && (
+            {/* Subview 1: Concert Lineup & Hero CTA */}
+            {activeView === 'posters' && (
               <>
+                {/* High-Impact Above The Fold Hero CTA */}
+                <HeroCTA
+                  onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
+                  onNavigateToWaitlist={() => navigateTo('waitlist')}
+                  onNavigateToEvents={() => navigateTo('posters')}
+                  onNavigateToReviews={() => navigateTo('reviews')}
+                />
+
                 <EventPosters
                   onSelectEventForSale={(eId) => handleOpenSaleWithCategory(eId, null)}
                   onSelectEventForPriceList={handleViewPriceList}
                 />
                 
+                {/* Real Reviews Section on Homepage */}
+                <div style={{ marginTop: '3rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
+                  <ReviewsSection />
+                </div>
+
                 {/* Live FAQ Section on Homepage */}
                 <div style={{ marginTop: '2.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
                   <FAQSection onAskInChat={handleAskInChat} />
@@ -290,29 +388,83 @@ const MainDashboard = () => {
               </>
             )}
 
-            {promoterTab === 'prices' && (
+            {/* Subview 2: Waitlist Page */}
+            {activeView === 'waitlist' && (
+              <WaitlistPage
+                onSubmitSuccess={handleWaitlistSuccess}
+                onNavigateToEvents={() => navigateTo('posters')}
+              />
+            )}
+
+            {/* Subview 3: Price List & Calculator */}
+            {activeView === 'prices' && (
               <PriceListExplorer
                 selectedEventId={selectedEventForPrices}
                 onSelectEventForSale={(eId, cat) => handleOpenSaleWithCategory(eId, cat)}
               />
             )}
 
-            {promoterTab === 'ledger' && (
+            {/* Subview 4: Sales Ledger */}
+            {activeView === 'ledger' && (
               <SalesLedger
                 onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
               />
             )}
 
-            {promoterTab === 'rewards' && (
+            {/* Subview 5: Rewards & Referrals */}
+            {activeView === 'rewards' && (
               <RewardsAndReferrals />
             )}
 
-            {promoterTab === 'tiers' && (
+            {/* Subview 6: Commission Tiers */}
+            {activeView === 'tiers' && (
               <PromoterCommissionRules />
             )}
 
-            {promoterTab === 'faqs' && (
+            {/* Subview 7: Real Reviews */}
+            {activeView === 'reviews' && (
+              <ReviewsSection />
+            )}
+
+            {/* Subview 8: About Us Page */}
+            {activeView === 'about' && (
+              <AboutPage
+                onNavigateToEvents={() => navigateTo('posters')}
+                onNavigateToWaitlist={() => navigateTo('waitlist')}
+                onNavigateToContact={() => navigateTo('contact')}
+              />
+            )}
+
+            {/* Subview 9: Contact Page */}
+            {activeView === 'contact' && (
+              <ContactPage
+                onOpenFAQ={handleOpenFAQ}
+                onNavigateToEvents={() => navigateTo('posters')}
+              />
+            )}
+
+            {/* Subview 10: FAQ Center */}
+            {activeView === 'faqs' && (
               <FAQSection onAskInChat={handleAskInChat} />
+            )}
+
+            {/* Subview 11: Thank You Page */}
+            {activeView === 'thank-you' && (
+              <ThankYouPage
+                orderData={lastOrderData}
+                onNavigateToHome={handleGoHome}
+                onNavigateToLedger={() => navigateTo('ledger')}
+              />
+            )}
+
+            {/* Subview 12: Custom 404 Page */}
+            {activeView === '404' && (
+              <NotFoundPage
+                onNavigateToHome={handleGoHome}
+                onSelectEvent={(eId) => {
+                  handleViewPriceList(eId);
+                }}
+              />
             )}
 
           </div>
@@ -325,7 +477,7 @@ const MainDashboard = () => {
               onOpenCreateEvent={handleAddNewEvent}
             />
 
-            {/* Additional Admin Tab Strip for FAQs */}
+            {/* Admin Tab Strip */}
             <div style={{
               display: 'flex',
               gap: '0.35rem',
@@ -408,19 +560,19 @@ const MainDashboard = () => {
         {currentRole === 'promoter' ? (
           <>
             <button
-              onClick={() => { setPromoterTab('posters'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${promoterTab === 'posters' ? 'active' : ''}`}
+              onClick={() => navigateTo('posters')}
+              className={`mobile-nav-item ${activeView === 'posters' ? 'active' : ''}`}
             >
               <Ticket size={18} />
               <span>Events</span>
             </button>
 
             <button
-              onClick={() => { setPromoterTab('rewards'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${promoterTab === 'rewards' ? 'active' : ''}`}
+              onClick={() => navigateTo('waitlist')}
+              className={`mobile-nav-item ${activeView === 'waitlist' ? 'active' : ''}`}
             >
-              <Gift size={18} />
-              <span>Rewards</span>
+              <Zap size={18} />
+              <span>Waitlist</span>
             </button>
 
             {/* Floating Quick Action in Center */}
@@ -446,16 +598,16 @@ const MainDashboard = () => {
             </button>
 
             <button
-              onClick={() => { setPromoterTab('ledger'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${promoterTab === 'ledger' ? 'active' : ''}`}
+              onClick={() => navigateTo('ledger')}
+              className={`mobile-nav-item ${activeView === 'ledger' ? 'active' : ''}`}
             >
               <Receipt size={18} />
               <span>Ledger</span>
             </button>
 
             <button
-              onClick={() => { setPromoterTab('faqs'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${promoterTab === 'faqs' ? 'active' : ''}`}
+              onClick={() => navigateTo('faqs')}
+              className={`mobile-nav-item ${activeView === 'faqs' ? 'active' : ''}`}
             >
               <HelpCircle size={18} />
               <span>FAQs</span>
@@ -533,114 +685,153 @@ const MainDashboard = () => {
         onClose={() => setIsLegalModalOpen(false)}
       />
 
+      <RLSInspectorModal
+        isOpen={isRLSModalOpen}
+        onClose={() => setIsRLSModalOpen(false)}
+      />
+
       {/* Action Toasts & Realtime Live Activity FOMO Pulse */}
       <ToastContainer />
       <LiveActivityPopup onSelectEvent={(eId) => handleOpenSaleWithCategory(eId, null)} />
 
-      {/* Footer with Official Logo, Founders Attribution & Helpline */}
+      {/* Working Cookie Consent Banner */}
+      <CookieConsent onOpenPolicy={() => setIsLegalModalOpen(true)} />
+
+      {/* Rich Footer with Founders, Internal Links & Helpline */}
       <footer style={{
         borderTop: '1px solid var(--border-color)',
-        padding: '1.75rem 0',
-        background: 'rgba(7, 8, 10, 0.88)',
+        padding: '2.5rem 0 2rem',
+        background: 'rgba(7, 8, 10, 0.94)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         marginTop: 'auto'
       }}>
-        <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="container flex flex-col gap-6">
           
-          {/* Brand Logo & Founders Tag */}
-          <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left">
-            <div 
-              onClick={handleGoHome}
-              className="flex items-center gap-2"
-              style={{ cursor: 'pointer' }}
-              title="Return to Tixora Home"
-            >
-              <img
-                src="/tixora-logo.png"
-                alt="Tixora — LIVE THE HYPE"
+          {/* Main Footer Row */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            
+            {/* Brand Logo & Founders Attribution */}
+            <div className="flex flex-col gap-2">
+              <div 
+                onClick={handleGoHome}
+                className="flex items-center gap-2"
+                style={{ cursor: 'pointer' }}
+                title="Return to Tixora Home"
+              >
+                <img
+                  src="/tixora-logo.png"
+                  alt="Tixora — LIVE THE HYPE official emblem"
+                  style={{
+                    height: '34px',
+                    width: 'auto',
+                    borderRadius: '5px',
+                    display: 'block'
+                  }}
+                />
+              </div>
+
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '9999px',
+                padding: '3px 12px',
+                fontSize: '0.74rem',
+                color: '#e4e4e7',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                width: 'fit-content'
+              }}>
+                <span><strong>Ronak Jain R</strong> (Founder)</span>
+                <span style={{ color: 'var(--text-muted)' }}>•</span>
+                <span><strong>Anshul S Balan</strong> (Co-Founder)</span>
+              </div>
+            </div>
+
+            {/* Internal Links Column Matrix */}
+            <div className="flex flex-wrap gap-x-8 gap-y-3" style={{ fontSize: '0.78rem' }}>
+              <div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+                  Platform
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <button onClick={() => navigateTo('posters')} className="footer-link">Concerts & Passes</button>
+                  <button onClick={() => navigateTo('waitlist')} className="footer-link">Campus Ambassador</button>
+                  <button onClick={() => navigateTo('prices')} className="footer-link">Price Calculator</button>
+                  <button onClick={() => navigateTo('rewards')} className="footer-link">Referral Rewards</button>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+                  Company
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <button onClick={() => navigateTo('about')} className="footer-link">About Us & Founders</button>
+                  <button onClick={() => navigateTo('reviews')} className="footer-link">Verified Reviews</button>
+                  <button onClick={() => navigateTo('contact')} className="footer-link">Contact & Help Desk</button>
+                  <button onClick={() => navigateTo('404')} className="footer-link">404 Recovery Test</button>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+                  Trust & Security
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <button onClick={() => setIsLegalModalOpen(true)} className="footer-link">Compliance Policy</button>
+                  <button onClick={() => setIsRLSModalOpen(true)} className="footer-link">Row-Level Security (RLS)</button>
+                  <button onClick={handleOpenFAQ} className="footer-link">FAQ Center</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Sub-footer Strip */}
+          <div style={{
+            borderTop: '1px solid var(--border-color)',
+            paddingTop: '1.25rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '12px',
+            fontSize: '0.74rem',
+            color: 'var(--text-muted)'
+          }}>
+            <div>
+              © 2026 Tixora India. All rights reserved. 100% verified digital pass issuance.
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <a
+                href="https://wa.me/917892145475"
+                target="_blank"
+                rel="noreferrer"
                 style={{
-                  height: '32px',
-                  width: 'auto',
-                  borderRadius: '5px',
-                  display: 'block'
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  color: '#34d399',
+                  textDecoration: 'none',
+                  fontWeight: 600
                 }}
-              />
-            </div>
-
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '9999px',
-              padding: '3px 12px',
-              fontSize: '0.74rem',
-              color: '#e4e4e7',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}>
-              <span><strong>Ronak Jain R</strong> (Founder)</span>
-              <span style={{ color: 'var(--text-muted)' }}>•</span>
-              <span><strong>Anshul S Balan</strong> (Co-Founder)</span>
+              >
+                <Phone size={12} /> Helpline: +91 78921 45475
+              </a>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <Lock size={11} color="#60a5fa" /> Supabase RLS Protected
+              </span>
             </div>
           </div>
 
-          {/* Queries & Helpline and Legal Links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.74rem', color: 'var(--text-muted)', justifyContent: 'center' }}>
-            <a
-              href="https://wa.me/917892145475"
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                color: '#34d399',
-                textDecoration: 'none',
-                fontWeight: 600
-              }}
-            >
-              <Phone size={12} /> Helpline: +91 78921 45475
-            </a>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <ShieldCheck size={12} color="#10b981" /> DigiLocker Verified
-            </span>
-            <span>•</span>
-            <button
-              onClick={handleOpenFAQ}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#ffffff',
-                cursor: 'pointer',
-                padding: 0,
-                textDecoration: 'underline',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '3px'
-              }}
-            >
-              <HelpCircle size={12} /> FAQ Center
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => setIsLegalModalOpen(true)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#60a5fa',
-                cursor: 'pointer',
-                padding: 0,
-                textDecoration: 'underline',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '3px'
-              }}
-            >
-              <Scale size={12} /> Compliance Policy
-            </button>
-          </div>
         </div>
       </footer>
 

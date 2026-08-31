@@ -158,6 +158,7 @@ ${tiersText}
                   <img
                     src={event.posterUrl}
                     alt=""
+                    aria-hidden="true"
                     style={{ 
                       width: '130%', 
                       height: '130%', 
@@ -172,7 +173,7 @@ ${tiersText}
                 {/* Sharp uncropped official poster */}
                 <img
                   src={event.posterUrl}
-                  alt={event.name}
+                  alt={`Official verified promotional poster for ${event.name} in ${event.city} 2026`}
                   className="poster-img"
                   style={{ 
                     position: 'relative', 
@@ -400,7 +401,7 @@ ${tiersText}
                 }}>
                   <img
                     src={selectedPosterModal.posterUrl}
-                    alt="Story Poster"
+                    alt={`High resolution 9:16 mobile story poster for ${selectedPosterModal.name}`}
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 </div>
@@ -427,7 +428,7 @@ ${tiersText}
                 }}>
                   <img
                     src={selectedPosterModal.bannerUrl}
-                    alt="Feed Banner"
+                    alt={`High resolution 16:9 feed promotional banner for ${selectedPosterModal.name}`}
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 </div>
