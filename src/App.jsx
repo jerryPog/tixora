@@ -18,7 +18,6 @@ import { FestivalCountdown } from './components/FestivalCountdown';
 import { TourSchedule } from './components/TourSchedule';
 import { ArtistLineupShowcase } from './components/ArtistLineupShowcase';
 import { ExperienceTeaser } from './components/ExperienceTeaser';
-import { PartnerLogoStrip } from './components/PartnerLogoStrip';
 import { FestivalStatsStrip } from './components/FestivalStatsStrip';
 import { TourNewsSection } from './components/TourNewsSection';
 
@@ -420,10 +419,7 @@ const MainDashboard = () => {
                 {/* 6. Cinematic Audiovisual Experience Teaser */}
                 <ExperienceTeaser onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)} />
 
-                {/* 7. Official Ecosystem Partners & Ticketing Brands */}
-                <PartnerLogoStrip />
-
-                {/* 8. Live Festival & Campus Stats Metric Strip */}
+                {/* 7. Live Festival & Campus Stats Metric Strip */}
                 <FestivalStatsStrip />
 
                 {/* 9. Latest Tour News & Phase Updates */}
