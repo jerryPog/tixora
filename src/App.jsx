@@ -14,7 +14,6 @@ import { AboutPage } from './components/Pages/AboutPage';
 import { ContactPage } from './components/Pages/ContactPage';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
 
-import { FestivalCountdown } from './components/FestivalCountdown';
 import { TourSchedule } from './components/TourSchedule';
 import { ArtistLineupShowcase } from './components/ArtistLineupShowcase';
 import { ExperienceTeaser } from './components/ExperienceTeaser';
@@ -378,14 +377,7 @@ const MainDashboard = () => {
                   onNavigateToReviews={() => navigateTo('reviews')}
                 />
 
-                {/* 2. Real-Time Tour Countdown Clock */}
-                <FestivalCountdown
-                  targetDate="2026-11-14T16:00:00"
-                  eventName="Guns N' Roses — Bengaluru Tour (Nov 14, 2026)"
-                  onBookTicket={() => handleViewPriceList('evt-gnr-blr')}
-                />
-
-                {/* 3. Official Concert Postings & Tier Passes */}
+                {/* 2. Official Concert Postings & Tier Passes */}
                 <div style={{ marginBottom: '3.5rem' }}>
                   <div className="section-watermark-wrapper">
                     <div className="section-watermark-bg" aria-hidden="true">
