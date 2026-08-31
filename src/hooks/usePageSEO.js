@@ -61,6 +61,12 @@ const PAGE_METADATA = {
     canonical: "https://tixora.in/#faqs",
     ogType: "website"
   },
+  support: {
+    title: "Issue Resolution Center | Refunds, Inventory & Ticket Support | Tixora",
+    description: "Create and track Tixora support requests for refunds, inventory mismatches, missing QR passes, and ticket issuance problems.",
+    canonical: "https://tixora.in/#support",
+    ogType: "website"
+  },
   'thank-you': {
     title: "Confirmation & Thank You | Tixora — Live The Hype",
     description: "Your ticket order or campus ambassador application has been successfully recorded. Access your digital pass and QR code immediately.",

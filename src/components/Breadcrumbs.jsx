@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ChevronRight, Home } from 'lucide-react';
 
 export const Breadcrumbs = ({ items = [], onNavigate }) => {
-  if (!items || items.length === 0) return null;
-
-  const breadcrumbsList = [
+  const breadcrumbsList = useMemo(() => [
     { label: 'Home', view: 'posters' },
     ...items
-  ];
+  ], [items]);
 
   // Inject Schema.org BreadcrumbList microdata
   useEffect(() => {
@@ -32,7 +30,9 @@ export const Breadcrumbs = ({ items = [], onNavigate }) => {
     };
 
     script.textContent = JSON.stringify(schema);
-  }, [items]);
+  }, [breadcrumbsList]);
+
+  if (!items || items.length === 0) return null;
 
   return (
     <nav 

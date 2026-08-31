@@ -18,7 +18,8 @@ import {
   Phone,
   Lock,
   Receipt,
-  Gift
+  Gift,
+  Headphones
 } from 'lucide-react';
 
 export const Header = ({ 
@@ -51,6 +52,7 @@ export const Header = ({
     { id: 'reviews', label: 'Reviews', icon: <Star size={14} color="#f59e0b" /> },
     { id: 'about', label: 'About', icon: <Info size={14} /> },
     { id: 'contact', label: 'Contact', icon: <Phone size={14} /> },
+    { id: 'support', label: 'Support', icon: <Headphones size={14} /> },
     { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={14} /> }
   ];
 

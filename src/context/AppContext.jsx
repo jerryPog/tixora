@@ -5,6 +5,23 @@ const AppContext = createContext();
 
 const STORAGE_VERSION = 'v9_rewards_referrals';
 
+const INITIAL_SUPPORT_TICKETS = [
+  {
+    id: 'TXR-2408',
+    category: 'Ticket issuance',
+    subject: 'QR pass not received after payment',
+    description: 'Payment is verified, but the buyer has not received the QR pass yet.',
+    orderId: 'SAL-2026-0842',
+    priority: 'High',
+    status: 'In progress',
+    promoterId: 'prom-1',
+    promoterName: 'Aarav Sharma',
+    assignee: 'Ticketing desk',
+    createdAt: '2026-08-30T10:30:00.000Z',
+    updatedAt: '2026-08-31T06:15:00.000Z'
+  }
+];
+
 export const AppProvider = ({ children }) => {
   // Persistence in localStorage with auto-migration
   const [events, setEvents] = useState(() => {
@@ -83,6 +100,15 @@ export const AppProvider = ({ children }) => {
   const [currentRole, setCurrentRole] = useState('promoter'); // 'promoter' | 'admin'
   const [activePromoterId, setActivePromoterId] = useState('prom-1'); // Default to Aarav Sharma
   const [toasts, setToasts] = useState([]);
+  const [supportTickets, setSupportTickets] = useState(() => {
+    const saved = localStorage.getItem(`tixora_support_tickets_${STORAGE_VERSION}`);
+    if (!saved) return INITIAL_SUPPORT_TICKETS;
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return INITIAL_SUPPORT_TICKETS;
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem(`tixora_events_${STORAGE_VERSION}`, JSON.stringify(events));
@@ -95,6 +121,10 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(`tixora_sales_${STORAGE_VERSION}`, JSON.stringify(sales));
   }, [sales]);
+
+  useEffect(() => {
+    localStorage.setItem(`tixora_support_tickets_${STORAGE_VERSION}`, JSON.stringify(supportTickets));
+  }, [supportTickets]);
 
   const showToast = (message, type = 'success') => {
     const id = Date.now() + Math.random();
@@ -230,6 +260,32 @@ export const AppProvider = ({ children }) => {
     );
   };
 
+  const createSupportTicket = (ticket) => {
+    const now = new Date().toISOString();
+    const newTicket = {
+      ...ticket,
+      id: `TXR-${String(Date.now()).slice(-6)}`,
+      promoterId: activePromoter.id,
+      promoterName: activePromoter.name,
+      status: 'Open',
+      assignee: 'Unassigned',
+      createdAt: now,
+      updatedAt: now
+    };
+    setSupportTickets((prev) => [newTicket, ...prev]);
+    showToast(`Support request ${newTicket.id} created`, 'success');
+    return newTicket;
+  };
+
+  const updateSupportTicket = (ticketId, updates) => {
+    setSupportTickets((prev) => prev.map((ticket) => (
+      ticket.id === ticketId
+        ? { ...ticket, ...updates, updatedAt: new Date().toISOString() }
+        : ticket
+    )));
+    showToast(`Support request ${ticketId} updated`, 'success');
+  };
+
   useEffect(() => {
     localStorage.setItem(`tixora_claimed_rewards_${STORAGE_VERSION}`, JSON.stringify(claimedRewardIds));
   }, [claimedRewardIds]);
@@ -254,6 +310,7 @@ export const AppProvider = ({ children }) => {
     setRewards(INITIAL_REWARDS);
     setReferrals(INITIAL_REFERRALS);
     setClaimedRewardIds(['rew-2']);
+    setSupportTickets(INITIAL_SUPPORT_TICKETS);
     localStorage.clear();
     showToast('Database reset to official 2026 concert lineup & posters', 'info');
   };
@@ -282,7 +339,10 @@ export const AppProvider = ({ children }) => {
         deleteEvent,
         updatePromoter,
         togglePromoterSuspension,
-        resetAllData
+        resetAllData,
+        supportTickets,
+        createSupportTicket,
+        updateSupportTicket
       }}
     >
       {children}

@@ -35,6 +35,7 @@ import { CreateEventModal } from './components/AdminDashboard/CreateEventModal';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
 import { FAQSection } from './components/FAQSection';
 import { ToastContainer } from './components/Toast';
+import { SupportTickets } from './components/SupportTickets';
 import { LiveActivityPopup } from './components/LiveActivityPopup';
 import { usePageSEO } from './hooks/usePageSEO';
 
@@ -55,7 +56,8 @@ import {
   Zap,
   Star,
   Info,
-  Lock
+  Lock,
+  Headphones
 } from 'lucide-react';
 import './index.css';
 
@@ -179,30 +181,14 @@ const MainDashboard = () => {
   // Dynamic SEO Page Title & Meta Tags Hook
   usePageSEO(activeView);
 
-  // Always reset to main home page upon page reload / refresh
   useEffect(() => {
-    // Disable browser automatic scroll restoration to ensure top placement on refresh
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
 
-    // Clear hash and force activeView to main home page ('posters') on fresh load / reload
-    if (window.location.hash) {
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
-    setActiveView('posters');
-    window.scrollTo(0, 0);
-
-    // Clean hash on beforeunload / pagehide so any subsequent refresh lands on home
-    const handleBeforeUnload = () => {
-      if (window.location.hash) {
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
-    };
-
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validViews = ['events', 'posters', 'waitlist', 'prices', 'ledger', 'rewards', 'tiers', 'reviews', 'about', 'contact', 'faqs', 'thank-you', '404'];
+      const validViews = ['events', 'posters', 'waitlist', 'prices', 'ledger', 'rewards', 'tiers', 'reviews', 'about', 'contact', 'faqs', 'support', 'thank-you', '404'];
       
       if (hash === 'events' || !hash) {
         setActiveView('posters');
@@ -211,18 +197,19 @@ const MainDashboard = () => {
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('pagehide', handleBeforeUnload);
+    handleHashChange();
+    window.scrollTo(0, 0);
     window.addEventListener('hashchange', handleHashChange);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('pagehide', handleBeforeUnload);
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
 
   const navigateTo = (viewId) => {
+    if (currentRole === 'admin' && viewId === 'support') {
+      setAdminTab('support');
+    }
     setActiveView(viewId);
     window.location.hash = viewId === 'posters' ? 'events' : viewId;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -296,6 +283,8 @@ const MainDashboard = () => {
         return [{ label: 'Commission Tiers', view: 'tiers' }];
       case 'faqs':
         return [{ label: 'FAQ & Policies Center', view: 'faqs' }];
+      case 'support':
+        return [{ label: 'Issue Resolution Center', view: 'support' }];
       case 'thank-you':
         return [{ label: 'Confirmation & Digital Pass', view: 'thank-you' }];
       case '404':
@@ -360,7 +349,8 @@ const MainDashboard = () => {
                 { id: 'reviews', label: 'Reviews', icon: <Star size={15} color="#f59e0b" /> },
                 { id: 'about', label: 'About Us', icon: <Info size={15} /> },
                 { id: 'contact', label: 'Contact', icon: <Phone size={15} /> },
-                { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={15} /> }
+                { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={15} /> },
+                { id: 'support', label: 'Support requests', icon: <Headphones size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -509,6 +499,8 @@ const MainDashboard = () => {
               <FAQSection onAskInChat={handleAskInChat} />
             )}
 
+            {activeView === 'support' && <SupportTickets />}
+
             {/* Subview 11: Thank You Page */}
             {activeView === 'thank-you' && (
               <ThankYouPage
@@ -552,7 +544,8 @@ const MainDashboard = () => {
                 { id: 'events', label: 'Concert Roster', icon: <Ticket size={15} /> },
                 { id: 'promoters', label: 'Promoter Network', icon: <Users size={15} /> },
                 { id: 'sales', label: 'Audit & Sales Feed', icon: <TrendingUp size={15} /> },
-                { id: 'faqs', label: 'Operational FAQs', icon: <HelpCircle size={15} /> }
+                { id: 'faqs', label: 'Operational FAQs', icon: <HelpCircle size={15} /> },
+                { id: 'support', label: 'Support queue', icon: <Headphones size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -603,6 +596,8 @@ const MainDashboard = () => {
             {adminTab === 'faqs' && (
               <FAQSection onAskInChat={handleAskInChat} />
             )}
+
+            {adminTab === 'support' && <SupportTickets />}
           </div>
         )}
 
@@ -666,12 +661,12 @@ const MainDashboard = () => {
               <span>Ledger</span>
             </button>
 
-            <button
-              onClick={() => navigateTo('faqs')}
-              className={`mobile-nav-item ${activeView === 'faqs' ? 'active' : ''}`}
+              <button
+              onClick={() => navigateTo('support')}
+              className={`mobile-nav-item ${activeView === 'support' ? 'active' : ''}`}
             >
-              <HelpCircle size={18} />
-              <span>FAQs</span>
+              <Headphones size={18} />
+              <span>Support</span>
             </button>
           </>
         ) : (
@@ -714,11 +709,11 @@ const MainDashboard = () => {
             </button>
 
             <button
-              onClick={() => { setAdminTab('faqs'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${adminTab === 'faqs' ? 'active' : ''}`}
+              onClick={() => { setAdminTab('support'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${adminTab === 'support' ? 'active' : ''}`}
             >
-              <HelpCircle size={18} />
-              <span>FAQs</span>
+              <Headphones size={18} />
+              <span>Support</span>
             </button>
           </>
         )}
@@ -837,6 +832,7 @@ const MainDashboard = () => {
                   <button onClick={() => navigateTo('about')} className="footer-link">About Us & Founders</button>
                   <button onClick={() => navigateTo('reviews')} className="footer-link">Verified Reviews</button>
                   <button onClick={() => navigateTo('contact')} className="footer-link">Contact & Help Desk</button>
+                  <button onClick={() => navigateTo('support')} className="footer-link">Issue Resolution Center</button>
                 </div>
               </div>
 
