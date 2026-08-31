@@ -92,11 +92,11 @@ export const LegalComplianceModal = ({ isOpen, onClose }) => {
           flexWrap: 'wrap',
           gap: '10px'
         }}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
             <Users size={16} color="#38bdf8" />
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>Leadership:</span>
-            <span style={{ fontSize: '0.8rem', color: '#e4e4e7' }}>
-              <strong>Ronak Jain R</strong> (Founder) & <strong>Anshul S Balan</strong> (Co-Founder)
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>Board of Directors:</span>
+            <span style={{ fontSize: '0.78rem', color: '#e4e4e7' }}>
+              <strong>Ronak Jain R</strong> (Founder), <strong>Prajwal Gowrish H S</strong> (Co-Founder), <strong>Anshul S Balan</strong> (Co-Founder), <strong>Kanishk Jhunjhunwala</strong> (Co-Founder)
             </span>
           </div>
 

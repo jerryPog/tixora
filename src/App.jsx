@@ -771,20 +771,25 @@ const MainDashboard = () => {
               </div>
 
               <div style={{
-                background: 'rgba(255, 255, 255, 0.05)',
+                background: 'rgba(255, 255, 255, 0.04)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: '9999px',
-                padding: '3px 12px',
-                fontSize: '0.74rem',
+                padding: '4px 14px',
+                fontSize: '0.72rem',
                 color: '#e4e4e7',
                 display: 'inline-flex',
                 alignItems: 'center',
+                flexWrap: 'wrap',
                 gap: '6px',
                 width: 'fit-content'
               }}>
                 <span><strong>Ronak Jain R</strong> (Founder)</span>
                 <span style={{ color: 'var(--text-muted)' }}>•</span>
+                <span><strong>Prajwal Gowrish H S</strong> (Co-Founder)</span>
+                <span style={{ color: 'var(--text-muted)' }}>•</span>
                 <span><strong>Anshul S Balan</strong> (Co-Founder)</span>
+                <span style={{ color: 'var(--text-muted)' }}>•</span>
+                <span><strong>Kanishk Jhunjhunwala</strong> (Co-Founder)</span>
               </div>
             </div>
 

@@ -44,7 +44,7 @@ const PAGE_METADATA = {
     ogType: "website"
   },
   about: {
-    title: "About Tixora — Founded by Ronak Jain R & Anshul S Balan | Live The Hype",
+    title: "About Tixora — Board of Directors & Leadership | Live The Hype",
     description: "Learn about Tixora's mission to democratize youth concert ticketing in India through DigiLocker verification, anti-scalping technology, and fair promoter revenue shares.",
     canonical: "https://tixora.in/#about",
     ogType: "article"
@@ -161,8 +161,10 @@ export const usePageSEO = (viewKey = 'posters', customTitle = null, customDescri
           "url": "https://tixora.in",
           "logo": "https://tixora.in/tixora-logo.png",
           "founders": [
-            { "@type": "Person", "name": "Ronak Jain R", "jobTitle": "Founder" },
-            { "@type": "Person", "name": "Anshul S Balan", "jobTitle": "Co-Founder" }
+            { "@type": "Person", "name": "Ronak Jain R", "jobTitle": "Founder", "email": "ronakj303@gmail.com", "telephone": "+91-78921-45475" },
+            { "@type": "Person", "name": "Prajwal Gowrish H S", "jobTitle": "Co-Founder", "email": "gowrishprajwal123@gmail.com", "telephone": "+91-88612-00170" },
+            { "@type": "Person", "name": "Anshul S Balan", "jobTitle": "Co-Founder", "email": "anshulsb70@gmail.com", "telephone": "+91-70125-37541" },
+            { "@type": "Person", "name": "Kanishk Jhunjhunwala", "jobTitle": "Co-Founder", "email": "kanishkjhunjhunwala@gmail.com", "telephone": "+91-91045-73147" }
           ],
           "contactPoint": {
             "@type": "ContactPoint",

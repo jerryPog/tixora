@@ -35,87 +35,131 @@ export const AboutPage = ({ onNavigateToEvents, onNavigateToWaitlist, onNavigate
         </div>
       </div>
 
-      {/* Founders Spotlight Card */}
-      <div className="glass-card" style={{ padding: '2rem', marginBottom: '2rem', borderRadius: '16px' }}>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-          
-          <div className="md:col-span-8">
-            <div style={{
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#60a5fa',
-              letterSpacing: '0.05em',
-              marginBottom: '6px'
-            }}>
-              Executive Leadership
-            </div>
-            
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.75rem', color: '#ffffff' }}>
-              Founded by Ronak Jain R & Anshul S Balan
-            </h2>
+      {/* Board of Directors & Executive Leadership Spotlight */}
+      <div className="glass-card" style={{ padding: '2rem', marginBottom: '2.5rem', borderRadius: '16px' }}>
+        <div style={{
+          fontSize: '0.72rem',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          color: '#60a5fa',
+          letterSpacing: '0.05em',
+          marginBottom: '6px'
+        }}>
+          Executive Leadership & Board of Directors
+        </div>
+        
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.75rem', color: '#ffffff' }}>
+          Board of Directors (BOD) & Founding Team
+        </h2>
 
-            <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1rem' }}>
-              As avid concert-goers in college, our founders witnessed the extreme frustration of sold-out shows, fake Instagram DM tickets, and predatory black-market markups. They designed Tixora to solve this crisis by turning trusted campus community leaders into certified, DigiLocker-backed event ambassadors.
-            </p>
+        <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1.75rem' }}>
+          As avid concert-goers in college, our leadership team witnessed the extreme frustration of sold-out shows, fake Instagram DM tickets, and predatory black-market markups. Tixora was engineered to solve this crisis by turning trusted campus community leaders into certified, DigiLocker-backed event ambassadors with instant pass issuance.
+        </p>
 
-            <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.04)',
+        {/* 4-Column Responsive Grid for Board of Directors */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              name: "Ronak Jain R",
+              role: "Founder",
+              email: "ronakj303@gmail.com",
+              phone: "+91 78921 45475",
+              roleColor: "#10b981",
+              initials: "RJ"
+            },
+            {
+              name: "Prajwal Gowrish H S",
+              role: "Co-Founder",
+              email: "gowrishprajwal123@gmail.com",
+              phone: "+91 88612 00170",
+              roleColor: "#60a5fa",
+              initials: "PG"
+            },
+            {
+              name: "Anshul S Balan",
+              role: "Co-Founder",
+              email: "anshulsb70@gmail.com",
+              phone: "+91 70125 37541",
+              roleColor: "#a855f7",
+              initials: "AB"
+            },
+            {
+              name: "Kanishk Jhunjhunwala",
+              role: "Co-Founder",
+              email: "kanishkjhunjhunwala@gmail.com",
+              phone: "+91 91045 73147",
+              roleColor: "#ec4899",
+              initials: "KJ"
+            }
+          ].map((member, idx) => (
+            <div
+              key={idx}
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid var(--border-color)',
-                borderRadius: '10px',
-                padding: '10px 14px'
-              }}>
-                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#ffffff' }}>Ronak Jain R</div>
-                <div style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 600 }}>Founder & Chief Executive</div>
-              </div>
-
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '10px',
-                padding: '10px 14px'
-              }}>
-                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#ffffff' }}>Anshul S Balan</div>
-                <div style={{ fontSize: '0.72rem', color: '#60a5fa', fontWeight: 600 }}>Co-Founder & Operations Lead</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="md:col-span-4" style={{ textAlign: 'center' }}>
-            <div style={{
-              background: '#090a0d',
-              border: '1px solid var(--border-color)',
-              borderRadius: '14px',
-              padding: '1.25rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              <img
-                src="/tixora-logo.png"
-                alt="Tixora official emblem — Live The Hype verified ticketing"
-                style={{ width: '90px', height: 'auto', borderRadius: '8px' }}
-              />
-              <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#fff', marginTop: '4px' }}>Tixora India</div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Registered Youth Ticketing Platform</div>
-              <div style={{
-                background: 'rgba(16, 185, 129, 0.12)',
-                color: '#10b981',
-                fontSize: '0.66rem',
-                fontWeight: 700,
-                padding: '2px 8px',
-                borderRadius: '4px',
+                borderRadius: '12px',
+                padding: '1.25rem 1rem',
                 display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}>
-                <ShieldCheck size={11} /> DigiLocker Verified
+                flexDirection: 'column',
+                gap: '0.75rem',
+                transition: 'all 0.2s ease'
+              }}
+              className="card-interactive"
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: `linear-gradient(135deg, ${member.roleColor}, #090a0d)`,
+                  border: `1px solid ${member.roleColor}`,
+                  color: '#ffffff',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  {member.initials}
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.2 }}>
+                    {member.name}
+                  </div>
+                  <span style={{
+                    fontSize: '0.66rem',
+                    fontWeight: 700,
+                    color: member.roleColor,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em'
+                  }}>
+                    {member.role}
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.74rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '8px' }}>
+                <a
+                  href={`mailto:${member.email}`}
+                  style={{ color: 'var(--text-muted)', textDecoration: 'none', wordBreak: 'break-all', display: 'flex', alignItems: 'center', gap: '4px' }}
+                  onMouseOver={e => e.currentTarget.style.color = '#ffffff'}
+                  onMouseOut={e => e.currentTarget.style.color = 'var(--text-muted)'}
+                >
+                  <span>✉ {member.email}</span>
+                </a>
+
+                <a
+                  href={`https://wa.me/${member.phone.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: '#34d399', fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}
+                >
+                  <span>📞 {member.phone}</span>
+                </a>
               </div>
             </div>
-          </div>
-
+          ))}
         </div>
       </div>
 

@@ -236,7 +236,33 @@ export const ContactPage = ({ onOpenFAQ, onNavigateToEvents }) => {
           {/* Details Pill */}
           <div className="glass-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: '#60a5fa', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px' }}>
+                Board of Directors & Leadership Direct Desk
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {[
+                  { name: "Ronak Jain R", role: "Founder", email: "ronakj303@gmail.com", phone: "+91 78921 45475" },
+                  { name: "Prajwal Gowrish H S", role: "Co-Founder", email: "gowrishprajwal123@gmail.com", phone: "+91 88612 00170" },
+                  { name: "Anshul S Balan", role: "Co-Founder", email: "anshulsb70@gmail.com", phone: "+91 70125 37541" },
+                  { name: "Kanishk Jhunjhunwala", role: "Co-Founder", email: "kanishkjhunjhunwala@gmail.com", phone: "+91 91045 73147" }
+                ].map((item, idx) => (
+                  <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ffffff' }}>{item.name}</span>
+                      <span style={{ fontSize: '0.64rem', color: '#10b981', fontWeight: 600 }}>{item.role}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px', fontSize: '0.7rem' }}>
+                      <a href={`mailto:${item.email}`} style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>{item.email}</a>
+                      <a href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" style={{ color: '#34d399', fontWeight: 600, textDecoration: 'none' }}>{item.phone}</a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '10px' }}>
               <Mail size={18} color="#60a5fa" style={{ flexShrink: 0 }} />
               <div>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Official Inquiries</div>

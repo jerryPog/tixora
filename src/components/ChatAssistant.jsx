@@ -124,7 +124,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
 
     // 0. Helpline / Phone Number
     if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('support') || q.includes('helpline')) {
-      return `📞 **Tixora Helpline & Operations Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n• **Founders:** Ronak Jain R (Founder) & Anshul S Balan (Co-Founder)\n\nFeel free to call or WhatsApp +91 78921 45475 anytime for promoter onboarding, urgent cash settlement assistance, or event ticket allocations!`;
+      return `📞 **Tixora Helpline & Leadership Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n\n**🏛️ Board of Directors & Leadership:**\n• **Ronak Jain R** (Founder) — ronakj303@gmail.com | +91 78921 45475\n• **Prajwal Gowrish H S** (Co-Founder) — gowrishprajwal123@gmail.com | +91 88612 00170\n• **Anshul S Balan** (Co-Founder) — anshulsb70@gmail.com | +91 70125 37541\n• **Kanishk Jhunjhunwala** (Co-Founder) — kanishkjhunjhunwala@gmail.com | +91 91045 73147\n\nFeel free to call or WhatsApp anytime for promoter onboarding, cash settlement assistance, or event pass allocations!`;
     }
 
     // 1. FAQ: Upfront Payment & Pass Issuance Flow
@@ -232,9 +232,9 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
       return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (Instant Card/UPI/Bank clearance).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access & early Phase 1 allocations.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*All commissions are computed and settled immediately upon verified ticket booking.*`;
     }
 
-    // 15. Founders
-    if (q.includes('founder') || q.includes('who made') || q.includes('created by') || q.includes('team')) {
-      return `🏛️ **Tixora Founding Team:**\n\n• **Ronak Jain R** — Founder\n• **Anshul S Balan** — Co-Founder\n• **Support Helpline:** +91 78921 45475\n\nTixora empowers verified student networks to issue official digital concert passes with full audit control and instant cash accounting.`;
+    // 15. Founders & Board of Directors
+    if (q.includes('founder') || q.includes('who made') || q.includes('created by') || q.includes('team') || q.includes('bod') || q.includes('director')) {
+      return `🏛️ **Tixora Board of Directors & Founding Team:**\n\n• **Ronak Jain R** — Founder (ronakj303@gmail.com | +91 78921 45475)\n• **Prajwal Gowrish H S** — Co-Founder (gowrishprajwal123@gmail.com | +91 88612 00170)\n• **Anshul S Balan** — Co-Founder (anshulsb70@gmail.com | +91 70125 37541)\n• **Kanishk Jhunjhunwala** — Co-Founder (kanishkjhunjhunwala@gmail.com | +91 91045 73147)\n\n• **Primary Support Helpline:** +91 78921 45475\n\nTixora empowers verified campus networks to issue official digital concert passes with complete audit transparency and instant accounting.`;
     }
 
     // 16. Fallback Search in FAQ Dataset
