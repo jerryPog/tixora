@@ -313,60 +313,24 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          style={{
-            position: 'fixed',
-            bottom: '80px',
-            right: '20px',
-            background: '#ffffff',
-            color: '#090a0d',
-            border: 'none',
-            borderRadius: '9999px',
-            padding: '10px 18px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontWeight: 700,
-            fontSize: '0.85rem',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)',
-            cursor: 'pointer',
-            zIndex: 999,
-            transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-            animation: 'fadeIn 0.3s ease'
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.04)')}
-          onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1.0)')}
+          className="chat-launcher-btn"
+          title="Open AI Assistant"
         >
-          <Bot size={18} />
-          <span>Ask AI Assistant</span>
+          <Bot size={17} />
+          <span className="chat-launcher-text">Ask AI Assistant</span>
           <span style={{
             width: '8px',
             height: '8px',
             borderRadius: '50%',
-            background: '#10b981'
+            background: '#10b981',
+            boxShadow: '0 0 6px #10b981'
           }} />
         </button>
       )}
 
       {/* Interactive Chatbox Window */}
       {isOpen && (
-        <div style={{
-          position: 'fixed',
-          bottom: '80px',
-          right: '20px',
-          width: 'calc(100vw - 40px)',
-          maxWidth: '420px',
-          height: '560px',
-          maxHeight: 'calc(100vh - 120px)',
-          background: '#10121a',
-          border: '1px solid rgba(255, 255, 255, 0.14)',
-          borderRadius: '16px',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
-          zIndex: 1000,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          animation: 'fadeIn 0.2s ease'
-        }}>
+        <div className="chat-window-modal">
           
           {/* Chat Header */}
           <div style={{

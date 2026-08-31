@@ -261,7 +261,7 @@ export const TourSchedule = ({ onSelectEvent }) => {
             }}
           >
             {/* Left: Time & Stage */}
-            <div style={{ minWidth: '150px' }}>
+            <div className="schedule-time-block">
               <div style={{ fontSize: '0.76rem', fontWeight: 700, color: '#ec4899', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Clock size={12} />
                 <span>{item.time}</span>
@@ -272,21 +272,21 @@ export const TourSchedule = ({ onSelectEvent }) => {
             </div>
 
             {/* Middle: Artist Thumbnail & Details */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: '200px' }}>
+            <div className="schedule-artist-block">
               <img
                 src={item.poster}
                 alt={`Official poster thumbnail for ${item.artist}`}
                 style={{
-                  width: '46px',
-                  height: '46px',
+                  width: '44px',
+                  height: '44px',
                   borderRadius: '8px',
                   objectFit: 'cover',
                   flexShrink: 0,
                   border: '1px solid var(--border-color)'
                 }}
               />
-              <div>
-                <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                   <span>{item.artist}</span>
                   {item.headliner && (
                     <span style={{
@@ -302,17 +302,17 @@ export const TourSchedule = ({ onSelectEvent }) => {
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {item.genre}
                 </div>
               </div>
             </div>
 
             {/* Right: Pass Booking Trigger */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-              <div className="hidden sm:block" style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.66rem', color: 'var(--text-muted)' }}>Passes From</div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#10b981' }}>
+            <div className="schedule-action-block">
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '0.66rem', color: 'var(--text-muted)' }}>From</div>
+                <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#10b981' }}>
                   ₹{item.minPrice.toLocaleString('en-IN')}
                 </div>
               </div>
@@ -320,7 +320,7 @@ export const TourSchedule = ({ onSelectEvent }) => {
               <button
                 onClick={() => onSelectEvent(item.eventId)}
                 className="neon-btn-pink"
-                style={{ padding: '6px 14px', fontSize: '0.76rem', gap: '4px' }}
+                style={{ padding: '6px 14px', fontSize: '0.76rem', gap: '4px', whiteSpace: 'nowrap' }}
               >
                 <Ticket size={13} />
                 <span>Book Pass</span>

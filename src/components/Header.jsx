@@ -172,7 +172,7 @@ export const Header = ({
         </nav>
 
         {/* Controls Right */}
-        <div className="flex items-center gap-2" style={{ flexShrink: 0 }}>
+        <div className="flex items-center gap-1.5 sm:gap-2" style={{ flexShrink: 1, minWidth: 0, justifyContent: 'flex-end' }}>
           
           {/* Role Switcher Pill */}
           <div style={{
@@ -192,18 +192,19 @@ export const Header = ({
                 background: currentRole === 'promoter' ? '#ffffff' : 'transparent',
                 color: currentRole === 'promoter' ? '#090a0d' : 'var(--text-muted)',
                 border: 'none',
-                padding: '4px 8px',
+                padding: '4px 6px',
                 borderRadius: '6px',
-                fontSize: '0.72rem',
+                fontSize: '0.7rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '3px'
               }}
+              title="Promoter Portal"
             >
-              <UserCheck size={12} /> Promoter
+              <UserCheck size={12} /> <span className="hidden sm:inline">Promoter</span>
             </button>
 
             <button
@@ -215,18 +216,19 @@ export const Header = ({
                 background: currentRole === 'admin' ? '#ffffff' : 'transparent',
                 color: currentRole === 'admin' ? '#090a0d' : 'var(--text-muted)',
                 border: 'none',
-                padding: '4px 8px',
+                padding: '4px 6px',
                 borderRadius: '6px',
-                fontSize: '0.72rem',
+                fontSize: '0.7rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '3px'
               }}
+              title="Admin Dashboard"
             >
-              <SlidersHorizontal size={12} /> Admin
+              <SlidersHorizontal size={12} /> <span className="hidden sm:inline">Admin</span>
             </button>
           </div>
 
@@ -239,20 +241,21 @@ export const Header = ({
                   background: 'rgba(255, 255, 255, 0.04)',
                   border: '1px solid var(--border-color)',
                   borderRadius: '8px',
-                  padding: '4px 8px',
+                  padding: '4px 6px',
                   color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
+                  gap: '4px',
                   cursor: 'pointer'
                 }}
+                title={`Switch active promoter (Current: ${activePromoter.name})`}
               >
                 <img
                   src={activePromoter.avatar}
                   alt={`Profile picture of verified promoter ${activePromoter.name}`}
-                  style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }}
+                  style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }}
                 />
-                <span style={{ fontSize: '0.74rem', fontWeight: 600, maxWidth: '75px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span className="hidden md:inline" style={{ fontSize: '0.74rem', fontWeight: 600, maxWidth: '65px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {activePromoter.name.split(' ')[0]}
                 </span>
                 <ChevronDown size={11} color="var(--text-muted)" />
@@ -264,6 +267,7 @@ export const Header = ({
                   top: '115%',
                   right: 0,
                   width: '260px',
+                  maxWidth: 'calc(100vw - 20px)',
                   background: '#13151c',
                   border: '1px solid rgba(255, 255, 255, 0.12)',
                   borderRadius: '12px',
@@ -319,17 +323,17 @@ export const Header = ({
             <button
               onClick={onOpenRecordSale}
               className="btn btn-primary"
-              style={{ padding: '5px 11px', fontSize: '0.74rem', gap: '4px' }}
+              style={{ padding: '5px 9px', fontSize: '0.74rem', gap: '4px' }}
             >
-              <Plus size={14} /> <span className="hidden-xs">Issue</span>
+              <Plus size={13} /> <span className="hidden sm:inline">Issue</span>
             </button>
           ) : (
             <button
               onClick={onOpenCreateEvent}
               className="btn btn-primary"
-              style={{ padding: '5px 11px', fontSize: '0.74rem', gap: '4px' }}
+              style={{ padding: '5px 9px', fontSize: '0.74rem', gap: '4px' }}
             >
-              <Plus size={14} /> <span className="hidden-xs">Add Event</span>
+              <Plus size={13} /> <span className="hidden sm:inline">Add Event</span>
             </button>
           )}
 
@@ -341,7 +345,7 @@ export const Header = ({
               background: 'rgba(255, 255, 255, 0.04)',
               border: '1px solid var(--border-color)',
               borderRadius: '8px',
-              padding: '6px',
+              padding: '5px',
               color: 'var(--text-muted)',
               cursor: 'pointer',
               display: 'flex',
@@ -350,7 +354,7 @@ export const Header = ({
             }}
             aria-label="Reset Mock Data"
           >
-            <RotateCcw size={13} />
+            <RotateCcw size={12} />
           </button>
 
         </div>

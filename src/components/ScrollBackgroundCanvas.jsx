@@ -14,13 +14,19 @@ export const ScrollBackgroundCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    // Cap DPR to 1.5 on mobile to avoid allocating excessive GPU memory buffers
+    const isMobile = window.innerWidth <= 768;
+    const dpr = isMobile ? Math.min(1.5, window.devicePixelRatio || 1) : Math.min(2, window.devicePixelRatio || 1);
     const displayWidth = window.innerWidth;
     const displayHeight = window.innerHeight;
 
-    if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
-      canvas.width = displayWidth * dpr;
-      canvas.height = displayHeight * dpr;
+    const targetW = Math.floor(displayWidth * dpr);
+    const targetH = Math.floor(displayHeight * dpr);
+
+    // Only update if difference is meaningful (> 10px) to prevent toolbar jitter during mobile scroll
+    if (Math.abs(canvas.width - targetW) > 10 || Math.abs(canvas.height - targetH) > 10) {
+      canvas.width = targetW;
+      canvas.height = targetH;
     }
   };
 
@@ -33,15 +39,14 @@ export const ScrollBackgroundCanvas = () => {
     const img = imagesRef.current[frameIndex];
     if (!img || !img.complete || img.naturalWidth === 0) return;
 
-    resizeCanvas();
-
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    if (canvasWidth === 0 || canvasHeight === 0) return;
 
     // True 'background-size: cover' algorithm
     const hRatio = canvasWidth / img.naturalWidth;
     const vRatio = canvasHeight / img.naturalHeight;
-    const ratio = Math.max(hRatio, vRatio); // Max ensures 100% coverage on both width & height
+    const ratio = Math.max(hRatio, vRatio);
 
     const renderWidth = img.naturalWidth * ratio;
     const renderHeight = img.naturalHeight * ratio;
@@ -53,7 +58,7 @@ export const ScrollBackgroundCanvas = () => {
     ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, offsetX, offsetY, renderWidth, renderHeight);
   };
 
-  // Preload all 93 frames
+  // Preload all 93 frames smoothly
   useEffect(() => {
     const loadedImages = [];
     let loadedCount = 0;
@@ -65,7 +70,6 @@ export const ScrollBackgroundCanvas = () => {
       img.onload = () => {
         loadedCount++;
         if (loadedCount === 1) {
-          // Resize and draw immediately
           resizeCanvas();
           drawFrame(0);
         }
@@ -85,16 +89,25 @@ export const ScrollBackgroundCanvas = () => {
     };
   }, []);
 
-  // Window resize handler
+  // Debounced Window resize & orientation change handler
   useEffect(() => {
+    let resizeTimer = null;
     const handleResize = () => {
-      resizeCanvas();
-      drawFrame(Math.round(currentFrameRef.current));
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resizeCanvas();
+        drawFrame(Math.round(currentFrameRef.current));
+      }, 100);
     };
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    resizeCanvas();
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
+    return () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
   }, []);
 
   // Smooth scroll listener with linear interpolation (LERP)
@@ -135,10 +148,9 @@ export const ScrollBackgroundCanvas = () => {
   return (
     <div style={{
       position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
+      inset: 0,
+      width: '100%',
+      height: '100%',
       zIndex: -1,
       pointerEvents: 'none',
       overflow: 'hidden'
