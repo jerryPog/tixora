@@ -610,6 +610,7 @@ const MainDashboard = () => {
 
       {/* AI Assistant Chatbox */}
       <ChatAssistant
+        onNavigate={navigateTo}
         onOpenRecordSale={() => handleOpenSaleWithCategory(null, null)}
         onOpenPriceList={handleViewPriceList}
         externalQueryTrigger={externalChatQuery}

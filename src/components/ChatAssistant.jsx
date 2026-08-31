@@ -14,7 +14,14 @@ import {
   ShieldCheck,
   RotateCcw,
   Building2,
-  ChevronRight
+  ChevronRight,
+  LifeBuoy,
+  Tag,
+  Zap,
+  Gift,
+  Award,
+  ExternalLink,
+  Trash2
 } from 'lucide-react';
 import { FAQ_DATA } from '../data/faqData';
 
@@ -34,7 +41,8 @@ const ARTIST_KNOWLEDGE = {
       "Patience",
       "Civil War"
     ],
-    showInfo: "14 Nov 2026 @ NICE Grounds, Bengaluru. Passes from ₹4,000 to ₹16,000 (Silver, Gold, Platinum Lounge)."
+    showInfo: "14 Nov 2026 @ NICE Grounds, Bengaluru. Passes from ₹4,000 to ₹16,000 (Silver, Gold, Platinum Lounge). Promoter cut up to ₹1,440/ticket.",
+    eventId: "evt-gnr-blr"
   },
   'anyma': {
     name: "Anyma (Matteo Milleri)",
@@ -51,7 +59,8 @@ const ARTIST_KNOWLEDGE = {
       "Save Me (with Cassian)",
       "Running"
     ],
-    showInfo: "21 Nov 2026 @ Mahalaxmi Racecourse, Mumbai. Passes from ₹4,250 to ₹32,000 (GA Back, GA Front, Early Bird Backstage, VIP Lounge)."
+    showInfo: "21 Nov 2026 @ Mahalaxmi Racecourse, Mumbai. Passes from ₹4,250 to ₹32,000 (GA Back, GA Front, Early Bird Backstage, VIP Lounge). Promoter cut up to ₹3,200/ticket.",
+    eventId: "evt-anyma-mum"
   },
   'fred again': {
     name: "Fred again.. (Fred Gibson)",
@@ -68,7 +77,8 @@ const ARTIST_KNOWLEDGE = {
       "Jungle",
       "stayinit (with Lil Yachty)"
     ],
-    showInfo: "Delhi NCR: 05 Dec 2026 @ Leisure Valley Ground | Mumbai: 08–09 Dec 2026 @ Mahalaxmi Racecourse. Verified student passes from ₹1,750."
+    showInfo: "Delhi NCR: 05 Dec 2026 @ Leisure Valley Ground | Mumbai: 08–09 Dec 2026 @ Mahalaxmi Racecourse. Verified student passes from ₹1,750.",
+    eventId: "evt-fred-del"
   },
   'chainsmokers': {
     name: "The Chainsmokers",
@@ -85,7 +95,8 @@ const ARTIST_KNOWLEDGE = {
       "High",
       "All We Know (feat. Phoebe Ryan)"
     ],
-    showInfo: "20 Dec 2026 @ NICE Grounds, Bengaluru (Sunburn Arena). Passes from ₹1,500 to ₹12,999."
+    showInfo: "20 Dec 2026 @ NICE Grounds, Bengaluru (Sunburn Arena). Passes from ₹1,500 to ₹12,999. Promoter cut up to ₹1,300/ticket.",
+    eventId: "evt-chainsmokers-blr"
   },
   'khalid': {
     name: "Khalid",
@@ -102,19 +113,32 @@ const ARTIST_KNOWLEDGE = {
       "Eastside (with Benny Blanco & Halsey)",
       "8TEEN"
     ],
-    showInfo: "13 Dec 2026 @ HUDA Gymkhana Club, Gurugram (Delhi NCR). Passes from ₹2,549 to ₹6,999."
+    showInfo: "13 Dec 2026 @ HUDA Gymkhana Club, Gurugram (Delhi NCR). Passes from ₹2,549 to ₹6,999. Promoter cut up to ₹630/ticket.",
+    eventId: "evt-khalid-del"
   }
 };
 
-export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQueryTrigger, onNavigateToFAQ }) => {
+export const ChatAssistant = ({ 
+  onNavigate,
+  onOpenRecordSale, 
+  onOpenPriceList, 
+  externalQueryTrigger, 
+  onNavigateToFAQ 
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 'msg-welcome',
       sender: 'bot',
-      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about:\n• 💳 **Upfront Payments:** Card, UPI & Bank instant clearance\n• 🎟️ **Ticket Delivery:** Instant dispatch to BookMyShow/District\n• 🏆 **Tiers:** Commission progression up to 16%\n• 🛡️ **DigiLocker & Verification:** Verified promoter authenticity\n• 🎵 **Artists & Songs:** Guns N' Roses, Anyma, Fred again.., Chainsmokers, Khalid\n\n📞 *Direct helpline: +91 78921 45475*",
-      timestamp: 'Just now'
+      text: "👋 Hi! I'm **Tixora AI Assistant**.\n\nAsk me about:\n• 🎫 **Support Tickets:** Raise issues, track refunds & ticket inquiries\n• 💳 **Upfront Payments:** Instant UPI, Card & Bank clearance\n• 📲 **Pass Delivery:** Instant dispatch to BookMyShow/District accounts\n• 🏆 **Promoter Tiers:** Commission rates up to 16% + VIP access\n• 🎵 **2026 Concerts:** Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid\n\n📞 *Direct helpline: +91 78921 45475*",
+      timestamp: 'Just now',
+      actions: [
+        { label: "🎫 Support Tickets Desk", view: "tickets" },
+        { label: "💰 Price Calculator", view: "prices" },
+        { label: "🎟️ Concert Roster", view: "posters" }
+      ]
     }
   ]);
   const messagesEndRef = useRef(null);
@@ -122,133 +146,202 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
   const generateBotReply = (query) => {
     const q = query.toLowerCase().trim();
 
-    // 0. Helpline / Phone Number
-    if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('support') || q.includes('helpline')) {
-      return `📞 **Tixora Helpline & Leadership Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n\n**🏛️ Board of Directors & Leadership:**\n• **Ronak Jain R** (Founder) — ronakj303@gmail.com | +91 78921 45475\n• **Prajwal Gowrish H S** (Co-Founder) — gowrishprajwal123@gmail.com | +91 88612 00170\n• **Anshul S Balan** (Co-Founder) — anshulsb70@gmail.com | +91 70125 37541\n• **Kanishk Jhunjhunwala** (Co-Founder) — kanishkjhunjhunwala@gmail.com | +91 91045 73147\n\nFeel free to call or WhatsApp anytime for promoter onboarding, cash settlement assistance, or event pass allocations!`;
+    // 0. Support Tickets / Issues / Disputes / Refunds
+    if (q.includes('ticket') && (q.includes('support') || q.includes('raise') || q.includes('issue') || q.includes('help') || q.includes('problem') || q.includes('desk') || q.includes('track') || q.includes('complaint'))) {
+      return {
+        text: `🎫 **Tixora Support & Issue Resolution Desk:**\n\n• **Instant Ticket Creation:** You can raise a ticket for missing passes, payment verification, student discounts, partner refund approvals, or buyer disputes.\n• **Priority Resolution SLA:** Typical resolution time is **2 to 4 hours** with direct founder escalation.\n• **Single Source of Truth:** All transactions recorded under your DigiLocker-verified account are automatically audited.\n\nClick below to open the dedicated Support Tickets portal or message our leadership directly.`,
+        actions: [
+          { label: "🎫 Open Support Tickets Desk", view: "tickets" },
+          { label: "📞 WhatsApp Helpline", url: "https://wa.me/917892145475" }
+        ]
+      };
     }
 
-    // 1. FAQ: Upfront Payment & Pass Issuance Flow
+    // 1. Helpline / Phone Number / Founders
+    if (q.includes('number') || q.includes('phone') || q.includes('contact') || q.includes('call') || q.includes('whatsapp') || q.includes('helpline')) {
+      return {
+        text: `📞 **Tixora Helpline & Leadership Support:**\n\n• **Direct Phone / WhatsApp:** [+91 78921 45475](https://wa.me/917892145475)\n• **Support Hours:** 10:00 AM – 10:00 PM IST (Daily)\n\n**🏛️ Founding Team & Leadership:**\n• **Ronak Jain R** (Founder) — ronakj303@gmail.com | +91 78921 45475\n• **Prajwal Gowrish H S** (Co-Founder) — gowrishprajwal123@gmail.com | +91 88612 00170\n• **Anshul S Balan** (Co-Founder) — anshulsb70@gmail.com | +91 70125 37541\n• **Kanishk Jhunjhunwala** (Co-Founder) — kanishkjhunjhunwala@gmail.com | +91 91045 73147`,
+        actions: [
+          { label: "💬 Message on WhatsApp", url: "https://wa.me/917892145475" },
+          { label: "📬 Contact Form", view: "contact" }
+        ]
+      };
+    }
+
+    // 2. Upfront Payment & Pass Issuance Flow
     if (q.includes('how to pay') || q.includes('payment model') || q.includes('when is ticket issued') || q.includes('pay us') || q.includes('upfront') || q.includes('credit') || q.includes('how do promoters pay') || q.includes('payment method')) {
-      return `💳 **Upfront Payment & Instant Ticket Issuance:**\n\n• **Payment-First Model:** Promoters pay Tixora upfront via **Card (Debit/Credit)**, **UPI**, or **Instant Bank Transfer (IMPS/NEFT)**.\n• **When Tickets Are Issued:** Only when payment is completed does the ticket issuing process start. The digital pass is immediately generated and dispatched directly to the buyer's official **BookMyShow or District account**.\n• **No Post-Dated Deadlines:** There are no credit terms or deposit due dates. Every transaction is settled immediately.`;
+      return {
+        text: `💳 **Upfront Payment & Instant Ticket Issuance:**\n\n• **Payment-First Model:** Promoters pay Tixora upfront via **Card (Debit/Credit)**, **UPI**, or **Instant Bank Transfer (IMPS/NEFT)**.\n• **When Tickets Are Issued:** The moment payment is verified, the digital pass is generated and dispatched directly to the buyer's official **BookMyShow or District account**.\n• **No Credit Deadlines:** Transactions settle instantly with zero risk of unpaid balances.`,
+        actions: [
+          { label: "⚡ Record a New Sale", action: "recordSale" },
+          { label: "📊 View Price Lists", view: "prices" }
+        ]
+      };
     }
 
-    // 2. FAQ: Collecting Cash from Customer
+    // 3. Collecting Cash from Customer
     if (q.includes('collect cash') || q.includes('cash from buyer') || q.includes('customer cash') || q.includes('buyer pays cash')) {
-      return `💵 **Collecting Cash from Buyers:**\n\n• **Yes, you can collect physical cash from your customers!**\n• **Upfront Settlement:** When entering the order, you pay Tixora via your Card, UPI, or Bank Transfer. The official ticket will then be issued and sent straight to your buyer's BookMyShow / District account in real-time.`;
+      return {
+        text: `💵 **Collecting Physical Cash from Buyers:**\n\n• **Yes, you can collect physical cash directly from your peers!**\n• **How it Works:** You collect the cash, then pay Tixora via UPI/Card in the portal. The official ticket with QR is delivered immediately into your buyer's BookMyShow / District account in real time.\n• **Your Cut:** You retain your commission portion upfront or receive it direct to your linked UPI!`,
+        actions: [
+          { label: "⚡ Record Cash Sale", action: "recordSale" },
+          { label: "📜 View Sales Ledger", view: "ledger" }
+        ]
+      };
     }
 
-    // 3. FAQ: No deposit deadlines or credit terms
-    if (q.includes('deadline') || q.includes('deposit date') || q.includes('due date') || q.includes('late deposit') || q.includes('miss deadline')) {
-      return `⚡ **Zero Deposit Deadlines:**\n\n• Tixora operates on **100% Upfront Settlement**.\n• There are no post-dated deposit deadlines or credit quotas. You simply pay at the time of ticket booking via Card/UPI/Bank, and the digital pass is issued instantly.`;
-    }
-
-    // 4. FAQ: Move up a tier & better commission rate
+    // 4. Move up a tier & better commission rate
     if (q.includes('move up') || q.includes('better commission') || q.includes('tier progression') || q.includes('increase commission') || q.includes('tier rate') || q.includes('upgrade tier')) {
-      return `📈 **How to Move Up Tiers & Earn Up to 16% Commission:**\n\n• **Cumulative Volume:** Tiers progress automatically as you sell more passes across concerts.\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per pass.\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage passes & tour bonuses.`;
+      return {
+        text: `📈 **How to Move Up Tiers & Earn Up to 16% Commission:**\n\n• **Automatic Progression:** Tiers update in real time based on your total verified ticket volume:\n  - 🥉 **Bronze (0–9 tkts):** 5.0% base cut\n  - 🥈 **Silver (10–50 tkts):** 5.0% – 8.5% cut\n  - 🥇 **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist\n  - 💎 **Diamond / Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage passes`,
+        actions: [
+          { label: "🏆 View Tier Milestones", view: "tiers" },
+          { label: "🎁 Claim Rewards", view: "rewards" }
+        ]
+      };
     }
 
-    // 5. FAQ: Promoter Milestone Rewards, Free Tickets & Merch Coupons
+    // 5. Promoter Milestone Rewards, Free Tickets & Merch Coupons
     if (q.includes('reward') || q.includes('free ticket') || q.includes('coupon') || q.includes('free pass') || q.includes('merch') || q.includes('voucher') || q.includes('perk')) {
-      return `🎁 **Promoter Milestone Rewards & Free Concert Passes:**\n\n• **2x Free GA Passes:** Sell 25 passes to unlock 2 free tickets to The Chainsmokers Bengaluru (₹4,000 value)!\n• **₹1,500 Tour Merch Coupon:** Unlocked at 15 sales milestone.\n• **1x VIP Fanpit Pass:** Unlocked at 50 sales for Anyma presents ÆDEN Mumbai (₹8,000 value).\n• **₹2,500 F&B Vouchers:** Unlocked at 40 sales.\n• **2x All-Access Backstage Pass:** Unlocked at 100 sales for Guns N' Roses India Tour!\n• **₹5,000 Cash Stipend:** Direct UPI payment for 150 sales milestone.\n\n*Check the new **'Rewards & Referrals'** tab on your dashboard to claim your codes!*`;
+      return {
+        text: `🎁 **Promoter Milestone Rewards & Free Concert Passes:**\n\n• **2x Free GA Passes:** Sell 25 passes to unlock 2 free tickets to The Chainsmokers Bengaluru (₹4,000 value)!\n• **₹1,500 Tour Merch Voucher:** Unlocked at 15 sales milestone.\n• **1x VIP Fanpit Pass:** Unlocked at 50 sales for Anyma presents ÆDEN Mumbai (₹8,000 value).\n• **2x All-Access Backstage Passes:** Unlocked at 100 sales for Guns N' Roses India Tour!\n• **₹5,000 Direct Cash Stipend:** For 150 sales milestone.`,
+        actions: [
+          { label: "🎁 Open Rewards & Referrals", view: "rewards" },
+          { label: "🚀 Ambassador Waitlist", view: "waitlist" }
+        ]
+      };
     }
 
-    // 6. FAQ: Campus Promoter Referral Program
+    // 6. Campus Promoter Referral Program
     if (q.includes('refer') || q.includes('invite') || q.includes('bounty') || q.includes('referral code') || q.includes('earn 500') || q.includes('referral link')) {
-      return `🤝 **Campus Promoter Referral Program:**\n\n• **Earn ₹500 Bounty:** Share your unique promoter referral link (found in the Rewards & Referrals tab) with batchmates and student ambassadors.\n• **Payout Trigger:** As soon as your referred friend signs up and sells their first 5 passes, ₹500 cash is credited directly to your account.\n• **1-Click WhatsApp Share:** Easily forward your invite link to college WhatsApp groups and student clubs!`;
+      return {
+        text: `🤝 **Campus Promoter Referral Program (Earn ₹500/Friend):**\n\n• **Share Your Code:** Share your unique referral link from the Rewards tab.\n• **Instant Bounty:** When your referred friend joins and sells their first 5 passes, **₹500 cash** is credited directly to your UPI.\n• **Unlimited Referrals:** No cap on referral rewards!`,
+        actions: [
+          { label: "🤝 View Referral Code", view: "rewards" }
+        ]
+      };
     }
 
-    // 6. FAQ: How tickets are delivered to buyer (BookMyShow / District)
+    // 7. How tickets are delivered to buyer (BookMyShow / District)
     if (q.includes('how are tickets') || q.includes('delivered') || q.includes('ticket delivery') || q.includes('where do tickets go') || q.includes('receive ticket') || q.includes('bookmyshow') || q.includes('district')) {
-      if (q.includes('need') && (q.includes('account') || q.includes('bms') || q.includes('district'))) {
-        return `📱 **Buyer Account Requirements (BookMyShow / District):**\n\n• **Yes**, the buyer needs an account on the relevant platform (BookMyShow or District) to receive the ticket.\n• **No Bank Card Required for Buyers:** If they don't have one, creating an account only requires a mobile phone number — no card or bank account needed, ensuring zero friction for cash buyers.`;
-      }
-      return `📲 **How Tickets are Delivered to the Buyer:**\n\n• **Direct Platform Delivery:** Tickets are delivered digitally, directly into the buyer's own **BookMyShow or District account** — NOT through a separate Tixora app.\n• **Trust & Legitimacy:** The buyer gets an official, scannable ticket on a platform they already recognize and trust, accessible just like any other standard booking.`;
+      return {
+        text: `📲 **Direct Digital Delivery to BookMyShow / District:**\n\n• **Official Platform Delivery:** Passes are delivered directly into the buyer's BookMyShow or District app account linked to their mobile number.\n• **No Separate App Needed:** Buyers don't need a Tixora account — they see their scannable QR ticket directly in their BookMyShow or District app.\n• **100% Genuine:** Zero risk of duplicate or counterfeit tickets.`,
+        actions: [
+          { label: "🎟️ Explore Concerts", view: "posters" },
+          { label: "🎫 Support Desk", view: "tickets" }
+        ]
+      };
     }
 
-    // 7. FAQ: Physical / Paper tickets
-    if (q.includes('physical') || q.includes('paper') || q.includes('printed') || q.includes('hard copy')) {
-      return `🚫 **Physical & Paper Ticket Policy:**\n\n• **No paper tickets are generated:** All tickets are issued digitally only.\n• **Anti-Scalping & Fraud Prevention:** This eliminates counterfeit, duplicate, or forged tickets and ensures Tixora always possesses a verifiable, traceable record of every legitimate pass issued.`;
-    }
-
-    // 8. FAQ: Event Cancellations & Refunds
+    // 8. Event Cancellations & Refunds
     if (q.includes('cancel') || (q.includes('refund') && (q.includes('event') || q.includes('cancelled') || q.includes('money back')))) {
-      if (q.includes('not cancelled') || q.includes('isn\'t cancelled') || q.includes('change mind')) {
-        return `⚠️ **Buyer Refund Policy (Event NOT Cancelled):**\n\n• Refunds outside of a cancellation strictly follow the standard policy of the ticketing platform (BookMyShow/District) where the ticket was issued.\n• **Promoter Advisory:** Promoters should **not** personally refund cash without confirming the ticket's refund eligibility with Tixora first.`;
-      }
-      return `🔄 **What Happens If an Event Is Cancelled:**\n\n1. **Digital Passes:** All tickets already delivered are refunded through the standard BookMyShow/District cancellation process on that platform.\n2. **Promoter Cash Refunds:** Cash collected by promoters for a cancelled event must be returned to those buyers.\n3. **Tixora Reimbursements:** Any cash already deposited with Tixora for that event will be refunded to the promoter to pass on.\n4. **Important:** Promoters must **not** disburse refunds to buyers until formal confirmation is received from Tixora.`;
+      return {
+        text: `🔄 **Event Cancellations & Refund Protection:**\n\n1. **Digital Passes:** Delivered tickets are automatically refunded through the official BookMyShow/District cancellation flow.\n2. **Promoter Cash Reversal:** Cash paid by peer buyers is refunded back through Tixora.\n3. **Resolution Assistance:** You can submit an expedited refund request on our Support Tickets Desk.`,
+        actions: [
+          { label: "🎫 Raise Refund Request", view: "tickets" },
+          { label: "📖 View Cancellation FAQs", view: "faqs" }
+        ]
+      };
     }
 
-    // 9. FAQ: Event Postponement
-    if (q.includes('postpone') || q.includes('reschedule') || q.includes('delayed date')) {
-      return `📅 **What Happens If an Event Is Postponed:**\n\n• **Tickets Remain Valid:** Existing tickets typically remain valid for the new date, following the organizer's and platform's postponement policy.\n• **Direct Notice:** Tixora will notify affected promoters directly with instructions specific to that event.`;
-    }
-
-    // 10. FAQ: DigiLocker Verification & Disputes
+    // 9. DigiLocker Verification
     if (q.includes('digilocker') || q.includes('why verify') || q.includes('verification') || q.includes('identity')) {
-      if (q.includes('student') || q.includes('college') || q.includes('genuine')) {
-        return `🎓 **DigiLocker vs. Student Verification:**\n\n• **Identity vs Enrollment:** DigiLocker confirms official identity (Aadhaar/PAN details), not school or college enrollment.\n• **Secondary Check:** Some student-exclusive passes may require an additional student ID card or institutional email verification.`;
-      }
-      return `🛡️ **Why DigiLocker Verification Is Required:**\n\n• **Verified Identity:** DigiLocker confirms your real identity before you're approved as a promoter.\n• **Mutual Protection:** It protects buyers (they know a verified real person sold them the ticket) and protects you (Tixora can resolve disputes in your favor based on verified identity logs).`;
+      return {
+        text: `🛡️ **Why DigiLocker Verification is Required:**\n\n• **Verified Identity:** DigiLocker confirms your identity (Aadhaar/PAN details) before ticket issuance access is granted.\n• **Anti-Scalping Security:** Protects buyers knowing they purchased from a verified student promoter.\n• **Audit Trail:** Protects promoters in case of buyer disputes as all orders are cryptographically authenticated.`,
+        actions: [
+          { label: "🚀 Join Ambassador Waitlist", view: "waitlist" },
+          { label: "📜 View Legal & Compliance", view: "about" }
+        ]
+      };
     }
 
-    // 11. FAQ: Disputes Between Promoter and Buyer
-    if (q.includes('dispute') || q.includes('conflict') || q.includes('complaint') || q.includes('source of truth')) {
-      return `⚖️ **Dispute Resolution Between Promoter and Buyer:**\n\n• **Authoritative Log:** Because every ticket is logged against your verified promoter account, Tixora uses its own ticket records as the **single source of truth** in any dispute — independent of how cash was handled.\n• **Protection for Promoters:** This works in your favor as long as you have properly recorded the transaction in the system.`;
-    }
-
-    // 12. FAQ: For Organizers — Minimum Guarantee & Upfront payments
-    if (q.includes('organizer') || q.includes('minimum guarantee') || q.includes('how does tixora get') || q.includes('upfront') || q.includes('revenue share')) {
-      return `🎪 **How Tixora Works with Event Organizers:**\n\n• **Minimum Guarantee (MG):** Tixora negotiates minimum guarantee deals with organizers — committing to a guaranteed number of tickets sold in exchange for a bulk discount off face value.\n• **Payment Structures:** Depending on demand, deals are structured either as a **committed inventory buy** under a minimum guarantee or as a **revenue-share arrangement** for lower-demand events.`;
-    }
-
-    // 13. Artist Songs & Info Matching
+    // 10. Artist Songs & Info Matching
     if (q.includes('fred') || q.includes('again')) {
       const a = ARTIST_KNOWLEDGE['fred again'];
-      return `🎹 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Most Popular Songs:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Tour Info:** ${a.showInfo}`;
+      return {
+        text: `🎹 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Most Popular Songs:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Tour Info:** ${a.showInfo}`,
+        actions: [
+          { label: "🎟️ View Fred again.. Passes", view: "prices", eventId: a.eventId }
+        ]
+      };
     }
 
     if (q.includes('anyma') || q.includes('aeden') || q.includes('æden') || q.includes('afterlife')) {
       const a = ARTIST_KNOWLEDGE['anyma'];
-      return `🌌 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Most Popular Tracks:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`;
+      return {
+        text: `🌌 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Most Popular Tracks:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`,
+        actions: [
+          { label: "🎟️ View Anyma ÆDEN Passes", view: "prices", eventId: a.eventId }
+        ]
+      };
     }
 
     if (q.includes('guns') || q.includes('roses') || q.includes('slash') || q.includes('axl')) {
       const a = ARTIST_KNOWLEDGE['guns n roses'];
-      return `🎸 **${a.name}**\n**Lineup:** ${a.members}\n\n**🔥 Legendary Songs:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Tour Info:** ${a.showInfo}`;
+      return {
+        text: `🎸 **${a.name}**\n**Lineup:** ${a.members}\n\n**🔥 Legendary Songs:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Tour Info:** ${a.showInfo}`,
+        actions: [
+          { label: "🎟️ View Guns N' Roses Passes", view: "prices", eventId: a.eventId }
+        ]
+      };
     }
 
     if (q.includes('chainsmoker') || q.includes('sunburn')) {
       const a = ARTIST_KNOWLEDGE['chainsmokers'];
-      return `🔥 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Top Anthems:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`;
+      return {
+        text: `🔥 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Top Anthems:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`,
+        actions: [
+          { label: "🎟️ View Chainsmokers Passes", view: "prices", eventId: a.eventId }
+        ]
+      };
     }
 
     if (q.includes('khalid') || q.includes('location') || q.includes('young dumb')) {
       const a = ARTIST_KNOWLEDGE['khalid'];
-      return `🎤 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Top Hits:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`;
+      return {
+        text: `🎤 **${a.name}**\n**Genre:** ${a.genre}\n\n**🔥 Top Hits:**\n${a.topSongs.map((s, i) => `${i + 1}. *${s}*`).join('\n')}\n\n📍 **Show Info:** ${a.showInfo}`,
+        actions: [
+          { label: "🎟️ View Khalid Passes", view: "prices", eventId: a.eventId }
+        ]
+      };
     }
 
-    // 14. Commission tiers summary
-    if (q.includes('commission') || q.includes('tier') || q.includes('silver') || q.includes('gold') || q.includes('platinum')) {
-      return `🏆 **Promoter Commission Tiers:**\n\n• **Silver (10–50 tkts):** 5.0% – 8.5% cut per ticket (Instant Card/UPI/Bank clearance).\n• **Gold (51–150 tkts):** 9.0% – 12.0% cut + priority artist guestlist access & early Phase 1 allocations.\n• **Platinum (151+ tkts):** 13.0% – 16.0% cut + all-access backstage pass & tour cash bonuses.\n\n*All commissions are computed and settled immediately upon verified ticket booking.*`;
-    }
-
-    // 15. Founders & Board of Directors
+    // 11. Founders & Board of Directors
     if (q.includes('founder') || q.includes('who made') || q.includes('created by') || q.includes('team') || q.includes('bod') || q.includes('director')) {
-      return `🏛️ **Tixora Board of Directors & Founding Team:**\n\n• **Ronak Jain R** — Founder (ronakj303@gmail.com | +91 78921 45475)\n• **Prajwal Gowrish H S** — Co-Founder (gowrishprajwal123@gmail.com | +91 88612 00170)\n• **Anshul S Balan** — Co-Founder (anshulsb70@gmail.com | +91 70125 37541)\n• **Kanishk Jhunjhunwala** — Co-Founder (kanishkjhunjhunwala@gmail.com | +91 91045 73147)\n\n• **Primary Support Helpline:** +91 78921 45475\n\nTixora empowers verified campus networks to issue official digital concert passes with complete audit transparency and instant accounting.`;
+      return {
+        text: `🏛️ **Tixora Board of Directors & Founding Team:**\n\n• **Ronak Jain R** — Founder (ronakj303@gmail.com | +91 78921 45475)\n• **Prajwal Gowrish H S** — Co-Founder (gowrishprajwal123@gmail.com | +91 88612 00170)\n• **Anshul S Balan** — Co-Founder (anshulsb70@gmail.com | +91 70125 37541)\n• **Kanishk Jhunjhunwala** — Co-Founder (kanishkjhunjhunwala@gmail.com | +91 91045 73147)\n\n• **Primary Support Helpline:** +91 78921 45475`,
+        actions: [
+          { label: "📖 About Tixora", view: "about" },
+          { label: "📞 Helpline WhatsApp", url: "https://wa.me/917892145475" }
+        ]
+      };
     }
 
-    // 16. Fallback Search in FAQ Dataset
+    // 12. Fallback Search in FAQ Dataset
     const matchFaq = FAQ_DATA.find(f => 
       f.question.toLowerCase().includes(q) || 
       f.keywords.some(k => q.includes(k.toLowerCase()))
     );
 
     if (matchFaq) {
-      return `💡 **${matchFaq.question}**\n\n${matchFaq.answer}\n\n*Category: ${matchFaq.categoryLabel}*`;
+      return {
+        text: `💡 **${matchFaq.question}**\n\n${matchFaq.answer}\n\n*Category: ${matchFaq.categoryLabel}*`,
+        actions: [
+          { label: "📖 Full FAQ Center", view: "faqs" },
+          { label: "🎫 Support Desk", view: "tickets" }
+        ]
+      };
     }
 
     // Default Fallback
-    return `✨ **I'm here to help! Ask me anything about:**\n\n• 💳 **Upfront Payment:** How Card, UPI, and Bank settlements issue tickets\n• 🎟️ **Ticket Delivery:** How passes reach BookMyShow or District accounts\n• 🏆 **Promoter Tiers:** Silver, Gold, Platinum commission rates\n• 🔄 **Cancellations & Refunds:** Platform refunds vs promoter cash returns\n• 🛡️ **DigiLocker & Disputes:** Identity verification and source of truth records\n• 🎸 **Artist Songs & Info:** Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid\n\n📞 *Or WhatsApp our team directly at +91 78921 45475.*`;
+    return {
+      text: `✨ **I'm here to help! Ask me anything about:**\n\n• 🎫 **Support Tickets:** Raising inquiries, tracking status & refunds\n• 💳 **Upfront Payment:** Instant Card, UPI & Bank clearance\n• 📲 **Pass Delivery:** How tickets reach BookMyShow & District\n• 🏆 **Promoter Tiers:** Silver, Gold, Platinum commission rates\n• 🔄 **Cancellations & Refunds:** Protection guidelines\n• 🎸 **2026 Concert Lineups:** Anyma, Fred again.., Guns N' Roses, Chainsmokers, Khalid\n\n📞 *Or WhatsApp our team at +91 78921 45475.*`,
+      actions: [
+        { label: "🎫 Support Desk", view: "tickets" },
+        { label: "💰 Price Calculator", view: "prices" },
+        { label: "🎟️ Concert Passes", view: "posters" }
+      ]
+    };
   };
 
   const handleSend = (textToSend = null) => {
@@ -264,18 +357,64 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
 
     setMessages((prev) => [...prev, userMsg]);
     if (!textToSend) setInputMessage('');
+    setIsTyping(true);
 
     // Simulate smart bot response with micro delay
     setTimeout(() => {
-      const replyText = generateBotReply(text);
+      const replyData = generateBotReply(text);
       const botMsg = {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: replyText,
+        text: typeof replyData === 'string' ? replyData : replyData.text,
+        actions: replyData.actions || [],
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages((prev) => [...prev, botMsg]);
-    }, 250);
+      setIsTyping(false);
+    }, 320);
+  };
+
+  const handleActionClick = (action) => {
+    if (action.url) {
+      window.open(action.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    if (action.action === 'recordSale' && onOpenRecordSale) {
+      setIsOpen(false);
+      onOpenRecordSale();
+      return;
+    }
+    if (action.eventId && onOpenPriceList) {
+      setIsOpen(false);
+      onOpenPriceList(action.eventId);
+      return;
+    }
+    if (action.view && onNavigate) {
+      setIsOpen(false);
+      onNavigate(action.view);
+      return;
+    }
+    if (action.view === 'faqs' && onNavigateToFAQ) {
+      setIsOpen(false);
+      onNavigateToFAQ();
+      return;
+    }
+  };
+
+  const handleClearHistory = () => {
+    setMessages([
+      {
+        id: 'msg-welcome',
+        sender: 'bot',
+        text: "👋 Chat reset! How can I assist you with Tixora passes, promoter earnings, or support tickets today?",
+        timestamp: 'Just now',
+        actions: [
+          { label: "🎫 Support Tickets", view: "tickets" },
+          { label: "💰 Price Calculator", view: "prices" },
+          { label: "🎟️ Concert Roster", view: "posters" }
+        ]
+      }
+    ]);
   };
 
   const scrollToBottom = () => {
@@ -286,7 +425,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
     if (isOpen) {
       scrollToBottom();
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, isTyping]);
 
   useEffect(() => {
     if (externalQueryTrigger) {
@@ -296,15 +435,16 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
   }, [externalQueryTrigger]);
 
   const QUICK_QUESTIONS = [
-    { label: "🎁 Rewards & Free Tickets", query: "What rewards, free tickets, and coupons do promoters get?" },
+    { label: "🎫 Support Tickets & Issues", query: "How do I raise a support ticket or request an issue resolution?" },
+    { label: "🎁 Rewards & Free Passes", query: "What rewards, free tickets, and coupons do promoters get?" },
     { label: "🤝 Refer Friends (Earn ₹500)", query: "How does the Campus Promoter Referral System work?" },
-    { label: "💳 Pay via Card / UPI / Bank", query: "How does ticket payment and issuance work?" },
+    { label: "💳 Upfront Card / UPI / Bank", query: "How does ticket payment and instant issuance work?" },
     { label: "💵 Collecting Cash from Buyers", query: "Can promoters collect cash from their peer buyers?" },
-    { label: "🎟️ BMS / District Delivery", query: "How are tickets delivered to the buyer?" },
+    { label: "📲 BMS / District Delivery", query: "How are tickets delivered to the buyer's BookMyShow account?" },
     { label: "📈 Move Up Commission Tiers", query: "How do I move up a tier and get a better commission rate?" },
-    { label: "🔄 Event Cancellations & Refunds", query: "What happens if an event is cancelled?" },
-    { label: "🛡️ DigiLocker & Disputes", query: "Why do I need to verify with DigiLocker?" },
-    { label: "📞 Helpline: 78921 45475", query: "Contact phone number and helpline" }
+    { label: "🔄 Cancellations & Refunds", query: "What happens if an event is cancelled or postponed?" },
+    { label: "🛡️ DigiLocker Verification", query: "Why do I need to verify with DigiLocker?" },
+    { label: "📞 Helpline: +91 78921 45475", query: "Contact phone number, founders, and helpline" }
   ];
 
   return (
@@ -315,26 +455,79 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
           onClick={() => setIsOpen(true)}
           className="chat-launcher-btn"
           title="Open AI Assistant"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            zIndex: 999,
+            background: 'linear-gradient(135deg, #18181b 0%, #09090b 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.18)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(236, 72, 153, 0.25)',
+            color: '#ffffff',
+            borderRadius: '9999px',
+            padding: '10px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            cursor: 'pointer',
+            fontWeight: 700,
+            fontSize: '0.84rem',
+            letterSpacing: '0.01em',
+            transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
         >
-          <Bot size={17} />
+          <div style={{
+            width: '24px',
+            height: '24px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0
+          }}>
+            <Bot size={14} color="#ffffff" />
+          </div>
           <span className="chat-launcher-text">Ask AI Assistant</span>
           <span style={{
             width: '8px',
             height: '8px',
             borderRadius: '50%',
             background: '#10b981',
-            boxShadow: '0 0 6px #10b981'
+            boxShadow: '0 0 8px #10b981'
           }} />
         </button>
       )}
 
-      {/* Interactive Chatbox Window */}
+      {/* Interactive Chatbox Window Modal */}
       {isOpen && (
-        <div className="chat-window-modal">
+        <div 
+          className="chat-window-modal"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            width: '420px',
+            maxWidth: 'calc(100vw - 32px)',
+            height: '620px',
+            maxHeight: 'calc(100vh - 100px)',
+            background: 'rgba(11, 13, 19, 0.96)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            borderRadius: '18px',
+            boxShadow: '0 24px 64px rgba(0, 0, 0, 0.8), 0 0 32px rgba(236, 72, 153, 0.18)',
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 9999,
+            overflow: 'hidden',
+            animation: 'fadeInUp 0.28s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
+        >
           
           {/* Chat Header */}
           <div style={{
-            background: 'rgba(18, 20, 28, 0.95)',
+            background: 'rgba(18, 20, 28, 0.98)',
             borderBottom: '1px solid var(--border-color)',
             padding: '12px 14px',
             display: 'flex',
@@ -342,28 +535,61 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
             alignItems: 'center'
           }}>
             <div className="flex items-center gap-2.5">
-              <img
-                src="/tixora-logo.png"
-                alt="Tixora AI"
-                style={{
-                  height: '28px',
-                  width: 'auto',
-                  borderRadius: '5px',
-                  display: 'block'
-                }}
-              />
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Bot size={18} color="#ffffff" />
+              </div>
               <div>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#ffffff' }}>
-                  Tixora AI Assistant
+                <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span>Tixora AI Assistant</span>
+                  <span style={{
+                    fontSize: '0.62rem',
+                    background: 'rgba(236, 72, 153, 0.18)',
+                    color: '#ec4899',
+                    padding: '1px 6px',
+                    borderRadius: '4px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase'
+                  }}>Live</span>
                 </div>
                 <div className="flex items-center gap-1.5" style={{ fontSize: '0.68rem', color: '#10b981' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
-                  <span>FAQs • Policies • Delivery • Artists</span>
+                  <span>Support • Delivery • Rates • Lineup</span>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-1">
+              <button
+                onClick={handleClearHistory}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.15s ease'
+                }}
+                title="Clear Chat History"
+                onMouseOver={(e) => (e.currentTarget.style.color = '#ffffff')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+              >
+                <Trash2 size={13} />
+              </button>
+
               {onNavigateToFAQ && (
                 <button
                   onClick={() => {
@@ -386,7 +612,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
                   title="View Full FAQ Guide"
                 >
                   <HelpCircle size={12} />
-                  <span>Full FAQs</span>
+                  <span>FAQs</span>
                 </button>
               )}
 
@@ -430,9 +656,9 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
           >
             <div className="flex items-center gap-1.5">
               <Phone size={12} />
-              <span>Helpline: <strong>+91 78921 45475</strong></span>
+              <span>Helpline / WhatsApp: <strong>+91 78921 45475</strong></span>
             </div>
-            <span style={{ fontSize: '0.68rem', textDecoration: 'underline' }}>WhatsApp Us →</span>
+            <span style={{ fontSize: '0.68rem', textDecoration: 'underline' }}>Chat Now →</span>
           </a>
 
           {/* Messages Body */}
@@ -442,31 +668,77 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
             padding: '12px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px'
+            gap: '12px'
           }}>
             {messages.map((msg) => (
               <div
                 key={msg.id}
                 style={{
                   alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                  maxWidth: '88%',
+                  maxWidth: '90%',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '2px'
+                  gap: '4px'
                 }}
               >
                 <div style={{
                   background: msg.sender === 'user' ? '#ffffff' : 'rgba(255, 255, 255, 0.06)',
                   color: msg.sender === 'user' ? '#090a0d' : '#f4f4f6',
                   border: msg.sender === 'user' ? 'none' : '1px solid var(--border-color)',
-                  borderRadius: msg.sender === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                  padding: '9px 12px',
-                  fontSize: '0.8rem',
-                  lineHeight: 1.45,
-                  whiteSpace: 'pre-line'
+                  borderRadius: msg.sender === 'user' ? '14px 14px 2px 14px' : '14px 14px 14px 2px',
+                  padding: '10px 13px',
+                  fontSize: '0.82rem',
+                  lineHeight: 1.48,
+                  whiteSpace: 'pre-line',
+                  boxShadow: msg.sender === 'user' ? '0 4px 14px rgba(0,0,0,0.3)' : 'none'
                 }}>
                   {msg.text}
+
+                  {/* 1-Click Interactive Action Buttons */}
+                  {msg.actions && msg.actions.length > 0 && (
+                    <div style={{
+                      marginTop: '10px',
+                      paddingTop: '8px',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '6px'
+                    }}>
+                      {msg.actions.map((act, aIdx) => (
+                        <button
+                          key={aIdx}
+                          onClick={() => handleActionClick(act)}
+                          style={{
+                            background: 'rgba(236, 72, 153, 0.15)',
+                            border: '1px solid rgba(236, 72, 153, 0.35)',
+                            color: '#ffffff',
+                            borderRadius: '6px',
+                            padding: '4px 9px',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            transition: 'all 0.15s ease'
+                          }}
+                          onMouseOver={(e) => {
+                            e.currentTarget.style.background = 'rgba(236, 72, 153, 0.3)';
+                            e.currentTarget.style.borderColor = '#ec4899';
+                          }}
+                          onMouseOut={(e) => {
+                            e.currentTarget.style.background = 'rgba(236, 72, 153, 0.15)';
+                            e.currentTarget.style.borderColor = 'rgba(236, 72, 153, 0.35)';
+                          }}
+                        >
+                          <span>{act.label}</span>
+                          <ChevronRight size={11} />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
+
                 <div style={{
                   fontSize: '0.62rem',
                   color: 'var(--text-muted)',
@@ -477,13 +749,31 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
                 </div>
               </div>
             ))}
+
+            {/* Live Typing Indicator */}
+            {isTyping && (
+              <div style={{
+                alignSelf: 'flex-start',
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '14px 14px 14px 2px',
+                padding: '8px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}>
+                <span className="pulse-dot" style={{ margin: 0, width: '6px', height: '6px', background: '#ec4899' }} />
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Tixora AI is typing...</span>
+              </div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
 
           {/* 1-Click Quick Suggestion Chips Bar */}
           <div style={{
             padding: '8px 10px',
-            background: 'rgba(14, 16, 24, 0.85)',
+            background: 'rgba(14, 16, 24, 0.88)',
             borderTop: '1px solid var(--border-color)',
             overflowX: 'auto',
             display: 'flex',
@@ -534,7 +824,7 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
           >
             <input
               type="text"
-              placeholder="Ask about BookMyShow delivery, 10-day rules, refunds..."
+              placeholder="Ask about support tickets, refunds, BookMyShow delivery..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               style={{
@@ -575,3 +865,4 @@ export const ChatAssistant = ({ onOpenRecordSale, onOpenPriceList, externalQuery
     </>
   );
 };
+
