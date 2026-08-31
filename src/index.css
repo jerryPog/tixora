@@ -802,21 +802,59 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
 }
 
+.footer-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 3rem;
+}
+
+@media (max-width: 768px) {
+  .footer-nav-grid {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-nav-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-nav-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
 .footer-link {
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: #a1a1aa;
   cursor: pointer;
-  padding: 0;
+  padding: 2px 0;
   text-align: left;
-  font-size: 0.76rem;
-  transition: color 0.15s ease;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .footer-link:hover {
   color: #ffffff;
-  text-decoration: underline;
+  transform: translateX(2px);
 }
+
 
 
 

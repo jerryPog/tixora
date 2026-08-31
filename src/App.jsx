@@ -801,12 +801,12 @@ const MainDashboard = () => {
             </div>
 
             {/* Internal Links Column Matrix */}
-            <div className="flex flex-wrap gap-x-8 gap-y-3" style={{ fontSize: '0.78rem' }}>
-              <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+            <div className="footer-nav-grid">
+              <div className="footer-nav-col">
+                <div className="footer-nav-title">
                   Platform
                 </div>
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-2">
                   <button onClick={() => navigateTo('posters')} className="footer-link">Concerts & Passes</button>
                   <button onClick={() => navigateTo('waitlist')} className="footer-link">Campus Ambassador</button>
                   <button onClick={() => navigateTo('prices')} className="footer-link">Price Calculator</button>
@@ -814,11 +814,11 @@ const MainDashboard = () => {
                 </div>
               </div>
 
-              <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+              <div className="footer-nav-col">
+                <div className="footer-nav-title">
                   Company
                 </div>
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-2">
                   <button onClick={() => navigateTo('about')} className="footer-link">About Us & Founders</button>
                   <button onClick={() => navigateTo('reviews')} className="footer-link">Verified Reviews</button>
                   <button onClick={() => navigateTo('contact')} className="footer-link">Contact & Help Desk</button>
@@ -826,11 +826,11 @@ const MainDashboard = () => {
                 </div>
               </div>
 
-              <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+              <div className="footer-nav-col">
+                <div className="footer-nav-title">
                   Trust & Security
                 </div>
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-2">
                   <button onClick={() => setIsLegalModalOpen(true)} className="footer-link">Compliance Policy</button>
                   <button onClick={() => setIsRLSModalOpen(true)} className="footer-link">Row-Level Security (RLS)</button>
                   <button onClick={handleOpenFAQ} className="footer-link">FAQ Center</button>
