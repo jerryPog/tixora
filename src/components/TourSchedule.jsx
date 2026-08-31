@@ -41,7 +41,7 @@ const SCHEDULE_DATES = [
         stage: 'Main Stage (Headliner)',
         artist: "Guns N' Roses (Axl Rose, Slash, Duff)",
         genre: 'Hard Rock Legends 3-Hour Marathon',
-        poster: '/posters/guns-n-roses-official-poster.jpg',
+        poster: '/posters/guns-n-roses-india-poster.jpg',
         minPrice: 4000,
         eventId: 'evt-gnr-blr',
         headliner: true
