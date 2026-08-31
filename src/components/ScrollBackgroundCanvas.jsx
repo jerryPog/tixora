@@ -1,42 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const TOTAL_FRAMES = 93;
-const PARTICLE_COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 64;
+const PARTICLE_COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 36;
 
 export const ScrollBackgroundCanvas = () => {
   const canvasRef = useRef(null);
   const imagesRef = useRef([]);
+  const lastDrawnImgRef = useRef(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const currentFrameRef = useRef(0);
   const targetFrameRef = useRef(0);
-  const scrollVelocityRef = useRef(0);
-  const lastScrollYRef = useRef(0);
-  const lastScrollTimeRef = useRef(Date.now());
   const mouseRef = useRef({ x: -1000, y: -1000, active: false, radius: 180 });
   const animationFrameId = useRef(null);
   const particlesRef = useRef([]);
 
-  // Initialize Particles (Festival Embers & Cosmic Sparks)
+  // Initialize Gentle Ambient Particles (Soft festival embers)
   const initParticles = (w, h) => {
     const particles = [];
     const colors = [
-      'rgba(236, 72, 153, ', // Magenta
-      'rgba(6, 182, 212, ',  // Cyan
-      'rgba(139, 92, 246, ', // Violet
-      'rgba(245, 158, 11, ', // Amber
-      'rgba(255, 255, 255, ' // Pure White
+      'rgba(236, 72, 153, ', // Soft Magenta
+      'rgba(6, 182, 212, ',  // Soft Cyan
+      'rgba(139, 92, 246, ', // Soft Violet
+      'rgba(245, 158, 11, '  // Soft Amber
     ];
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        size: Math.random() * 2.8 + 0.8,
-        speedX: (Math.random() - 0.5) * 0.45,
-        speedY: -Math.random() * 0.65 - 0.2, // Drifting upward
+        size: Math.random() * 2.0 + 0.8,
+        speedX: (Math.random() - 0.5) * 0.25,
+        speedY: -Math.random() * 0.35 - 0.1, // Calm upward drift
         colorPrefix: colors[Math.floor(Math.random() * colors.length)],
-        alpha: Math.random() * 0.65 + 0.25,
-        pulseSpeed: Math.random() * 0.03 + 0.01,
+        baseAlpha: Math.random() * 0.25 + 0.12,
+        pulseSpeed: Math.random() * 0.015 + 0.008,
         pulseOffset: Math.random() * Math.PI * 2
       });
     }
@@ -74,6 +71,7 @@ export const ScrollBackgroundCanvas = () => {
       img.onload = () => {
         loadedCount++;
         if (loadedCount === 1) {
+          lastDrawnImgRef.current = img;
           resizeCanvas();
         }
         if (loadedCount === TOTAL_FRAMES) {
@@ -112,7 +110,7 @@ export const ScrollBackgroundCanvas = () => {
     };
   }, []);
 
-  // Mouse & Touch Tracking for Interactive Stage Lighting Spotlights
+  // Mouse & Touch Tracking for Interactive Stage Lighting
   useEffect(() => {
     const handleMouseMove = (e) => {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -120,7 +118,7 @@ export const ScrollBackgroundCanvas = () => {
         x: e.clientX * dpr,
         y: e.clientY * dpr,
         active: true,
-        radius: 220 * dpr
+        radius: 200 * dpr
       };
     };
 
@@ -135,7 +133,7 @@ export const ScrollBackgroundCanvas = () => {
           x: e.touches[0].clientX * dpr,
           y: e.touches[0].clientY * dpr,
           active: true,
-          radius: 160 * dpr
+          radius: 140 * dpr
         };
       }
     };
@@ -153,23 +151,13 @@ export const ScrollBackgroundCanvas = () => {
     };
   }, []);
 
-  // Smooth scroll listener with linear interpolation & velocity calculation
+  // Smooth scroll listener
   useEffect(() => {
     const handleScroll = () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (maxScroll <= 0) return;
 
-      const now = Date.now();
-      const dt = Math.max(1, now - lastScrollTimeRef.current);
       const currentScrollY = window.scrollY;
-      const scrollDiff = Math.abs(currentScrollY - lastScrollYRef.current);
-      
-      // Calculate instantaneous scroll velocity
-      scrollVelocityRef.current = Math.min(15, (scrollDiff / dt) * 12);
-
-      lastScrollYRef.current = currentScrollY;
-      lastScrollTimeRef.current = now;
-
       const progress = Math.max(0, Math.min(1, currentScrollY / maxScroll));
       targetFrameRef.current = progress * (TOTAL_FRAMES - 1);
     };
@@ -179,17 +167,14 @@ export const ScrollBackgroundCanvas = () => {
 
     let time = 0;
 
-    // Master High-Performance Visual Render Loop
+    // High-Performance Flicker-Free Visual Render Loop
     const renderLoop = () => {
       time += 0.016;
 
-      // Decay scroll velocity gradually
-      scrollVelocityRef.current *= 0.92;
-
-      // Smooth LERP frame interpolation
+      // Silky smooth LERP frame interpolation (no sudden frame snapping or strobe)
       const diff = targetFrameRef.current - currentFrameRef.current;
-      if (Math.abs(diff) > 0.002) {
-        currentFrameRef.current += diff * 0.16;
+      if (Math.abs(diff) > 0.001) {
+        currentFrameRef.current += diff * 0.1;
       }
 
       const canvas = canvasRef.current;
@@ -198,104 +183,63 @@ export const ScrollBackgroundCanvas = () => {
         if (ctx) {
           const frameIndex = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameRef.current)));
           const progress = frameIndex / (TOTAL_FRAMES - 1);
-          const velocity = scrollVelocityRef.current;
 
           const canvasWidth = canvas.width;
           const canvasHeight = canvas.height;
 
-          // 1. Draw Base Concert Video Frame with Camera Parallax & Subtle Zoom
-          const img = imagesRef.current[frameIndex];
-          if (img && img.complete && img.naturalWidth > 0) {
-            // True 'background-size: cover' algorithm with dynamic subtle zoom (1.00 -> 1.08)
-            const zoom = 1.0 + progress * 0.07 + Math.min(0.04, velocity * 0.003);
-            const hRatio = canvasWidth / img.naturalWidth;
-            const vRatio = canvasHeight / img.naturalHeight;
+          // 1. Draw Base Concert Video Frame with smooth aspect ratio and no blank flash
+          const requestedImg = imagesRef.current[frameIndex];
+          const imgToDraw = (requestedImg && requestedImg.complete && requestedImg.naturalWidth > 0)
+            ? requestedImg
+            : lastDrawnImgRef.current;
+
+          if (imgToDraw && imgToDraw.complete && imgToDraw.naturalWidth > 0) {
+            lastDrawnImgRef.current = imgToDraw;
+
+            // Stable, subtle zoom without velocity jerks
+            const zoom = 1.0 + progress * 0.04;
+            const hRatio = canvasWidth / imgToDraw.naturalWidth;
+            const vRatio = canvasHeight / imgToDraw.naturalHeight;
             const baseRatio = Math.max(hRatio, vRatio);
             const ratio = baseRatio * zoom;
 
-            const renderWidth = img.naturalWidth * ratio;
-            const renderHeight = img.naturalHeight * ratio;
+            const renderWidth = imgToDraw.naturalWidth * ratio;
+            const renderHeight = imgToDraw.naturalHeight * ratio;
             const offsetX = (canvasWidth - renderWidth) / 2;
-            const offsetY = (canvasHeight - renderHeight) / 2 + (progress * 18 * (canvasHeight / 1000));
+            const offsetY = (canvasHeight - renderHeight) / 2 + (progress * 12 * (canvasHeight / 1000));
 
-            ctx.fillStyle = '#07080b';
-            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-            ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, offsetX, offsetY, renderWidth, renderHeight);
+            ctx.drawImage(imgToDraw, 0, 0, imgToDraw.naturalWidth, imgToDraw.naturalHeight, offsetX, offsetY, renderWidth, renderHeight);
           } else {
             ctx.fillStyle = '#07080b';
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
           }
 
-          // 2. Kinetic Volumetric Stage Laser Beams (Multi-colored concert light sweeps)
+          // 2. Soft Ambient Stage Glow (Steady, non-flashing, comfortable dark atmospheric lighting)
           ctx.save();
           ctx.globalCompositeOperation = 'screen';
 
           const stageOriginX = canvasWidth * 0.5;
-          const stageOriginY = canvasHeight * 0.28; // Emitted from cathedral arch apex
+          const stageOriginY = canvasHeight * 0.28;
 
-          const laserCount = 6;
-          const laserColors = [
-            'rgba(236, 72, 153, ', // Pink / Magenta
-            'rgba(6, 182, 212, ',  // Cyan
-            'rgba(168, 85, 247, ', // Purple
-            'rgba(245, 158, 11, ', // Gold / Amber
-            'rgba(16, 185, 129, ', // Emerald
-            'rgba(59, 130, 246, '  // Electric Blue
-          ];
-
-          for (let i = 0; i < laserCount; i++) {
-            const angleOffset = ((i - (laserCount - 1) / 2) * 0.28);
-            const sweep = Math.sin(time * 1.2 + i * 1.5 + progress * Math.PI * 2) * (0.35 + velocity * 0.05);
-            const angle = Math.PI * 0.5 + angleOffset + sweep;
-
-            const beamLength = Math.max(canvasWidth, canvasHeight) * 1.4;
-            const targetX = stageOriginX + Math.cos(angle) * beamLength;
-            const targetY = stageOriginY + Math.sin(angle) * beamLength;
-
-            const beamWidth = (Math.sin(time * 2 + i) * 6 + 18) * (1 + velocity * 0.08);
-
-            const laserGrad = ctx.createLinearGradient(stageOriginX, stageOriginY, targetX, targetY);
-            const baseAlpha = 0.22 + Math.sin(time * 3 + i) * 0.08 + Math.min(0.35, velocity * 0.04);
-            laserGrad.addColorStop(0, `${laserColors[i % laserColors.length]}${baseAlpha * 1.4})`);
-            laserGrad.addColorStop(0.35, `${laserColors[i % laserColors.length]}${baseAlpha * 0.7})`);
-            laserGrad.addColorStop(1, `${laserColors[i % laserColors.length]}0)`);
-
-            ctx.lineWidth = beamWidth;
-            ctx.strokeStyle = laserGrad;
-            ctx.beginPath();
-            ctx.moveTo(stageOriginX, stageOriginY);
-            ctx.lineTo(targetX, targetY);
-            ctx.stroke();
-
-            // Core laser beam highlight (thin white intense laser line)
-            ctx.lineWidth = Math.max(1.5, beamWidth * 0.15);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${baseAlpha * 0.85})`;
-            ctx.beginPath();
-            ctx.moveTo(stageOriginX, stageOriginY);
-            ctx.lineTo(targetX, targetY);
-            ctx.stroke();
-          }
-
-          // 3. Stage Horizon Pulsing Glow (Simulating massive stage lights & pyros)
+          // Gentle Ambient Horizon Flare
           const glowGrad = ctx.createRadialGradient(
             stageOriginX, stageOriginY + canvasHeight * 0.05, 10,
-            stageOriginX, stageOriginY + canvasHeight * 0.05, canvasWidth * 0.65
+            stageOriginX, stageOriginY + canvasHeight * 0.05, canvasWidth * 0.55
           );
-          const glowAlpha = 0.25 + Math.sin(time * 2) * 0.08 + Math.min(0.2, velocity * 0.03);
-          const hueShift = Math.sin(time * 0.5 + progress * Math.PI) > 0 ? '236, 72, 153, ' : '139, 92, 246, ';
-          glowGrad.addColorStop(0, `rgba(${hueShift}${glowAlpha * 1.5})`);
-          glowGrad.addColorStop(0.5, `rgba(${hueShift}${glowAlpha * 0.4})`);
+          // Very soft steady glow without flashing or harsh color switching
+          glowGrad.addColorStop(0, 'rgba(236, 72, 153, 0.16)');
+          glowGrad.addColorStop(0.4, 'rgba(139, 92, 246, 0.08)');
           glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
           ctx.fillStyle = glowGrad;
           ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-          // 4. Interactive Mouse / Touch Spotlight Flashlight
+          // 3. Subtle Interactive Mouse / Touch Soft Spotlight
           if (mouseRef.current.active) {
             const { x, y, radius } = mouseRef.current;
             const mouseGrad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-            mouseGrad.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
-            mouseGrad.addColorStop(0.4, 'rgba(236, 72, 153, 0.12)');
+            mouseGrad.addColorStop(0, 'rgba(255, 255, 255, 0.09)');
+            mouseGrad.addColorStop(0.5, 'rgba(236, 72, 153, 0.04)');
             mouseGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
             ctx.fillStyle = mouseGrad;
@@ -304,63 +248,49 @@ export const ScrollBackgroundCanvas = () => {
             ctx.fill();
           }
 
-          // 5. Floating Festival Embers & Cosmic Sparks
+          // 4. Floating Gentle Ambient Embers (Soft, calm drift with no jarring tails or strobe)
           const particles = particlesRef.current;
           for (let i = 0; i < particles.length; i++) {
             const p = particles[i];
 
-            // Upward drift with scroll velocity kick
-            p.y += p.speedY - velocity * 0.8;
-            p.x += p.speedX + Math.sin(time + i) * 0.35;
+            p.y += p.speedY;
+            p.x += p.speedX + Math.sin(time * 0.8 + i) * 0.15;
 
-            // Wrap around screen boundaries smoothly
-            if (p.y < -20) p.y = canvasHeight + 20;
-            if (p.y > canvasHeight + 20) p.y = -20;
-            if (p.x < -20) p.x = canvasWidth + 20;
-            if (p.x > canvasWidth + 20) p.x = -20;
+            // Wrap boundaries smoothly
+            if (p.y < -10) p.y = canvasHeight + 10;
+            if (p.y > canvasHeight + 10) p.y = -10;
+            if (p.x < -10) p.x = canvasWidth + 10;
+            if (p.x > canvasWidth + 10) p.x = -10;
 
-            const alphaPulse = p.alpha + Math.sin(time * 3 + p.pulseOffset) * 0.18;
-            const currentAlpha = Math.max(0.1, Math.min(0.9, alphaPulse + velocity * 0.05));
-            const particleRadius = p.size * (1 + velocity * 0.06);
+            const alphaPulse = p.baseAlpha + Math.sin(time * 1.5 + p.pulseOffset) * 0.06;
+            const currentAlpha = Math.max(0.08, Math.min(0.4, alphaPulse));
 
-            // Draw glowing particle spark
             ctx.fillStyle = `${p.colorPrefix}${currentAlpha})`;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, particleRadius, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fill();
-
-            // Particle light tail when scrolling fast
-            if (velocity > 1.5) {
-              ctx.strokeStyle = `${p.colorPrefix}${currentAlpha * 0.5})`;
-              ctx.lineWidth = particleRadius * 0.8;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p.x, p.y + velocity * 4.5);
-              ctx.stroke();
-            }
           }
 
           ctx.restore();
 
-          // 6. Refined Atmospheric Vignette & Contrast Shading
-          // Keeps typography crisp while letting the stadium stage & lasers shine brilliantly
+          // 5. Deep Atmospheric Contrast Vignette (Keeps content crystal clear & completely eye-friendly)
           const vignette = ctx.createRadialGradient(
             canvasWidth * 0.5, canvasHeight * 0.45, canvasWidth * 0.2,
-            canvasWidth * 0.5, canvasHeight * 0.5, canvasWidth * 0.78
+            canvasWidth * 0.5, canvasHeight * 0.5, canvasWidth * 0.8
           );
-          vignette.addColorStop(0, 'rgba(7, 8, 11, 0.25)');
-          vignette.addColorStop(0.65, 'rgba(7, 8, 11, 0.68)');
-          vignette.addColorStop(1, 'rgba(7, 8, 11, 0.94)');
+          vignette.addColorStop(0, 'rgba(7, 8, 11, 0.35)');
+          vignette.addColorStop(0.6, 'rgba(7, 8, 11, 0.72)');
+          vignette.addColorStop(1, 'rgba(7, 8, 11, 0.95)');
 
           ctx.fillStyle = vignette;
           ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-          // Subtle Bottom Stage Fade to blend seamlessly with cards and footer
-          const bottomFade = ctx.createLinearGradient(0, canvasHeight * 0.7, 0, canvasHeight);
+          // Smooth bottom gradient transition into cards & footer
+          const bottomFade = ctx.createLinearGradient(0, canvasHeight * 0.65, 0, canvasHeight);
           bottomFade.addColorStop(0, 'rgba(7, 8, 11, 0)');
-          bottomFade.addColorStop(1, 'rgba(7, 8, 11, 0.85)');
+          bottomFade.addColorStop(1, 'rgba(7, 8, 11, 0.92)');
           ctx.fillStyle = bottomFade;
-          ctx.fillRect(0, canvasHeight * 0.7, canvasWidth, canvasHeight * 0.3);
+          ctx.fillRect(0, canvasHeight * 0.65, canvasWidth, canvasHeight * 0.35);
         }
       }
 
@@ -387,7 +317,6 @@ export const ScrollBackgroundCanvas = () => {
       pointerEvents: 'none',
       overflow: 'hidden'
     }}>
-      {/* Full-width full-height high-performance canvas */}
       <canvas
         ref={canvasRef}
         style={{
@@ -402,4 +331,5 @@ export const ScrollBackgroundCanvas = () => {
     </div>
   );
 };
+
 

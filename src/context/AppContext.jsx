@@ -1,9 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { INITIAL_EVENTS, INITIAL_PROMOTERS, INITIAL_SALES, INITIAL_REWARDS, INITIAL_REFERRALS, COMMISSION_TIERS } from '../data/mockData';
+import { 
+  INITIAL_EVENTS, 
+  INITIAL_PROMOTERS, 
+  INITIAL_SALES, 
+  INITIAL_REWARDS, 
+  INITIAL_REFERRALS, 
+  INITIAL_TICKETS,
+  COMMISSION_TIERS 
+} from '../data/mockData';
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v9_rewards_referrals';
+const STORAGE_VERSION = 'v10_support_tickets';
 
 const INITIAL_SUPPORT_TICKETS = [
   {
@@ -96,6 +104,18 @@ export const AppProvider = ({ children }) => {
     return INITIAL_REFERRALS;
   });
 
+  const [tickets, setTickets] = useState(() => {
+    const saved = localStorage.getItem(`tixora_tickets_${STORAGE_VERSION}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return INITIAL_TICKETS;
+      }
+    }
+    return INITIAL_TICKETS;
+  });
+
   // Current session: role can be 'promoter' or 'admin'
   const [currentRole, setCurrentRole] = useState('promoter'); // 'promoter' | 'admin'
   const [activePromoterId, setActivePromoterId] = useState('prom-1'); // Default to Aarav Sharma
@@ -123,8 +143,8 @@ export const AppProvider = ({ children }) => {
   }, [sales]);
 
   useEffect(() => {
-    localStorage.setItem(`tixora_support_tickets_${STORAGE_VERSION}`, JSON.stringify(supportTickets));
-  }, [supportTickets]);
+    localStorage.setItem(`tixora_tickets_${STORAGE_VERSION}`, JSON.stringify(tickets));
+  }, [tickets]);
 
   const showToast = (message, type = 'success') => {
     const id = Date.now() + Math.random();
@@ -303,12 +323,107 @@ export const AppProvider = ({ children }) => {
     showToast(`🎉 Reward Claimed! Voucher code: ${reward.voucherCode}`, 'success');
   };
 
+  // Support Ticket System Actions
+  const raiseTicket = ({ category, subject, description, priority = 'Medium', orderId = '' }) => {
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const newId = `TIX-${randomNum}`;
+    const newTicket = {
+      id: newId,
+      ticketNumber: `#${newId}`,
+      category: category || 'Booking / Refund',
+      categoryKey: category ? category.toLowerCase().replace(/[^a-z]/g, '') : 'refund',
+      subject: subject.trim(),
+      description: description.trim(),
+      status: 'Open',
+      priority: priority,
+      promoterId: activePromoterId,
+      promoterName: activePromoter.name,
+      college: activePromoter.college,
+      createdAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      updatedAt: 'Just now',
+      orderId: orderId.trim() || null,
+      messages: [
+        {
+          id: `msg-${Date.now()}`,
+          sender: 'promoter',
+          senderName: activePromoter.name,
+          text: description.trim(),
+          timestamp: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        }
+      ]
+    };
+
+    setTickets((prev) => [newTicket, ...prev]);
+    showToast(`Ticket #${newId} raised successfully!`, 'success');
+    return newTicket;
+  };
+
+  const replyToTicket = (ticketId, text, sender = 'promoter') => {
+    if (!text.trim()) return;
+
+    setTickets((prev) =>
+      prev.map((t) => {
+        if (t.id === ticketId) {
+          const newMsg = {
+            id: `msg-${Date.now()}`,
+            sender: sender,
+            senderName: sender === 'promoter' ? activePromoter.name : 'Tixora Executive Support',
+            text: text.trim(),
+            timestamp: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+          };
+
+          return {
+            ...t,
+            status: sender === 'promoter' ? 'Open' : 'Awaiting Reply',
+            updatedAt: 'Just now',
+            messages: [...(t.messages || []), newMsg]
+          };
+        }
+        return t;
+      })
+    );
+    showToast('Reply submitted to ticket thread', 'success');
+  };
+
+  const updateTicketStatus = (ticketId, newStatus) => {
+    setTickets((prev) =>
+      prev.map((t) => (t.id === ticketId ? { ...t, status: newStatus, updatedAt: 'Just now' } : t))
+    );
+    showToast(`Ticket ${ticketId} marked as ${newStatus}`, 'info');
+  };
+
+  const escalateTicket = (ticketId, reason = '') => {
+    setTickets((prev) =>
+      prev.map((t) => {
+        if (t.id === ticketId) {
+          const escalateMsg = {
+            id: `msg-${Date.now()}`,
+            sender: 'system',
+            senderName: 'Tixora Escalation Bot',
+            text: `⚠️ Ticket escalated to Founders & Executive Leadership Desk (Ronak Jain R & Prajwal H S). Reason: ${reason || 'Urgent resolution requested by promoter.'}`,
+            timestamp: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+          };
+          return {
+            ...t,
+            status: 'Escalated',
+            priority: 'Urgent',
+            updatedAt: 'Just now',
+            messages: [...(t.messages || []), escalateMsg]
+          };
+        }
+        return t;
+      })
+    );
+    showToast(`Ticket ${ticketId} escalated to Executive Founders Desk`, 'warning');
+  };
+
   const resetAllData = () => {
     setEvents(INITIAL_EVENTS);
     setPromoters(INITIAL_PROMOTERS);
     setSales(INITIAL_SALES);
     setRewards(INITIAL_REWARDS);
     setReferrals(INITIAL_REFERRALS);
+    setTickets(INITIAL_TICKETS);
     setClaimedRewardIds(['rew-2']);
     setSupportTickets(INITIAL_SUPPORT_TICKETS);
     localStorage.clear();
@@ -325,6 +440,11 @@ export const AppProvider = ({ children }) => {
         claimedRewardIds,
         referrals,
         claimReward,
+        tickets,
+        raiseTicket,
+        replyToTicket,
+        updateTicketStatus,
+        escalateTicket,
         currentRole,
         setCurrentRole,
         activePromoterId,

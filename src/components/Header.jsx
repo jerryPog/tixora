@@ -19,7 +19,7 @@ import {
   Lock,
   Receipt,
   Gift,
-  Headphones
+  LifeBuoy
 } from 'lucide-react';
 
 export const Header = ({ 
@@ -48,11 +48,11 @@ export const Header = ({
 
   const navLinks = [
     { id: 'posters', label: 'Concerts', icon: <Ticket size={14} /> },
+    { id: 'tickets', label: 'Support Tickets', icon: <LifeBuoy size={14} color="#ec4899" /> },
     { id: 'waitlist', label: 'Waitlist', icon: <Zap size={14} color="#f59e0b" /> },
     { id: 'reviews', label: 'Reviews', icon: <Star size={14} color="#f59e0b" /> },
     { id: 'about', label: 'About', icon: <Info size={14} /> },
     { id: 'contact', label: 'Contact', icon: <Phone size={14} /> },
-    { id: 'support', label: 'Support', icon: <Headphones size={14} /> },
     { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={14} /> }
   ];
 

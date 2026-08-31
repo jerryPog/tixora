@@ -433,3 +433,101 @@ export const COMMISSION_TIERS = [
   }
 ];
 
+export const INITIAL_TICKETS = [
+  {
+    id: "TIX-1082",
+    ticketNumber: "#TIX-1082",
+    category: "Booking / Refund",
+    categoryKey: "refund",
+    subject: "Refund stuck for Phase 1 Guns N' Roses transaction",
+    description: "A customer transferred ₹8,000 for 2x Silver passes but the transaction failed at the payment gateway while debiting the bank. Need refund confirmation to update buyer.",
+    status: "Awaiting Reply", // "Open" | "In Progress" | "Awaiting Reply" | "Escalated" | "Resolved"
+    priority: "High",
+    promoterId: "prom-1",
+    promoterName: "Rahul Sharma",
+    college: "St. Stephen's College, DU",
+    createdAt: "29 Aug 2026, 02:40 PM",
+    updatedAt: "2 hours ago",
+    orderId: "ORD-94812",
+    messages: [
+      {
+        id: "msg-1",
+        sender: "promoter",
+        senderName: "Rahul Sharma",
+        text: "A customer transferred ₹8,000 for 2x Silver passes but the transaction failed at the payment gateway while debiting the bank. Need refund confirmation to update buyer.",
+        timestamp: "29 Aug 2026, 02:40 PM"
+      },
+      {
+        id: "msg-2",
+        sender: "support",
+        senderName: "Tixora Ops (Prajwal H S)",
+        text: "Hi Rahul, our banking gateway has flagged the transaction as pending clearance. We have initiated an auto-reversal to the source account (UTR: 5291048821). It will reflect within 24-48 hours.",
+        timestamp: "29 Aug 2026, 04:15 PM"
+      }
+    ]
+  },
+  {
+    id: "TIX-1049",
+    ticketNumber: "#TIX-1049",
+    category: "Partner Discount",
+    categoryKey: "discount",
+    subject: "Partner discount not received on 10x Fred again passes",
+    description: "Group booking promo code 'CAMPUSBEAT10' did not deduct the 10% partner discount during ticket issuance for Fred again Delhi show.",
+    status: "In Progress",
+    priority: "Medium",
+    promoterId: "prom-1",
+    promoterName: "Rahul Sharma",
+    college: "St. Stephen's College, DU",
+    createdAt: "28 Aug 2026, 11:20 AM",
+    updatedAt: "Yesterday",
+    orderId: "ORD-88319",
+    messages: [
+      {
+        id: "msg-1",
+        sender: "promoter",
+        senderName: "Rahul Sharma",
+        text: "Group booking promo code 'CAMPUSBEAT10' did not deduct the 10% partner discount during ticket issuance for Fred again Delhi show.",
+        timestamp: "28 Aug 2026, 11:20 AM"
+      },
+      {
+        id: "msg-2",
+        sender: "support",
+        senderName: "Tixora Support (Ronak Jain R)",
+        text: "We are reviewing the promoter discount ledger. A manual commission adjustment of ₹1,750 is queued for your next payout cycle.",
+        timestamp: "28 Aug 2026, 01:05 PM"
+      }
+    ]
+  },
+  {
+    id: "TIX-1015",
+    ticketNumber: "#TIX-1015",
+    category: "Inventory",
+    categoryKey: "inventory",
+    subject: "Inventory quota exhausted for Anyma Mumbai VIP Fanpit",
+    description: "Need additional allocation of 5 VIP Fanpit tickets for college dance society members attending Anyma Mumbai on Nov 21.",
+    status: "Resolved",
+    priority: "High",
+    promoterId: "prom-1",
+    promoterName: "Rahul Sharma",
+    college: "St. Stephen's College, DU",
+    createdAt: "25 Aug 2026, 05:10 PM",
+    updatedAt: "2 days ago",
+    orderId: "REQ-44019",
+    messages: [
+      {
+        id: "msg-1",
+        sender: "promoter",
+        senderName: "Rahul Sharma",
+        text: "Need additional allocation of 5 VIP Fanpit tickets for college dance society members attending Anyma Mumbai on Nov 21.",
+        timestamp: "25 Aug 2026, 05:10 PM"
+      },
+      {
+        id: "msg-2",
+        sender: "support",
+        senderName: "Tixora Ticketing Desk",
+        text: "Allocated 5 additional VIP passes to your promoter quota from Phase 2 reserve. You can now issue them from your dashboard.",
+        timestamp: "25 Aug 2026, 06:30 PM"
+      }
+    ]
+  }
+];

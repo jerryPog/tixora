@@ -49,6 +49,12 @@ const PAGE_METADATA = {
     canonical: "https://tixora.in/#about",
     ogType: "article"
   },
+  tickets: {
+    title: "Support Tickets & Issue Resolution Desk | Tixora",
+    description: "Raise issues, track support ticket replies, request booking refunds, verify partner discounts, and escalate urgent concert pass queries directly to Tixora leadership.",
+    canonical: "https://tixora.in/#tickets",
+    ogType: "website"
+  },
   contact: {
     title: "Contact Tixora Support & Helpline (+91 78921 45475) | 24/7 Promoter Care",
     description: "Get in touch with Tixora's dedicated promoter support desk via WhatsApp (+91 78921 45475), email, or our campus representative escalations.",

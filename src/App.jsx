@@ -13,6 +13,7 @@ import { ThankYouPage } from './components/Pages/ThankYouPage';
 import { AboutPage } from './components/Pages/AboutPage';
 import { ContactPage } from './components/Pages/ContactPage';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
+import { SupportTicketsSection } from './components/SupportTickets/SupportTicketsSection';
 
 import { TourSchedule } from './components/TourSchedule';
 import { ArtistLineupShowcase } from './components/ArtistLineupShowcase';
@@ -35,7 +36,6 @@ import { CreateEventModal } from './components/AdminDashboard/CreateEventModal';
 import { LegalComplianceModal } from './components/LegalComplianceModal';
 import { FAQSection } from './components/FAQSection';
 import { ToastContainer } from './components/Toast';
-import { SupportTickets } from './components/SupportTickets';
 import { LiveActivityPopup } from './components/LiveActivityPopup';
 import { usePageSEO } from './hooks/usePageSEO';
 
@@ -57,7 +57,7 @@ import {
   Star,
   Info,
   Lock,
-  Headphones
+  LifeBuoy
 } from 'lucide-react';
 import './index.css';
 
@@ -188,7 +188,7 @@ const MainDashboard = () => {
 
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      const validViews = ['events', 'posters', 'waitlist', 'prices', 'ledger', 'rewards', 'tiers', 'reviews', 'about', 'contact', 'faqs', 'support', 'thank-you', '404'];
+      const validViews = ['events', 'posters', 'tickets', 'waitlist', 'prices', 'ledger', 'rewards', 'tiers', 'reviews', 'about', 'contact', 'faqs', 'thank-you', '404'];
       
       if (hash === 'events' || !hash) {
         setActiveView('posters');
@@ -494,12 +494,15 @@ const MainDashboard = () => {
               />
             )}
 
+            {/* Subview: Support Tickets Desk */}
+            {activeView === 'tickets' && (
+              <SupportTicketsSection />
+            )}
+
             {/* Subview 10: FAQ Center */}
             {activeView === 'faqs' && (
               <FAQSection onAskInChat={handleAskInChat} />
             )}
-
-            {activeView === 'support' && <SupportTickets />}
 
             {/* Subview 11: Thank You Page */}
             {activeView === 'thank-you' && (
@@ -544,8 +547,8 @@ const MainDashboard = () => {
                 { id: 'events', label: 'Concert Roster', icon: <Ticket size={15} /> },
                 { id: 'promoters', label: 'Promoter Network', icon: <Users size={15} /> },
                 { id: 'sales', label: 'Audit & Sales Feed', icon: <TrendingUp size={15} /> },
-                { id: 'faqs', label: 'Operational FAQs', icon: <HelpCircle size={15} /> },
-                { id: 'support', label: 'Support queue', icon: <Headphones size={15} /> }
+                { id: 'tickets', label: 'Support Tickets', icon: <LifeBuoy size={15} color="#ec4899" /> },
+                { id: 'faqs', label: 'Operational FAQs', icon: <HelpCircle size={15} /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -593,11 +596,13 @@ const MainDashboard = () => {
               <AllSalesMonitor />
             )}
 
+            {adminTab === 'tickets' && (
+              <SupportTicketsSection />
+            )}
+
             {adminTab === 'faqs' && (
               <FAQSection onAskInChat={handleAskInChat} />
             )}
-
-            {adminTab === 'support' && <SupportTickets />}
           </div>
         )}
 
@@ -661,12 +666,12 @@ const MainDashboard = () => {
               <span>Ledger</span>
             </button>
 
-              <button
-              onClick={() => navigateTo('support')}
-              className={`mobile-nav-item ${activeView === 'support' ? 'active' : ''}`}
+            <button
+              onClick={() => navigateTo('tickets')}
+              className={`mobile-nav-item ${activeView === 'tickets' ? 'active' : ''}`}
             >
-              <Headphones size={18} />
-              <span>Support</span>
+              <LifeBuoy size={18} color="#ec4899" />
+              <span>Tickets</span>
             </button>
           </>
         ) : (
@@ -701,19 +706,19 @@ const MainDashboard = () => {
             </button>
 
             <button
+              onClick={() => { setAdminTab('tickets'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`mobile-nav-item ${adminTab === 'tickets' ? 'active' : ''}`}
+            >
+              <LifeBuoy size={18} color="#ec4899" />
+              <span>Tickets</span>
+            </button>
+
+            <button
               onClick={() => { setAdminTab('promoters'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className={`mobile-nav-item ${adminTab === 'promoters' ? 'active' : ''}`}
             >
               <Users size={18} />
               <span>Promoters</span>
-            </button>
-
-            <button
-              onClick={() => { setAdminTab('support'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className={`mobile-nav-item ${adminTab === 'support' ? 'active' : ''}`}
-            >
-              <Headphones size={18} />
-              <span>Support</span>
             </button>
           </>
         )}
@@ -818,6 +823,7 @@ const MainDashboard = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <button onClick={() => navigateTo('posters')} className="footer-link">Concerts & Passes</button>
+                  <button onClick={() => navigateTo('tickets')} className="footer-link">Support Tickets</button>
                   <button onClick={() => navigateTo('waitlist')} className="footer-link">Campus Ambassador</button>
                   <button onClick={() => navigateTo('prices')} className="footer-link">Price Calculator</button>
                   <button onClick={() => navigateTo('rewards')} className="footer-link">Referral Rewards</button>
