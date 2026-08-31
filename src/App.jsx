@@ -771,10 +771,10 @@ const MainDashboard = () => {
         <div className="container flex flex-col gap-6">
           
           {/* Main Footer Row */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-6">
             
             {/* Brand Logo & Founders Attribution */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <div 
                 onClick={handleGoHome}
                 className="flex items-center gap-2"
@@ -793,24 +793,22 @@ const MainDashboard = () => {
                 />
               </div>
 
+              {/* Vertical Founders Attribution Pill */}
               <div style={{
                 background: 'rgba(255, 255, 255, 0.04)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '9999px',
-                padding: '4px 14px',
+                borderRadius: '12px',
+                padding: '8px 14px',
                 fontSize: '0.72rem',
                 color: '#e4e4e7',
                 display: 'inline-flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '6px',
+                flexDirection: 'column',
+                gap: '4px',
                 width: 'fit-content'
               }}>
-                <span><strong>Ronak Jain R</strong> (Founder)</span>
-                <span style={{ color: 'var(--text-muted)' }}>•</span>
-                <span><strong>Prajwal Gowrish H S</strong> (Co-Founder)</span>
-                <span style={{ color: 'var(--text-muted)' }}>•</span>
-                <span><strong>Kanishk Jhunjhunwala</strong> (Co-Founder)</span>
+                <div><strong>Ronak Jain R</strong> (Founder)</div>
+                <div><strong>Prajwal Gowrish H S</strong> (Co-Founder)</div>
+                <div><strong>Kanishk Jhunjhunwala</strong> (Co-Founder)</div>
               </div>
             </div>
 
