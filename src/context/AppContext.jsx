@@ -11,7 +11,7 @@ import {
 
 const AppContext = createContext();
 
-const STORAGE_VERSION = 'v12_artist_faces';
+const STORAGE_VERSION = 'v13_artist_zoomed';
 
 const INITIAL_SUPPORT_TICKETS = [
   {
