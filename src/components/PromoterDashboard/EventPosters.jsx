@@ -13,6 +13,15 @@ import {
 } from 'lucide-react';
 import { VenueLayoutModal } from '../VenueLayoutModal';
 
+const ARTIST_IMAGE_MAP = {
+  'evt-gnr-blr': '/artists/guns-n-roses.jpg',
+  'evt-anyma-mum': '/artists/anyma.jpg',
+  'evt-fred-del': '/artists/fred-again.jpg',
+  'evt-fred-mum': '/artists/fred-again.jpg',
+  'evt-chainsmokers-blr': '/artists/chainsmokers.jpg',
+  'evt-khalid-del': '/artists/khalid.jpg',
+};
+
 export const EventPosters = ({ onSelectEventForSale, onSelectEventForPriceList }) => {
   const { events, activePromoter, showToast } = useApp();
   const [selectedCityFilter, setSelectedCityFilter] = useState('All');
@@ -155,7 +164,7 @@ ${tiersText}
               >
                 {/* Full-bleed crisp artist face & artwork (no text) */}
                 <img
-                  src={event.artistImageUrl || event.posterUrl}
+                  src={event.artistImageUrl || ARTIST_IMAGE_MAP[event.id] || event.posterUrl}
                   alt={`Official verified portrait for ${event.artist || event.name}`}
                   className="poster-img"
                   style={{ 
