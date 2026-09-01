@@ -153,16 +153,16 @@ ${tiersText}
                   background: '#090a0d'
                 }}
               >
-                {/* Full-bleed crisp artist artwork */}
+                {/* Full-bleed crisp artist face & artwork (no text) */}
                 <img
-                  src={event.posterUrl}
-                  alt={`Official verified promotional poster for ${event.name} in ${event.city} 2026`}
+                  src={event.artistImageUrl || event.posterUrl}
+                  alt={`Official verified portrait for ${event.artist || event.name}`}
                   className="poster-img"
                   style={{ 
                     width: '100%', 
                     height: '100%', 
                     objectFit: 'cover', 
-                    objectPosition: event.posterPosition || 'center 20%',
+                    objectPosition: event.posterPosition || 'center center',
                     transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                     display: 'block'
                   }}
