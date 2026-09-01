@@ -284,6 +284,10 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--border-hover);
 }
 
+.glass-card:hover .poster-img {
+  transform: scale(1.06);
+}
+
 /* Grid */
 .grid {
   display: grid;

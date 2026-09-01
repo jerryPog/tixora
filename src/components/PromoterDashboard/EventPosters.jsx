@@ -142,7 +142,7 @@ ${tiersText}
                 border: isAssigned ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid var(--border-color)'
               }}
             >
-              {/* Poster Image Showcase: Ambient blurred backdrop + 100% Uncropped Sharp Artwork */}
+              {/* Poster Image Showcase: Full-bleed Edge-to-Edge Artwork Highlight */}
               <div 
                 className="poster-container"
                 style={{ 
@@ -150,45 +150,34 @@ ${tiersText}
                   height: '320px', 
                   width: '100%', 
                   overflow: 'hidden', 
-                  background: '#090a0d',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  background: '#090a0d'
                 }}
               >
-                {/* Ambient glowing backdrop fill */}
-                <div style={{ position: 'absolute', inset: -15, overflow: 'hidden', pointerEvents: 'none' }}>
-                  <img
-                    src={event.posterUrl}
-                    alt=""
-                    aria-hidden="true"
-                    style={{ 
-                      width: '130%', 
-                      height: '130%', 
-                      objectFit: 'cover', 
-                      filter: 'blur(30px) brightness(0.35) saturate(1.3)',
-                      transform: 'translate(-10%, -10%)'
-                    }}
-                    loading="lazy"
-                  />
-                </div>
-                
-                {/* Sharp uncropped official poster */}
+                {/* Full-bleed crisp artist artwork */}
                 <img
                   src={event.posterUrl}
                   alt={`Official verified promotional poster for ${event.name} in ${event.city} 2026`}
                   className="poster-img"
                   style={{ 
-                    position: 'relative', 
-                    maxHeight: '100%', 
-                    maxWidth: '100%', 
-                    width: 'auto',
-                    height: '100%',
-                    objectFit: 'contain',
-                    zIndex: 1,
-                    filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.7))'
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover', 
+                    objectPosition: event.posterPosition || 'center 20%',
+                    transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                    display: 'block'
                   }}
                   loading="lazy"
+                />
+
+                {/* Ambient subtle vignette gradient overlay */}
+                <div 
+                  style={{ 
+                    position: 'absolute', 
+                    inset: 0, 
+                    background: 'linear-gradient(to bottom, rgba(9,10,13,0.2) 0%, transparent 40%, rgba(9,10,13,0.85) 100%)',
+                    pointerEvents: 'none',
+                    zIndex: 2
+                  }} 
                 />
 
                 {/* Badges on poster */}
