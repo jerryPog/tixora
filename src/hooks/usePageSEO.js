@@ -1,82 +1,100 @@
 import { useEffect } from 'react';
 
 const PAGE_METADATA = {
-  posters: {
+  home: {
     title: "Tixora — Live The Hype | Official Youth Concert Tickets & Promoter Portal",
     description: "Discover verified 2026 Indian concert passes including Guns N' Roses, Anyma ÆDEN, Fred again.., and The Chainsmokers. 100% DigiLocker-verified promoters & instant QR issuance.",
-    canonical: "https://tixora.in/#events",
+    canonical: "https://tixora.in/",
+    ogType: "website"
+  },
+  events: {
+    title: "Concerts & Festival Lineup 2026 | Tixora India",
+    description: "Browse official concert passes, ticket tiers, and tour dates across Bengaluru, Mumbai, and Delhi NCR with verified promoter pricing.",
+    canonical: "https://tixora.in/events",
+    ogType: "website"
+  },
+  posters: {
+    title: "Concerts & Festival Lineup 2026 | Tixora India",
+    description: "Browse official concert passes, ticket tiers, and tour dates across Bengaluru, Mumbai, and Delhi NCR with verified promoter pricing.",
+    canonical: "https://tixora.in/events",
     ogType: "website"
   },
   waitlist: {
     title: "Join the Tixora Campus Ambassador Waitlist | Earn Top Commissions & VIP Access",
     description: "Apply to become a verified Tixora campus promoter at your university. Earn 7.5%–10% commission per ticket, unlock artist backstage passes, and build campus leadership.",
-    canonical: "https://tixora.in/#waitlist",
+    canonical: "https://tixora.in/waitlist",
     ogType: "article"
   },
   prices: {
     title: "Live Concert Price Lists & Commission Calculator | Tixora India",
     description: "Explore official MRP ticket tiers, promoter commissions, face values, and profit cuts across Sunburn, Fred again.., Anyma, and Khalid India tours.",
-    canonical: "https://tixora.in/#prices",
+    canonical: "https://tixora.in/prices",
     ogType: "website"
   },
   ledger: {
     title: "My Sales Ledger & Earnings Dashboard | Tixora Promoter Portal",
     description: "Track real-time ticket sales, verified buyer delivery statuses, direct UPI/Bank payouts, and tier progression on the official Tixora platform.",
-    canonical: "https://tixora.in/#ledger",
+    canonical: "https://tixora.in/ledger",
     ogType: "website"
   },
   rewards: {
     title: "Promoter Rewards, Referral Program & VIP Perks | Tixora",
     description: "Share your promoter referral code to earn ₹500 bonuses per active recruit plus backstage artist passes, festival wristbands, and gear.",
-    canonical: "https://tixora.in/#rewards",
+    canonical: "https://tixora.in/rewards",
     ogType: "website"
   },
   tiers: {
     title: "Commission Tiers & Promoter Privileges | Tixora India",
     description: "Climb from Bronze to Diamond promoter tier to unlock up to 10% instant commission cuts, direct artist meet-and-greets, and festival hospitality.",
-    canonical: "https://tixora.in/#tiers",
+    canonical: "https://tixora.in/tiers",
     ogType: "website"
   },
   reviews: {
     title: "Verified Student Promoter Reviews & Testimonials | Tixora",
     description: "Read real reviews from student promoters across Delhi University, St. Xavier's Mumbai, RVCE Bangalore, and NMIMS on their earnings and experiences with Tixora.",
-    canonical: "https://tixora.in/#reviews",
+    canonical: "https://tixora.in/reviews",
     ogType: "website"
   },
   about: {
     title: "About Tixora — Board of Directors & Leadership | Live The Hype",
     description: "Learn about Tixora's mission to democratize youth concert ticketing in India through DigiLocker verification, anti-scalping technology, and fair promoter revenue shares.",
-    canonical: "https://tixora.in/#about",
+    canonical: "https://tixora.in/about",
     ogType: "article"
   },
   tickets: {
     title: "Support Tickets & Issue Resolution Desk | Tixora",
     description: "Raise issues, track support ticket replies, request booking refunds, verify partner discounts, and escalate urgent concert pass queries directly to Tixora leadership.",
-    canonical: "https://tixora.in/#tickets",
+    canonical: "https://tixora.in/tickets",
     ogType: "website"
   },
   contact: {
     title: "Contact Tixora Support & Helpline (+91 78921 45475) | 24/7 Promoter Care",
     description: "Get in touch with Tixora's dedicated promoter support desk via WhatsApp (+91 78921 45475), email, or our campus representative escalations.",
-    canonical: "https://tixora.in/#contact",
+    canonical: "https://tixora.in/contact",
     ogType: "website"
   },
   faqs: {
     title: "Frequently Asked Questions & Promoter Policies | Tixora",
     description: "Find instant answers regarding ticket issuance, DigiLocker verification, payout schedules, anti-scalping rules, and refund policies.",
-    canonical: "https://tixora.in/#faqs",
+    canonical: "https://tixora.in/faqs",
     ogType: "website"
   },
   support: {
     title: "Issue Resolution Center | Refunds, Inventory & Ticket Support | Tixora",
     description: "Create and track Tixora support requests for refunds, inventory mismatches, missing QR passes, and ticket issuance problems.",
-    canonical: "https://tixora.in/#support",
+    canonical: "https://tixora.in/tickets",
+    ogType: "website"
+  },
+  admin: {
+    title: "Staff Admin Dashboard & Operations Console | Tixora",
+    description: "Comprehensive operations console to manage concerts, verify promoter onboarding, monitor real-time audit sales, and triage support tickets.",
+    canonical: "https://tixora.in/admin",
     ogType: "website"
   },
   'thank-you': {
     title: "Confirmation & Thank You | Tixora — Live The Hype",
     description: "Your ticket order or campus ambassador application has been successfully recorded. Access your digital pass and QR code immediately.",
-    canonical: "https://tixora.in/#thank-you",
+    canonical: "https://tixora.in/thank-you",
     ogType: "website"
   },
   '404': {
@@ -87,9 +105,19 @@ const PAGE_METADATA = {
   }
 };
 
-export const usePageSEO = (viewKey = 'posters', customTitle = null, customDescription = null) => {
+const resolveKey = (keyOrPath) => {
+  if (!keyOrPath) return 'home';
+  const clean = keyOrPath.replace(/^\//, '').replace(/\/$/, '');
+  if (!clean) return 'home';
+  if (clean.startsWith('events/')) return 'events';
+  if (PAGE_METADATA[clean]) return clean;
+  return 'home';
+};
+
+export const usePageSEO = (viewKey = 'home', customTitle = null, customDescription = null) => {
   useEffect(() => {
-    const meta = PAGE_METADATA[viewKey] || PAGE_METADATA.posters;
+    const resolvedKey = resolveKey(viewKey);
+    const meta = PAGE_METADATA[resolvedKey] || PAGE_METADATA.home;
     const finalTitle = customTitle || meta.title;
     const finalDescription = customDescription || meta.description;
 

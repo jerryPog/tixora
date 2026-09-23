@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { 
   ShieldCheck, 
@@ -19,19 +20,19 @@ import {
   Lock,
   Receipt,
   Gift,
-  LifeBuoy
+  LifeBuoy,
+  Award
 } from 'lucide-react';
 
 export const Header = ({ 
-  currentView,
-  onNavigate,
   onOpenRecordSale, 
   onOpenCreateEvent, 
   onOpenLegalCompliance, 
-  onOpenRLSInspector,
-  onOpenFAQ, 
-  onGoHome 
+  onOpenRLSInspector 
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { 
     currentRole, 
     setCurrentRole, 
@@ -47,19 +48,15 @@ export const Header = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { id: 'posters', label: 'Concerts', icon: <Ticket size={14} /> },
-    { id: 'tickets', label: 'Support Tickets', icon: <LifeBuoy size={14} color="#ec4899" /> },
-    { id: 'waitlist', label: 'Waitlist', icon: <Zap size={14} color="#f59e0b" /> },
-    { id: 'reviews', label: 'Reviews', icon: <Star size={14} color="#f59e0b" /> },
-    { id: 'about', label: 'About', icon: <Info size={14} /> },
-    { id: 'contact', label: 'Contact', icon: <Phone size={14} /> },
-    { id: 'faqs', label: 'FAQs', icon: <HelpCircle size={14} /> }
+    { path: '/events', label: 'Concerts', icon: <Ticket size={14} /> },
+    { path: '/prices', label: 'Prices & Calc', icon: <Receipt size={14} /> },
+    { path: '/tickets', label: 'Support Desk', icon: <LifeBuoy size={14} color="#ec4899" /> },
+    { path: '/waitlist', label: 'Waitlist', icon: <Zap size={14} color="#f59e0b" /> },
+    { path: '/reviews', label: 'Reviews', icon: <Star size={14} color="#f59e0b" /> },
+    { path: '/about', label: 'About', icon: <Info size={14} /> },
+    { path: '/contact', label: 'Contact', icon: <Phone size={14} /> },
+    { path: '/faqs', label: 'FAQs', icon: <HelpCircle size={14} /> }
   ];
-
-  const handleNavClick = (viewId) => {
-    onNavigate(viewId);
-    setMobileMenuOpen(false);
-  };
 
   return (
     <header style={{
@@ -86,13 +83,13 @@ export const Header = ({
             {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
 
-          <div 
-            onClick={onGoHome}
+          <Link 
+            to="/"
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              cursor: 'pointer'
+              textDecoration: 'none'
             }}
             title="Return to Tixora Home"
           >
@@ -106,7 +103,7 @@ export const Header = ({
                 display: 'block'
               }}
             />
-          </div>
+          </Link>
 
           <div className="header-brand-badge" style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '10px' }}>
             <div>
@@ -134,25 +131,24 @@ export const Header = ({
           </div>
         </div>
 
-        {/* Desktop Navigation Links (Horizontal Row on Desktop) */}
+        {/* Desktop Navigation Links */}
         <nav className="header-nav-desktop" aria-label="Main Navigation">
           {navLinks.map((link) => {
-            const isActive = currentView === link.id;
+            const isActive = location.pathname === link.path || (link.path === '/events' && location.pathname.startsWith('/events/'));
 
             return (
-              <button
-                key={link.id}
-                onClick={() => handleNavClick(link.id)}
+              <NavLink
+                key={link.path}
+                to={link.path}
                 style={{
                   background: isActive ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
                   color: isActive ? '#ffffff' : 'var(--text-muted)',
-                  border: 'none',
                   borderBottom: isActive ? '2px solid #ffffff' : '2px solid transparent',
                   padding: '6px 11px',
                   borderRadius: '6px 6px 0 0',
                   fontSize: '0.78rem',
                   fontWeight: 600,
-                  cursor: 'pointer',
+                  textDecoration: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '5px',
@@ -168,7 +164,7 @@ export const Header = ({
               >
                 {link.icon}
                 <span>{link.label}</span>
-              </button>
+              </NavLink>
             );
           })}
         </nav>
@@ -189,6 +185,9 @@ export const Header = ({
               onClick={() => {
                 setCurrentRole('promoter');
                 showToast('Switched to Promoter View', 'info');
+                if (location.pathname.startsWith('/admin')) {
+                  navigate('/events');
+                }
               }}
               style={{
                 background: currentRole === 'promoter' ? '#ffffff' : 'transparent',
@@ -213,6 +212,7 @@ export const Header = ({
               onClick={() => {
                 setCurrentRole('admin');
                 showToast('Switched to Admin Dashboard', 'info');
+                navigate('/admin');
               }}
               style={{
                 background: currentRole === 'admin' ? '#ffffff' : 'transparent',
@@ -381,28 +381,35 @@ export const Header = ({
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            {navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => handleNavClick(link.id)}
-                style={{
-                  background: currentView === link.id ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.04)',
-                  color: currentView === link.id ? '#ffffff' : '#e4e4e7',
+            {[
+              { path: '/', label: 'Home', icon: <Ticket size={14} /> },
+              ...navLinks,
+              { path: '/ledger', label: 'Sales Ledger', icon: <Receipt size={14} /> },
+              { path: '/rewards', label: 'Rewards', icon: <Gift size={14} /> },
+              { path: '/tiers', label: 'Tiers', icon: <Award size={14} /> }
+            ].map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                style={({ isActive }) => ({
+                  background: isActive ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.04)',
+                  color: isActive ? '#ffffff' : '#e4e4e7',
                   border: '1px solid var(--border-color)',
                   borderRadius: '8px',
                   padding: '10px',
                   fontSize: '0.8rem',
                   fontWeight: 600,
-                  cursor: 'pointer',
+                  textDecoration: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
                   textAlign: 'left'
-                }}
+                })}
               >
                 {link.icon}
                 <span>{link.label}</span>
-              </button>
+              </NavLink>
             ))}
           </div>
 

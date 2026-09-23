@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { 
   Download, 
@@ -9,7 +10,8 @@ import {
   Check, 
   Image as ImageIcon, 
   Clock,
-  Map as MapIcon
+  Map as MapIcon,
+  ChevronRight
 } from 'lucide-react';
 import { VenueLayoutModal } from '../VenueLayoutModal';
 
@@ -22,7 +24,7 @@ const ARTIST_IMAGE_MAP = {
   'evt-khalid-del': '/artists/khalid.jpg',
 };
 
-export const EventPosters = ({ onSelectEventForSale, onSelectEventForPriceList }) => {
+export const EventPosters = ({ onSelectEventForSale, onSelectEventForPriceList, onSelectEventDetails }) => {
   const { events, activePromoter, showToast } = useApp();
   const [selectedCityFilter, setSelectedCityFilter] = useState('All');
   const [selectedPosterModal, setSelectedPosterModal] = useState(null);
@@ -253,9 +255,11 @@ ${tiersText}
               {/* Event Details Content */}
               <div style={{ padding: '1.15rem 1rem 1rem 1rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '0.85rem' }}>
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.25, marginBottom: '2px' }}>
-                    {event.name}
-                  </h3>
+                  <Link to={`/events/${event.id}`} style={{ textDecoration: 'none', color: '#ffffff' }}>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.25, marginBottom: '2px' }}>
+                      {event.name}
+                    </h3>
+                  </Link>
                   <div className="flex items-center gap-2" style={{ fontSize: '0.78rem', color: '#e4e4e7' }}>
                     <Calendar size={12} color="var(--text-muted)" />
                     <span>{event.date}</span>
@@ -363,21 +367,29 @@ ${tiersText}
                   </div>
 
                   {/* Primary actions row */}
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5">
+                    <Link
+                      to={`/events/${event.id}`}
+                      className="btn btn-secondary"
+                      style={{ flex: 1, padding: '7px 4px', fontSize: '0.74rem', textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                      Details
+                    </Link>
+
                     <button
                       onClick={() => onSelectEventForPriceList(event.id)}
                       className="btn btn-secondary"
-                      style={{ flex: 1, padding: '7px', fontSize: '0.76rem' }}
+                      style={{ flex: 1, padding: '7px 4px', fontSize: '0.74rem' }}
                     >
-                      View Table
+                      Prices
                     </button>
 
                     <button
                       onClick={() => onSelectEventForSale(event.id)}
                       className="btn btn-primary"
-                      style={{ flex: 1, padding: '7px', fontSize: '0.76rem', gap: '4px' }}
+                      style={{ flex: 1.2, padding: '7px 4px', fontSize: '0.74rem', gap: '3px' }}
                     >
-                      <Ticket size={12} /> Sell Ticket
+                      <Ticket size={11} /> Pass
                     </button>
                   </div>
                 </div>

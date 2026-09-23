@@ -1071,6 +1071,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: none;
   border: none;
   color: #a1a1aa;
+  text-decoration: none;
+  display: block;
   cursor: pointer;
   padding: 2px 0;
   text-align: left;
